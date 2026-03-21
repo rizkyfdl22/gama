@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --sage: #92A68A;
   --bg: #F8F9F5;
