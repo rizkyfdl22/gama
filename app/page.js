@@ -14,12 +14,9 @@ export default function Home() {
           <button className="btn-primary">Order Now</button>
         </div>
 
-        <div className="hero-img">
-          <img
-            src="https://images.unsplash.com/photo-1601924582975-7c5b6c7d4c6c"
-            alt="pizza"
-          />
-        </div>
+  <div className="hero-img">
+  <img src="/hero.jpeg" alt="pizza hero" />
+</div>
       </section>
 
       {/* FEATURES */}
