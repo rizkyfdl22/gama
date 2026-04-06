@@ -1,19 +1,26 @@
-// app/components/Navbar.js
+"use client";
+
+import Link from "next/link";
+
 export default function Navbar() {
   return (
-    <nav className="flex justify-between items-center px-8 py-4 bg-white shadow">
-      <h1 className="font-bold text-xl" style={{ color: "var(--sage)" }}>
-        PizzaBrand
+    <nav className="navbar">
+      <h1 className="logo">
+        Tourney<span>Hub</span>
       </h1>
-      <ul className="flex gap-6">
-        <li>Home</li>
-        <li>Menu</li>
-        <li>About</li>
-        <li>Contact</li>
-      </ul>
-      <button className="px-4 py-2 rounded-xl" style={{ background: "var(--wood)" }}>
-        Order Now
-      </button>
+
+      <div className="nav-links">
+        <Link href="/">Home</Link>
+        <Link href="/tournaments">Tournament</Link>
+        <Link href="#">How It Works</Link>
+      </div>
+
+      <div className="nav-actions">
+        <Link href="/login">Login</Link>
+        <Link href="/tournaments" className="btn-primary">
+          Explore
+        </Link>
+      </div>
     </nav>
   );
 }
