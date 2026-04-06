@@ -6,7 +6,7 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <h1 className="logo">
-        Tourney<span>Hub</span>
+        Semesta<span>Organizer</span>
       </h1>
 
       <div className="nav-links">
