@@ -87,6 +87,41 @@ export default function Home() {
         </p>
       </section>
 
+{/* PARTNERS */}
+<section className="partners">
+
+  <h2>Official Partner</h2>
+
+  <div className="marquee">
+    <div className="marquee-track">
+      <img src="/feed-logo.jpeg" alt="" />
+      <img src="/logo_RRQ.png" alt="" />
+      <img src="/pocari-sweat-logo.png" alt="" />
+
+      {/* DUPLICATE (WAJIB buat looping) */}     
+      <img src="/feed-logo.jpeg" alt="" />
+      <img src="/logo_RRQ.png" alt="" />
+      <img src="/pocari-sweat-logo.png" alt="" />
+    </div>
+  </div>
+
+  <h2 className="sponsor-title">Our Sponsors</h2>
+
+  <div className="marquee">
+    <div className="marquee-track">
+      <img src="/pertamina-logo.png" alt="" />
+      <img src="/warkop-iklas.png" alt="" />
+      <img src="/logo-wismilak.png" alt="" />
+
+      {/* DUPLICATE */}
+      <img src="/pertamina-logo.png" alt="" />
+      <img src="/warkop-iklas.png" alt="" />
+      <img src="/logo-wismilak.png" alt="" />
+    </div>
+  </div>
+
+</section>
+
       {/* CTA */}
       <section className="cta">
         <h2>Siap untuk bertanding?</h2>

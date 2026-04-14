@@ -305,6 +305,67 @@ body {
   margin-bottom: 20px;
 }
 
+/* ========================= */
+/* MARQUEE (LOGO SCROLL) */
+/* ========================= */
+
+.marquee {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 40px;
+  width: max-content;
+
+  animation: scroll 20s linear infinite;
+}
+
+.marquee img {
+  height: 50px;
+  object-fit: contain;
+  opacity: 0.7;
+  transition: 0.3s;
+}
+
+.marquee img:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* ANIMATION */
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee::before,
+.marquee::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 80px;
+  height: 100%;
+  z-index: 2;
+}
+
+.marquee::before {
+  left: 0;
+  background: linear-gradient(to right, var(--black), transparent);
+}
+
+.marquee::after {
+  right: 0;
+  background: linear-gradient(to left, var(--black), transparent);
+}
+
 /* FOOTER */
 .footer {
   margin-top: 120px;
