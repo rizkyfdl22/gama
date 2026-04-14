@@ -7,27 +7,41 @@ export default function Home() {
     <div className="home">
 
       {/* HERO */}
-      <section className="hero">
-        <h1>
-          We Create{" "}
-          <span className="gradient-text">Competitive Experiences</span>
-        </h1>
+<section className="hero">
+  
+  <div className="hero-content">
+    
+    {/* LEFT - TEXT */}
+    <div className="hero-left">
+      <h1>
+        We Create{" "}
+        <span className="gradient-text">Competitive Experiences</span>
+      </h1>
 
-        <p>
-          Kami adalah Event Organizer yang menghadirkan tournament
-          berkualitas untuk para pemain kompetitif.
-        </p>
+      <p>
+        Kami adalah Event Organizer yang menghadirkan tournament
+        berkualitas untuk para pemain kompetitif.
+      </p>
 
-        <div className="hero-buttons">
-          <Link href="/tournaments" className="btn-white">
-            Lihat Tournament
-          </Link>
+      <div className="hero-buttons">
+        <Link href="/tournaments" className="btn-white">
+          Lihat Tournament
+        </Link>
 
-          <Link href="/about" className="btn-outline">
-            Tentang Kami
-          </Link>
-        </div>
-      </section>
+        <Link href="/about" className="btn-outline">
+          Tentang Kami
+        </Link>
+      </div>
+    </div>
+
+    {/* RIGHT - LOGO */}
+    <div className="hero-right">
+      <img src="/logo_shadow.png" alt="Logo Tournament" />
+    </div>
+
+  </div>
+
+</section>
 
       {/* ABOUT */}
       <section className="section">
