@@ -14,13 +14,12 @@ export default function Home() {
     {/* LEFT - TEXT */}
     <div className="hero-left">
       <h1>
-        We Create{" "}
-        <span className="gradient-text">Competitive Experiences</span>
+        Di medan perang Semesta{" "}
+        <span className="gradient-text">hanya satu yang akan berdiri di puncak</span>
       </h1>
 
       <p>
-        Kami adalah Event Organizer yang menghadirkan tournament
-        berkualitas untuk para pemain kompetitif.
+        Ini saatnya Battle for supremacy!
       </p>
 
       <div className="hero-buttons">
@@ -47,32 +46,34 @@ export default function Home() {
       <section className="section">
         <h2>Who We Are</h2>
         <p>
-          Kami fokus membuat tournament yang fair, kompetitif, dan
-          terorganisir dengan baik. Dari registrasi hingga bracket,
-          semuanya kami kelola dengan profesional.
+          Semesta Cup S2 hadir sebagai panggung pertempuran bagi para pejuang  Land of Dawn
+          yang siap membuktikan siapa yang paling layak berada di puncak. Mengusung tema
+          Battle for supremacy, Turnamen ini bukan sekedar kompetisi, ini adalah ajang pembuktian
+          strategi, kerja sama tim, dan mental juara.
         </p>
       </section>
 
       {/* SERVICES */}
       <section className="features">
         <div className="card">
-          <h3>Tournament Organizer</h3>
+          <h3>Competitive Tournament</h3>
           <p>
-            Mengelola event dari awal hingga akhir dengan sistem yang rapi.
+            Menawarkan kompetisi Mobile Legends yang kompetitif dengan sistem turnamen profesional,
+             Bracket jelas, dan fair play.
           </p>
         </div>
 
         <div className="card">
-          <h3>Bracket Management</h3>
+          <h3>Prize Pool & rewards</h3>
           <p>
-            Sistem bracket yang jelas dan mudah dipahami oleh peserta.
+            Total hadiah menarik serta penghargaan bagi tim terbaik, MVP, dan performa paling gemilang.
           </p>
         </div>
 
         <div className="card">
-          <h3>Fair Competition</h3>
+          <h3>Exposure & recognition</h3>
           <p>
-            Kami menjunjung tinggi keadilan dalam setiap pertandingan.
+            Tunjukkan skill timmu ke publik dan dapatkan kesempatan dikenal lebih luas di dunia kompetitif.
           </p>
         </div>
       </section>
