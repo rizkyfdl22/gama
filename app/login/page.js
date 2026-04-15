@@ -22,12 +22,15 @@ export default function LoginPage() {
       return;
     }
 
-    // ambil role user
+    // ambil role
     const { data: profile } = await supabase
       .from("profiles")
       .select("role")
       .eq("id", data.user.id)
-      .single();
+      .maybeSingle()
+
+    // 🔥 WAJIB: sync cookie ke middleware
+    router.refresh();
 
     if (profile.role === "admin") {
       router.push("/admin");
