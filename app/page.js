@@ -46,10 +46,23 @@ export default function Home() {
       <section className="section">
         <h2>Who We Are</h2>
         <p>
-          Semesta Cup S2 hadir sebagai panggung pertempuran bagi para pejuang  Land of Dawn
-          yang siap membuktikan siapa yang paling layak berada di puncak. Mengusung tema
-          Battle for supremacy, Turnamen ini bukan sekedar kompetisi, ini adalah ajang pembuktian
-          strategi, kerja sama tim, dan mental juara.
+          Semesta Esoprts adalah platform dan komunitas yang berfokus pada penyelenggaraan
+          turnamen esports yang kompetitif, profesional, dan terbuka untuk semua kalangan.
+          Kami hadir untuk menjadi wadah bagi para pemain, tim, dan komunitas gaming dalam
+          mengembangkan potensi, menunjukkan skill, serta merasakan atmosfer kompetisi yang
+          berkualitas.
+        </p>
+        <p>
+          Berawal dari semangat untuk membangun ekosistem esports yang terstruktur, Semesta Esports
+          berkomitmen menghadirkan turnamen seperti Semesta Cup dengan sistem yang rapi, transparan,
+          dan mudah diakses. Kami percaya bahwa setiap pemain, baik pemula maupun profesional, 
+          berhak mendapatkan kesempatan yang sama untuk bersinar.
+        </p>
+        <p>
+        Tidak hanya sekedar turnamen, Semesta Esports juga bertujuan membangun komunitas yang sold, 
+        sportif, dan terus berkembang. Kami ingin menjadi bagian dari perjalanan para pemain dalam 
+        meraih prestasi, sekaligus mendorong pertumbuhan industri esports ke arah yang lebih positif 
+        dan berkelanjutan.  
         </p>
       </section>
 
@@ -58,15 +71,16 @@ export default function Home() {
         <div className="card">
           <h3>Competitive Tournament</h3>
           <p>
-            Menawarkan kompetisi Mobile Legends yang kompetitif dengan sistem turnamen profesional,
-             Bracket jelas, dan fair play.
+            Ikuti berbagai turnamen Esports seperti Semesta Cup dengan sistem kompetisi yang terstruktur 
+            dan profesional, dirancang untuk memberikan pengalaman bermain yang maksimal bagi setiap tim.
           </p>
         </div>
 
         <div className="card">
-          <h3>Prize Pool & rewards</h3>
+          <h3>Live brackets & Match Updates</h3>
           <p>
-            Total hadiah menarik serta penghargaan bagi tim terbaik, MVP, dan performa paling gemilang.
+            Pantau jalannya turnamen secara real-time melalui tampilan braket yang rapi dan mudah dipahami, 
+            lengkap dengan update skor setiap pertandingan.
           </p>
         </div>
 

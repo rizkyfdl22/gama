@@ -53,7 +53,7 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <h1 className="logo">
-        Semesta<span>Cup</span>
+        Semesta<span>Esports</span>
       </h1>
 
       <div className="nav-links">
