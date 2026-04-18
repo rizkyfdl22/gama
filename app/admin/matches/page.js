@@ -2,10 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/app/lib/supabase";
+import {
+  SingleEliminationBracket,
+  Match,
+} from "@g-loot/react-tournament-brackets";
 
 export default function AdminMatches() {
   const [teams, setTeams] = useState([]);
   const [matches, setMatches] = useState([]);
+
+  const [selectedMatch, setSelectedMatch] = useState(null);
+  const [scoreA, setScoreA] = useState(0);
+  const [scoreB, setScoreB] = useState(0);
 
   const [form, setForm] = useState({
     team_a: "",
@@ -14,12 +22,14 @@ export default function AdminMatches() {
     match_order: 1,
   });
 
-  // ambil teams
   useEffect(() => {
     fetchTeams();
     fetchMatches();
   }, []);
 
+  // =========================
+  // FETCH DATA
+  // =========================
   const fetchTeams = async () => {
     const { data } = await supabase.from("teams").select("*");
     setTeams(data || []);
@@ -34,7 +44,38 @@ export default function AdminMatches() {
     setMatches(data || []);
   };
 
+  // =========================
+  // FORMAT BRACKET
+  // =========================
+  const formatBracket = (matches) => {
+    return matches.map((m) => ({
+      id: m.id,
+      name: `Round ${m.round}`,
+      nextMatchId: null,
+      tournamentRoundText: `Round ${m.round}`,
+      startTime: "2024-01-01",
+      state: "SCHEDULED",
+
+      participants: [
+        {
+          id: `${m.id}-a`,
+          name: m.team_a || "TBD",
+          resultText: m.score_a?.toString() || "",
+          isWinner: m.score_a > m.score_b,
+        },
+        {
+          id: `${m.id}-b`,
+          name: m.team_b || "TBD",
+          resultText: m.score_b?.toString() || "",
+          isWinner: m.score_b > m.score_a,
+        },
+      ],
+    }));
+  };
+
+  // =========================
   // CREATE MATCH
+  // =========================
   const handleCreate = async (e) => {
     e.preventDefault();
 
@@ -55,29 +96,47 @@ export default function AdminMatches() {
     fetchMatches();
   };
 
-  // UPDATE SCORE
-  const handleScore = async (id, score_a, score_b) => {
+  // =========================
+  // CLICK MATCH → OPEN MODAL
+  // =========================
+  const handleMatchClick = (match) => {
+    const m = matches.find((x) => x.id === match.id);
+
+    setSelectedMatch(m);
+    setScoreA(m.score_a || 0);
+    setScoreB(m.score_b || 0);
+  };
+
+  // =========================
+  // SAVE SCORE
+  // =========================
+  const handleSaveScore = async () => {
     const { error } = await supabase
       .from("matches")
       .update({
-        score_a: Number(score_a),
-        score_b: Number(score_b),
+        score_a: Number(scoreA),
+        score_b: Number(scoreB),
       })
-      .eq("id", id);
+      .eq("id", selectedMatch.id);
 
     if (error) {
       alert(error.message);
       return;
     }
 
+    setSelectedMatch(null);
     fetchMatches();
   };
+
+  const formatted = formatBracket(matches);
 
   return (
     <div style={{ padding: "40px" }}>
       <h1>Match / Bracket Management</h1>
 
-      {/* CREATE MATCH */}
+      {/* =========================
+          CREATE MATCH
+      ========================= */}
       <form onSubmit={handleCreate} style={{ marginTop: "20px" }}>
         <select
           onChange={(e) => setForm({ ...form, team_a: e.target.value })}
@@ -103,7 +162,7 @@ export default function AdminMatches() {
 
         <input
           type="number"
-          placeholder="Round (1,2,3...)"
+          placeholder="Round"
           onChange={(e) => setForm({ ...form, round: e.target.value })}
         />
 
@@ -118,45 +177,46 @@ export default function AdminMatches() {
         <button type="submit">Buat Match</button>
       </form>
 
-      {/* LIST MATCH */}
-      <div style={{ marginTop: "40px" }}>
-        {matches.map((m) => (
-          <div
-            key={m.id}
-            style={{
-              marginBottom: "20px",
-              padding: "15px",
-              border: "1px solid rgba(255,255,255,0.1)",
-              borderRadius: "10px",
-            }}
-          >
-            <h3>
-              {m.team_a} vs {m.team_b}
-            </h3>
-            <p>Round: {m.round}</p>
+      {/* =========================
+          BRACKET VIEW
+      ========================= */}
+      <div style={{ marginTop: "50px", overflowX: "auto" }}>
+        <SingleEliminationBracket
+          matches={formatted}
+          matchComponent={Match}
+          onMatchClick={handleMatchClick}
+        />
+      </div>
 
-            <div style={{ display: "flex", gap: "10px" }}>
-              <input
-                type="number"
-                placeholder="Score A"
-                defaultValue={m.score_a}
-                onBlur={(e) =>
-                  handleScore(m.id, e.target.value, m.score_b)
-                }
-              />
+      {/* =========================
+          MODAL EDIT SCORE
+      ========================= */}
+      {selectedMatch && (
+        <div className="modal">
+          <div className="modal-box">
+            <h3>Edit Score</h3>
 
-              <input
-                type="number"
-                placeholder="Score B"
-                defaultValue={m.score_b}
-                onBlur={(e) =>
-                  handleScore(m.id, m.score_a, e.target.value)
-                }
-              />
+            <p>{selectedMatch.team_a}</p>
+            <input
+              type="number"
+              value={scoreA}
+              onChange={(e) => setScoreA(e.target.value)}
+            />
+
+            <p>{selectedMatch.team_b}</p>
+            <input
+              type="number"
+              value={scoreB}
+              onChange={(e) => setScoreB(e.target.value)}
+            />
+
+            <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
+              <button onClick={handleSaveScore}>Save</button>
+              <button onClick={() => setSelectedMatch(null)}>Close</button>
             </div>
           </div>
-        ))}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
