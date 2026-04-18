@@ -33,18 +33,12 @@ export default function AdminMatches() {
   const [bracketSize, setBracketSize] = useState(8);
   const [tournamentId, setTournamentId] = useState("");
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetchTournaments();
-  }, []);
-
-  useEffect(() => {
-    if (tournamentId) {
-      fetchTeams();
-      fetchMatches();
-    }
-  }, [tournamentId]);
+useEffect(() => {
+  fetchTournaments();
+  setLoading(false); // ✅ penting
+}, []);
 
   // =========================
   // FETCH DATA
@@ -64,15 +58,16 @@ export default function AdminMatches() {
   };
 
   const fetchMatches = async () => {
-    const { data } = await supabase
-      .from("matches")
-      .select("*")
-      .eq("tournament_id", tournamentId)
-      .order("round", { ascending: true });
+  setLoading(true);
 
-    setMatches(data || []);
-    setLoading(false);
-  };
+  const { data } = await supabase
+    .from("matches")
+    .select("*")
+    .eq("tournament_id", tournamentId);
+
+  setMatches(data || []);
+  setLoading(false);
+};
 
   // =========================
   // GENERATE BRACKET
