@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/app/lib/supabase";
 import dynamic from "next/dynamic";
 
-// ✅ FIX SSR (WAJIB)
+// ✅ WAJIB (biar ga error di Vercel)
 const SingleEliminationBracket = dynamic(
   () =>
     import("@g-loot/react-tournament-brackets").then(
@@ -29,13 +29,6 @@ export default function AdminMatches() {
   const [scoreA, setScoreA] = useState(0);
   const [scoreB, setScoreB] = useState(0);
 
-  const [form, setForm] = useState({
-    team_a: "",
-    team_b: "",
-    round: 1,
-    match_order: 1,
-  });
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -55,20 +48,68 @@ export default function AdminMatches() {
     const { data } = await supabase
       .from("matches")
       .select("*")
-      .order("round", { ascending: true });
+      .order("id", { ascending: true });
 
     setMatches(data || []);
     setLoading(false);
   };
 
   // =========================
-  // FORMAT BRACKET (SAFE)
+  // AUTO GENERATE BRACKET
+  // =========================
+  const generateBracket = async () => {
+    if (teams.length < 2) {
+      alert("Minimal 2 tim");
+      return;
+    }
+
+    let currentRoundTeams = [...teams];
+    let round = 1;
+    let allMatches = [];
+
+    while (currentRoundTeams.length > 1) {
+      let nextRound = [];
+
+      for (let i = 0; i < currentRoundTeams.length; i += 2) {
+        const teamA = currentRoundTeams[i];
+        const teamB = currentRoundTeams[i + 1];
+
+        const match = {
+          team_a: teamA?.name || "TBD",
+          team_b: teamB?.name || "TBD",
+          round,
+          match_order: i / 2,
+        };
+
+        allMatches.push(match);
+
+        nextRound.push({
+          name: "TBD",
+        });
+      }
+
+      currentRoundTeams = nextRound;
+      round++;
+    }
+
+    const { error } = await supabase.from("matches").insert(allMatches);
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    fetchMatches();
+  };
+
+  // =========================
+  // FORMAT BRACKET (IMPORTANT)
   // =========================
   const formatBracket = (matches = []) => {
-    return matches.map((m) => ({
+    return matches.map((m, i) => ({
       id: m.id,
-      name: `Round ${m.round}`,
-      nextMatchId: null,
+      name: `Match ${i + 1}`,
+      nextMatchId: matches[i + Math.floor(matches.length / 2)]?.id || null,
       tournamentRoundText: `Round ${m.round}`,
       startTime: "2024-01-01",
       state: "SCHEDULED",
@@ -88,34 +129,6 @@ export default function AdminMatches() {
         },
       ],
     }));
-  };
-
-  // =========================
-  // CREATE MATCH
-  // =========================
-  const handleCreate = async (e) => {
-    e.preventDefault();
-
-    if (!form.team_a || !form.team_b) {
-      alert("Pilih team dulu");
-      return;
-    }
-
-    const { error } = await supabase.from("matches").insert([
-      {
-        team_a: form.team_a,
-        team_b: form.team_b,
-        round: Number(form.round),
-        match_order: Number(form.match_order),
-      },
-    ]);
-
-    if (error) {
-      alert(error.message);
-      return;
-    }
-
-    fetchMatches();
   };
 
   // =========================
@@ -153,9 +166,6 @@ export default function AdminMatches() {
 
   const formatted = formatBracket(matches);
 
-  // =========================
-  // LOADING GUARD (FIX ERROR)
-  // =========================
   if (loading) {
     return <p style={{ padding: "40px" }}>Loading...</p>;
   }
@@ -165,50 +175,22 @@ export default function AdminMatches() {
       <h1>Match / Bracket Management</h1>
 
       {/* =========================
-          CREATE MATCH
+          AUTO GENERATE BUTTON
       ========================= */}
-      <form onSubmit={handleCreate} style={{ marginTop: "20px" }}>
-        <select
-          onChange={(e) => setForm({ ...form, team_a: e.target.value })}
-        >
-          <option value="">Pilih Team A</option>
-          {teams.map((t) => (
-            <option key={t.id} value={t.name}>
-              {t.name}
-            </option>
-          ))}
-        </select>
-
-        <select
-          onChange={(e) => setForm({ ...form, team_b: e.target.value })}
-        >
-          <option value="">Pilih Team B</option>
-          {teams.map((t) => (
-            <option key={t.id} value={t.name}>
-              {t.name}
-            </option>
-          ))}
-        </select>
-
-        <input
-          type="number"
-          placeholder="Round"
-          onChange={(e) => setForm({ ...form, round: e.target.value })}
-        />
-
-        <input
-          type="number"
-          placeholder="Match Order"
-          onChange={(e) =>
-            setForm({ ...form, match_order: e.target.value })
-          }
-        />
-
-        <button type="submit">Buat Match</button>
-      </form>
+      <button
+        onClick={generateBracket}
+        style={{
+          marginTop: "20px",
+          padding: "10px 20px",
+          background: "#9929EA",
+          borderRadius: "10px",
+        }}
+      >
+        Generate Bracket Otomatis
+      </button>
 
       {/* =========================
-          BRACKET (SAFE RENDER)
+          BRACKET VIEW
       ========================= */}
       <div style={{ marginTop: "50px", overflowX: "auto" }}>
         {formatted.length > 0 ? (
@@ -218,12 +200,12 @@ export default function AdminMatches() {
             onMatchClick={handleMatchClick}
           />
         ) : (
-          <p>Belum ada match</p>
+          <p>Belum ada bracket</p>
         )}
       </div>
 
       {/* =========================
-          MODAL
+          MODAL EDIT SCORE
       ========================= */}
       {selectedMatch && (
         <div className="modal">
