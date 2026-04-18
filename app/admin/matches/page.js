@@ -2,10 +2,24 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/app/lib/supabase";
-import {
-  SingleEliminationBracket,
-  Match,
-} from "@g-loot/react-tournament-brackets";
+import dynamic from "next/dynamic";
+
+// ✅ FIX SSR (WAJIB)
+const SingleEliminationBracket = dynamic(
+  () =>
+    import("@g-loot/react-tournament-brackets").then(
+      (mod) => mod.SingleEliminationBracket
+    ),
+  { ssr: false }
+);
+
+const Match = dynamic(
+  () =>
+    import("@g-loot/react-tournament-brackets").then(
+      (mod) => mod.Match
+    ),
+  { ssr: false }
+);
 
 export default function AdminMatches() {
   const [teams, setTeams] = useState([]);
@@ -21,6 +35,8 @@ export default function AdminMatches() {
     round: 1,
     match_order: 1,
   });
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchTeams();
@@ -42,12 +58,13 @@ export default function AdminMatches() {
       .order("round", { ascending: true });
 
     setMatches(data || []);
+    setLoading(false);
   };
 
   // =========================
-  // FORMAT BRACKET
+  // FORMAT BRACKET (SAFE)
   // =========================
-  const formatBracket = (matches) => {
+  const formatBracket = (matches = []) => {
     return matches.map((m) => ({
       id: m.id,
       name: `Round ${m.round}`,
@@ -61,13 +78,13 @@ export default function AdminMatches() {
           id: `${m.id}-a`,
           name: m.team_a || "TBD",
           resultText: m.score_a?.toString() || "",
-          isWinner: m.score_a > m.score_b,
+          isWinner: (m.score_a || 0) > (m.score_b || 0),
         },
         {
           id: `${m.id}-b`,
           name: m.team_b || "TBD",
           resultText: m.score_b?.toString() || "",
-          isWinner: m.score_b > m.score_a,
+          isWinner: (m.score_b || 0) > (m.score_a || 0),
         },
       ],
     }));
@@ -78,6 +95,11 @@ export default function AdminMatches() {
   // =========================
   const handleCreate = async (e) => {
     e.preventDefault();
+
+    if (!form.team_a || !form.team_b) {
+      alert("Pilih team dulu");
+      return;
+    }
 
     const { error } = await supabase.from("matches").insert([
       {
@@ -97,10 +119,11 @@ export default function AdminMatches() {
   };
 
   // =========================
-  // CLICK MATCH → OPEN MODAL
+  // CLICK MATCH
   // =========================
   const handleMatchClick = (match) => {
     const m = matches.find((x) => x.id === match.id);
+    if (!m) return;
 
     setSelectedMatch(m);
     setScoreA(m.score_a || 0);
@@ -130,6 +153,13 @@ export default function AdminMatches() {
 
   const formatted = formatBracket(matches);
 
+  // =========================
+  // LOADING GUARD (FIX ERROR)
+  // =========================
+  if (loading) {
+    return <p style={{ padding: "40px" }}>Loading...</p>;
+  }
+
   return (
     <div style={{ padding: "40px" }}>
       <h1>Match / Bracket Management</h1>
@@ -141,7 +171,7 @@ export default function AdminMatches() {
         <select
           onChange={(e) => setForm({ ...form, team_a: e.target.value })}
         >
-          <option>Pilih Team A</option>
+          <option value="">Pilih Team A</option>
           {teams.map((t) => (
             <option key={t.id} value={t.name}>
               {t.name}
@@ -152,7 +182,7 @@ export default function AdminMatches() {
         <select
           onChange={(e) => setForm({ ...form, team_b: e.target.value })}
         >
-          <option>Pilih Team B</option>
+          <option value="">Pilih Team B</option>
           {teams.map((t) => (
             <option key={t.id} value={t.name}>
               {t.name}
@@ -178,18 +208,22 @@ export default function AdminMatches() {
       </form>
 
       {/* =========================
-          BRACKET VIEW
+          BRACKET (SAFE RENDER)
       ========================= */}
       <div style={{ marginTop: "50px", overflowX: "auto" }}>
-        <SingleEliminationBracket
-          matches={formatted}
-          matchComponent={Match}
-          onMatchClick={handleMatchClick}
-        />
+        {formatted.length > 0 ? (
+          <SingleEliminationBracket
+            matches={formatted}
+            matchComponent={Match}
+            onMatchClick={handleMatchClick}
+          />
+        ) : (
+          <p>Belum ada match</p>
+        )}
       </div>
 
       {/* =========================
-          MODAL EDIT SCORE
+          MODAL
       ========================= */}
       {selectedMatch && (
         <div className="modal">
