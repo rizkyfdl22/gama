@@ -91,9 +91,12 @@ export default function AdminBracketPage() {
   };
 
   // =========================
-  // SELECT MATCH (PANEL)
+  // CLICK MATCH → OPEN MODAL
   // =========================
-  const handleSelectMatch = (m) => {
+  const handleMatchClick = (match) => {
+    const m = matches.find((x) => x.id === match.id);
+    if (!m) return;
+
     setSelectedMatch({ ...m });
     setScoreA(m.score_a || 0);
     setScoreB(m.score_b || 0);
@@ -102,30 +105,30 @@ export default function AdminBracketPage() {
   // =========================
   // ASSIGN TEAM
   // =========================
-  const assignTeam = async (matchId, position, teamId) => {
+  const assignTeam = async (position, teamId) => {
     const field = position === "A" ? "team_a_id" : "team_b_id";
 
     const { error } = await supabase
       .from("matches")
       .update({ [field]: teamId })
-      .eq("id", matchId);
+      .eq("id", selectedMatch.id);
 
     if (error) {
       alert(error.message);
       return;
     }
 
-    // update state realtime
-    setMatches((prev) =>
-      prev.map((m) =>
-        m.id === matchId ? { ...m, [field]: teamId } : m
-      )
-    );
-
+    // update local state
     setSelectedMatch((prev) => ({
       ...prev,
       [field]: teamId,
     }));
+
+    setMatches((prev) =>
+      prev.map((m) =>
+        m.id === selectedMatch.id ? { ...m, [field]: teamId } : m
+      )
+    );
   };
 
   // =========================
@@ -150,18 +153,18 @@ export default function AdminBracketPage() {
   };
 
   return (
-    <div style={{ display: "flex", padding: "40px", gap: "30px" }}>
-      
-      {/* =========================
-          LEFT: BRACKET VIEW
-      ========================= */}
-      <div style={{ flex: 2, overflowX: "auto" }}>
-        <h2>Bracket</h2>
+    <div style={{ padding: "40px" }}>
+      <h1>Admin Bracket</h1>
 
+      {/* =========================
+          BRACKET VIEW
+      ========================= */}
+      <div style={{ marginTop: "40px", overflowX: "auto" }}>
         {matches.length > 0 ? (
           <SingleEliminationBracket
             matches={formatBracket()}
             matchComponent={Match}
+            onMatchClick={handleMatchClick} // 🔥 FIX UTAMA
           />
         ) : (
           <p>Belum ada bracket</p>
@@ -169,45 +172,36 @@ export default function AdminBracketPage() {
       </div>
 
       {/* =========================
-          RIGHT: CONTROL PANEL
+          MODAL POPUP
       ========================= */}
-      <div style={{ flex: 1 }}>
-        <h2>Manage Match</h2>
-
-        {/* LIST MATCH */}
-        <div style={{ marginTop: "20px" }}>
-          {matches.map((m) => (
-            <div
-              key={m.id}
-              onClick={() => handleSelectMatch(m)}
-              style={{
-                padding: "12px",
-                marginBottom: "10px",
-                border: "1px solid #333",
-                borderRadius: "10px",
-                cursor: "pointer",
-                background:
-                  selectedMatch?.id === m.id ? "#1a1a1a" : "transparent",
-              }}
-            >
-              <strong>Match {m.match_order + 1}</strong>
-              <p>Round {m.round}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* EDIT PANEL */}
-        {selectedMatch && (
-          <div style={{ marginTop: "20px" }}>
+      {selectedMatch && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.7)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 999,
+          }}
+        >
+          <div
+            style={{
+              background: "#111",
+              padding: "25px",
+              borderRadius: "12px",
+              width: "350px",
+            }}
+          >
             <h3>Edit Match</h3>
 
             {/* TEAM A */}
             <p>Team A</p>
             <select
               value={selectedMatch.team_a_id || ""}
-              onChange={(e) =>
-                assignTeam(selectedMatch.id, "A", e.target.value)
-              }
+              onChange={(e) => assignTeam("A", e.target.value)}
+              style={{ width: "100%", marginBottom: "10px" }}
             >
               <option value="">Pilih Team</option>
               {teams.map((t) => (
@@ -221,15 +215,15 @@ export default function AdminBracketPage() {
               type="number"
               value={scoreA}
               onChange={(e) => setScoreA(e.target.value)}
+              style={{ width: "100%", marginBottom: "15px" }}
             />
 
             {/* TEAM B */}
             <p>Team B</p>
             <select
               value={selectedMatch.team_b_id || ""}
-              onChange={(e) =>
-                assignTeam(selectedMatch.id, "B", e.target.value)
-              }
+              onChange={(e) => assignTeam("B", e.target.value)}
+              style={{ width: "100%", marginBottom: "10px" }}
             >
               <option value="">Pilih Team</option>
               {teams.map((t) => (
@@ -243,24 +237,39 @@ export default function AdminBracketPage() {
               type="number"
               value={scoreB}
               onChange={(e) => setScoreB(e.target.value)}
+              style={{ width: "100%", marginBottom: "15px" }}
             />
 
-            <button
-              onClick={handleSave}
-              style={{
-                marginTop: "15px",
-                padding: "10px",
-                width: "100%",
-                background: "#9929EA",
-                borderRadius: "8px",
-                fontWeight: "bold",
-              }}
-            >
-              Save Score
-            </button>
+            {/* ACTION */}
+            <div style={{ display: "flex", gap: "10px" }}>
+              <button
+                onClick={handleSave}
+                style={{
+                  flex: 1,
+                  background: "#9929EA",
+                  padding: "10px",
+                  borderRadius: "8px",
+                  fontWeight: "bold",
+                }}
+              >
+                Save
+              </button>
+
+              <button
+                onClick={() => setSelectedMatch(null)}
+                style={{
+                  flex: 1,
+                  background: "#333",
+                  padding: "10px",
+                  borderRadius: "8px",
+                }}
+              >
+                Close
+              </button>
+            </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
