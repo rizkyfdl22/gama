@@ -9,8 +9,16 @@ export default function AdminTournaments() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await supabase.from("tournaments").select("*");
-      setData(data);
+      const { data, error } = await supabase
+        .from("tournaments")
+        .select("*");
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      setData(data || []);
     };
 
     fetchData();
@@ -20,21 +28,44 @@ export default function AdminTournaments() {
     <div style={{ padding: "40px" }}>
       <h1>Admin Tournaments</h1>
 
+      {/* CREATE */}
       <Link href="/admin/tournaments/create">
         <button>Create Tournament</button>
       </Link>
-      <Link href={`/admin/tournaments/${t.id}/bracket`}>
-  Manage Bracket
-</Link>
 
+      {/* LIST */}
       <div style={{ marginTop: "20px" }}>
-        {data.map((item) => (
-          <div key={item.id} style={{ marginBottom: "10px" }}>
-            <h3>{item.title}</h3>
-            <p>{item.game}</p>
-          </div>
-          
-        ))}
+        {data.length > 0 ? (
+          data.map((item) => (
+            <div
+              key={item.id}
+              style={{
+                marginBottom: "15px",
+                padding: "15px",
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: "10px",
+              }}
+            >
+              <h3>{item.title}</h3>
+              <p>{item.game}</p>
+
+              {/* ACTIONS */}
+              <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
+                
+                <Link href={`/admin/tournaments/${item.id}/bracket`}>
+                  <button>Manage Bracket</button>
+                </Link>
+
+                <Link href={`/admin/tournaments/${item.id}/teams`}>
+                  <button>Manage Teams</button>
+                </Link>
+
+              </div>
+            </div>
+          ))
+        ) : (
+          <p>Belum ada tournament</p>
+        )}
       </div>
     </div>
   );
