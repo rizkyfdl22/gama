@@ -151,82 +151,117 @@ export default function AdminBracketPage() {
     fetchData();
   };
 
-  return (
-    <div style={{ padding: "40px" }}>
-      <h1>Admin Bracket</h1>
+ return (
+  <div style={{ display: "flex", padding: "40px", gap: "30px" }}>
+    
+    {/* =========================
+        LEFT: BRACKET
+    ========================= */}
+    <div style={{ flex: 2, overflowX: "auto" }}>
+      <h2>Bracket</h2>
 
-      {/* BRACKET */}
-      <div style={{ marginTop: "40px", overflowX: "auto" }}>
-        {matches.length > 0 ? (
-          <SingleEliminationBracket
-            matches={formatBracket()}
-            matchComponent={Match}
-            onMatchClick={handleMatchClick}
-          />
-        ) : (
-          <p>Belum ada bracket</p>
-        )}
+      {matches.length > 0 ? (
+        <SingleEliminationBracket
+          matches={formatBracket()}
+          matchComponent={Match}
+        />
+      ) : (
+        <p>Belum ada bracket</p>
+      )}
+    </div>
+
+    {/* =========================
+        RIGHT: MATCH CONTROL
+    ========================= */}
+    <div style={{ flex: 1 }}>
+      <h2>Manage Match</h2>
+
+      {/* LIST MATCH */}
+      <div style={{ marginTop: "20px" }}>
+        {matches.map((m) => (
+          <div
+            key={m.id}
+            onClick={() => handleMatchClick(m)}
+            style={{
+              padding: "12px",
+              marginBottom: "10px",
+              border: "1px solid #333",
+              borderRadius: "10px",
+              cursor: "pointer",
+              background:
+                selectedMatch?.id === m.id ? "#1a1a1a" : "transparent",
+            }}
+          >
+            <strong>Match {m.match_order + 1}</strong>
+            <p>Round {m.round}</p>
+          </div>
+        ))}
       </div>
 
-      {/* MODAL EDIT */}
+      {/* EDIT PANEL */}
       {selectedMatch && (
-        <div className="modal">
-          <div className="modal-box">
-            <h3>Edit Match</h3>
+        <div style={{ marginTop: "20px" }}>
+          <h3>Edit Match</h3>
 
-            {/* TEAM A */}
-            <p>Team A</p>
-            <select
-              value={selectedMatch.team_a_id || ""}
-              onChange={(e) =>
-                assignTeam(selectedMatch.id, "A", e.target.value)
-              }
-            >
-              <option value="">Pilih Team</option>
-              {teams.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.name}
-                </option>
-              ))}
-            </select>
+          {/* TEAM A */}
+          <p>Team A</p>
+          <select
+            value={selectedMatch.team_a_id || ""}
+            onChange={(e) =>
+              assignTeam(selectedMatch.id, "A", e.target.value)
+            }
+          >
+            <option value="">Pilih Team</option>
+            {teams.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.name}
+              </option>
+            ))}
+          </select>
 
-            <input
-              type="number"
-              value={scoreA}
-              onChange={(e) => setScoreA(e.target.value)}
-            />
+          <input
+            type="number"
+            value={scoreA}
+            onChange={(e) => setScoreA(e.target.value)}
+          />
 
-            {/* TEAM B */}
-            <p>Team B</p>
-            <select
-              value={selectedMatch.team_b_id || ""}
-              onChange={(e) =>
-                assignTeam(selectedMatch.id, "B", e.target.value)
-              }
-            >
-              <option value="">Pilih Team</option>
-              {teams.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.name}
-                </option>
-              ))}
-            </select>
+          {/* TEAM B */}
+          <p>Team B</p>
+          <select
+            value={selectedMatch.team_b_id || ""}
+            onChange={(e) =>
+              assignTeam(selectedMatch.id, "B", e.target.value)
+            }
+          >
+            <option value="">Pilih Team</option>
+            {teams.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.name}
+              </option>
+            ))}
+          </select>
 
-            <input
-              type="number"
-              value={scoreB}
-              onChange={(e) => setScoreB(e.target.value)}
-            />
+          <input
+            type="number"
+            value={scoreB}
+            onChange={(e) => setScoreB(e.target.value)}
+          />
 
-            <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
-              <button onClick={handleSave}>Save</button>
-              <button onClick={() => setSelectedMatch(null)}>
-                Close
-              </button>
-            </div>
-          </div>
+          <button
+            onClick={handleSave}
+            style={{
+              marginTop: "15px",
+              padding: "10px",
+              width: "100%",
+              background: "#9929EA",
+              borderRadius: "8px",
+              fontWeight: "bold",
+            }}
+          >
+            Save Score
+          </button>
         </div>
       )}
     </div>
-  );
-}
+  </div>
+);
