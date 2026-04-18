@@ -36,16 +36,25 @@ export default function AdminMatches() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchTeams();
-    fetchMatches();
     fetchTournaments();
   }, []);
+
+  useEffect(() => {
+    if (tournamentId) {
+      fetchTeams();
+      fetchMatches();
+    }
+  }, [tournamentId]);
 
   // =========================
   // FETCH DATA
   // =========================
   const fetchTeams = async () => {
-    const { data } = await supabase.from("teams").select("*");
+    const { data } = await supabase
+      .from("teams")
+      .select("*")
+      .eq("tournament_id", tournamentId);
+
     setTeams(data || []);
   };
 
@@ -58,6 +67,7 @@ export default function AdminMatches() {
     const { data } = await supabase
       .from("matches")
       .select("*")
+      .eq("tournament_id", tournamentId)
       .order("round", { ascending: true });
 
     setMatches(data || []);
@@ -65,7 +75,7 @@ export default function AdminMatches() {
   };
 
   // =========================
-  // GENERATE BRACKET (BY SIZE)
+  // GENERATE BRACKET
   // =========================
   const generateBracket = async () => {
     if (!tournamentId) {
@@ -73,19 +83,17 @@ export default function AdminMatches() {
       return;
     }
 
-    let matches = [];
-    let matchId = 1;
+    // ❗ hapus bracket lama
+    await supabase.from("matches").delete().eq("tournament_id", tournamentId);
 
-    const rounds = Math.log2(bracketSize);
-    let previousRound = [];
+    let allMatches = [];
+    let rounds = Math.log2(bracketSize);
 
     for (let round = 1; round <= rounds; round++) {
       const matchCount = bracketSize / Math.pow(2, round);
-      let currentRound = [];
 
       for (let i = 0; i < matchCount; i++) {
-        const match = {
-          id: matchId,
+        allMatches.push({
           tournament_id: tournamentId,
           round,
           match_order: i,
@@ -94,36 +102,45 @@ export default function AdminMatches() {
           score_a: 0,
           score_b: 0,
           next_match_id: null,
-        };
-
-        currentRound.push(match);
-        matches.push(match);
-        matchId++;
-      }
-
-      // connect ke next match
-      if (previousRound.length > 0) {
-        previousRound.forEach((m, index) => {
-          m.next_match_id =
-            currentRound[Math.floor(index / 2)]?.id || null;
         });
       }
-
-      previousRound = currentRound;
     }
 
-    const { error } = await supabase.from("matches").insert(matches);
+    const { data, error } = await supabase
+      .from("matches")
+      .insert(allMatches)
+      .select();
 
     if (error) {
       alert(error.message);
       return;
     }
 
+    // 🔥 CONNECT NEXT MATCH (pakai UUID hasil insert)
+    let updatedMatches = [...data];
+
+    for (let i = 0; i < updatedMatches.length; i++) {
+      const current = updatedMatches[i];
+
+      const next = updatedMatches.find(
+        (m) =>
+          m.round === current.round + 1 &&
+          Math.floor(current.match_order / 2) === m.match_order
+      );
+
+      if (next) {
+        await supabase
+          .from("matches")
+          .update({ next_match_id: next.id })
+          .eq("id", current.id);
+      }
+    }
+
     fetchMatches();
   };
 
   // =========================
-  // FORMAT BRACKET (JOIN TEAM)
+  // FORMAT BRACKET
   // =========================
   const formatBracket = (matches = []) => {
     return matches.map((m) => {
@@ -132,7 +149,7 @@ export default function AdminMatches() {
 
       return {
         id: m.id,
-        name: `Match ${m.match_order}`,
+        name: `Match ${m.match_order + 1}`,
         nextMatchId: m.next_match_id,
         tournamentRoundText: `Round ${m.round}`,
         startTime: "2024-01-01",
@@ -160,23 +177,20 @@ export default function AdminMatches() {
   // ASSIGN TEAM
   // =========================
   const assignTeam = async (matchId, position, teamId) => {
+    if (!teamId) return;
+
     const field = position === "A" ? "team_a_id" : "team_b_id";
 
-    const { error } = await supabase
+    await supabase
       .from("matches")
       .update({ [field]: teamId })
       .eq("id", matchId);
-
-    if (error) {
-      alert(error.message);
-      return;
-    }
 
     fetchMatches();
   };
 
   // =========================
-  // CLICK MATCH
+  // SCORE
   // =========================
   const handleMatchClick = (match) => {
     const m = matches.find((x) => x.id === match.id);
@@ -187,11 +201,8 @@ export default function AdminMatches() {
     setScoreB(m.score_b || 0);
   };
 
-  // =========================
-  // SAVE SCORE
-  // =========================
   const handleSaveScore = async () => {
-    const { error } = await supabase
+    await supabase
       .from("matches")
       .update({
         score_a: Number(scoreA),
@@ -199,34 +210,25 @@ export default function AdminMatches() {
       })
       .eq("id", selectedMatch.id);
 
-    if (error) {
-      alert(error.message);
-      return;
-    }
-
     setSelectedMatch(null);
     fetchMatches();
   };
 
   const formatted = formatBracket(matches);
 
-  if (loading) {
-    return <p style={{ padding: "40px" }}>Loading...</p>;
-  }
+  if (loading) return <p style={{ padding: "40px" }}>Loading...</p>;
 
   return (
     <div style={{ padding: "40px" }}>
       <h1>Match / Bracket Management</h1>
 
-      {/* =========================
-          CONTROL PANEL
-      ========================= */}
+      {/* CONTROL */}
       <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
         <select onChange={(e) => setTournamentId(e.target.value)}>
           <option value="">Pilih Tournament</option>
           {tournaments.map((t) => (
             <option key={t.id} value={t.id}>
-              {t.name}
+              {t.title}
             </option>
           ))}
         </select>
@@ -236,8 +238,6 @@ export default function AdminMatches() {
           <option value={16}>16 Slot</option>
           <option value={32}>32 Slot</option>
           <option value={64}>64 Slot</option>
-          <option value={128}>128 Slot</option>
-          <option value={256}>256 Slot</option>
         </select>
 
         <button onClick={generateBracket}>
@@ -245,9 +245,7 @@ export default function AdminMatches() {
         </button>
       </div>
 
-      {/* =========================
-          BRACKET VIEW
-      ========================= */}
+      {/* BRACKET */}
       <div style={{ marginTop: "50px", overflowX: "auto" }}>
         {formatted.length > 0 ? (
           <SingleEliminationBracket
@@ -260,9 +258,7 @@ export default function AdminMatches() {
         )}
       </div>
 
-      {/* =========================
-          MODAL EDIT
-      ========================= */}
+      {/* MODAL */}
       {selectedMatch && (
         <div className="modal">
           <div className="modal-box">
@@ -274,7 +270,7 @@ export default function AdminMatches() {
                 assignTeam(selectedMatch.id, "A", e.target.value)
               }
             >
-              <option>Pilih Team</option>
+              <option value="">Pilih Team</option>
               {teams.map((t) => (
                 <option key={t.id} value={t.id}>
                   {t.name}
@@ -294,7 +290,7 @@ export default function AdminMatches() {
                 assignTeam(selectedMatch.id, "B", e.target.value)
               }
             >
-              <option>Pilih Team</option>
+              <option value="">Pilih Team</option>
               {teams.map((t) => (
                 <option key={t.id} value={t.id}>
                   {t.name}
