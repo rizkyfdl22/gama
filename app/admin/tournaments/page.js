@@ -23,6 +23,9 @@ export default function AdminTournaments() {
       <Link href="/admin/tournaments/create">
         <button>Create Tournament</button>
       </Link>
+      <Link href={`/admin/tournaments/${t.id}/bracket`}>
+  Manage Bracket
+</Link>
 
       <div style={{ marginTop: "20px" }}>
         {data.map((item) => (
@@ -30,6 +33,7 @@ export default function AdminTournaments() {
             <h3>{item.title}</h3>
             <p>{item.game}</p>
           </div>
+          
         ))}
       </div>
     </div>
