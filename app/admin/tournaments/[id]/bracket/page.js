@@ -96,9 +96,38 @@ export default function AdminBracketPage() {
     const m = matches.find((x) => x.id === match.id);
     if (!m) return;
 
-    setSelectedMatch(m);
+    setSelectedMatch({ ...m }); // FIX biar dropdown update
     setScoreA(m.score_a || 0);
     setScoreB(m.score_b || 0);
+  };
+
+  // =========================
+  // ASSIGN TEAM
+  // =========================
+  const assignTeam = async (matchId, position, teamId) => {
+    const field = position === "A" ? "team_a_id" : "team_b_id";
+
+    const { error } = await supabase
+      .from("matches")
+      .update({ [field]: teamId })
+      .eq("id", matchId);
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    // update state tanpa reload
+    setMatches((prev) =>
+      prev.map((m) =>
+        m.id === matchId ? { ...m, [field]: teamId } : m
+      )
+    );
+
+    setSelectedMatch((prev) => ({
+      ...prev,
+      [field]: teamId,
+    }));
   };
 
   // =========================
@@ -143,16 +172,46 @@ export default function AdminBracketPage() {
       {selectedMatch && (
         <div className="modal">
           <div className="modal-box">
-            <h3>Edit Score</h3>
+            <h3>Edit Match</h3>
 
+            {/* TEAM A */}
             <p>Team A</p>
+            <select
+              value={selectedMatch.team_a_id || ""}
+              onChange={(e) =>
+                assignTeam(selectedMatch.id, "A", e.target.value)
+              }
+            >
+              <option value="">Pilih Team</option>
+              {teams.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.name}
+                </option>
+              ))}
+            </select>
+
             <input
               type="number"
               value={scoreA}
               onChange={(e) => setScoreA(e.target.value)}
             />
 
+            {/* TEAM B */}
             <p>Team B</p>
+            <select
+              value={selectedMatch.team_b_id || ""}
+              onChange={(e) =>
+                assignTeam(selectedMatch.id, "B", e.target.value)
+              }
+            >
+              <option value="">Pilih Team</option>
+              {teams.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.name}
+                </option>
+              ))}
+            </select>
+
             <input
               type="number"
               value={scoreB}
@@ -161,7 +220,9 @@ export default function AdminBracketPage() {
 
             <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
               <button onClick={handleSave}>Save</button>
-              <button onClick={() => setSelectedMatch(null)}>Close</button>
+              <button onClick={() => setSelectedMatch(null)}>
+                Close
+              </button>
             </div>
           </div>
         </div>
