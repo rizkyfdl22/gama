@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/app/lib/supabase";
 import dynamic from "next/dynamic";
 
-// ✅ WAJIB (biar ga error di Vercel)
+// ✅ FIX SSR
 const SingleEliminationBracket = dynamic(
   () =>
     import("@g-loot/react-tournament-brackets").then(
@@ -24,16 +24,21 @@ const Match = dynamic(
 export default function AdminMatches() {
   const [teams, setTeams] = useState([]);
   const [matches, setMatches] = useState([]);
+  const [tournaments, setTournaments] = useState([]);
 
   const [selectedMatch, setSelectedMatch] = useState(null);
   const [scoreA, setScoreA] = useState(0);
   const [scoreB, setScoreB] = useState(0);
+
+  const [bracketSize, setBracketSize] = useState(8);
+  const [tournamentId, setTournamentId] = useState("");
 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchTeams();
     fetchMatches();
+    fetchTournaments();
   }, []);
 
   // =========================
@@ -44,55 +49,70 @@ export default function AdminMatches() {
     setTeams(data || []);
   };
 
+  const fetchTournaments = async () => {
+    const { data } = await supabase.from("tournaments").select("*");
+    setTournaments(data || []);
+  };
+
   const fetchMatches = async () => {
     const { data } = await supabase
       .from("matches")
       .select("*")
-      .order("id", { ascending: true });
+      .order("round", { ascending: true });
 
     setMatches(data || []);
     setLoading(false);
   };
 
   // =========================
-  // AUTO GENERATE BRACKET
+  // GENERATE BRACKET (BY SIZE)
   // =========================
   const generateBracket = async () => {
-    if (teams.length < 2) {
-      alert("Minimal 2 tim");
+    if (!tournamentId) {
+      alert("Pilih tournament dulu");
       return;
     }
 
-    let currentRoundTeams = [...teams];
-    let round = 1;
-    let allMatches = [];
+    let matches = [];
+    let matchId = 1;
 
-    while (currentRoundTeams.length > 1) {
-      let nextRound = [];
+    const rounds = Math.log2(bracketSize);
+    let previousRound = [];
 
-      for (let i = 0; i < currentRoundTeams.length; i += 2) {
-        const teamA = currentRoundTeams[i];
-        const teamB = currentRoundTeams[i + 1];
+    for (let round = 1; round <= rounds; round++) {
+      const matchCount = bracketSize / Math.pow(2, round);
+      let currentRound = [];
 
+      for (let i = 0; i < matchCount; i++) {
         const match = {
-          team_a: teamA?.name || "TBD",
-          team_b: teamB?.name || "TBD",
+          id: matchId,
+          tournament_id: tournamentId,
           round,
-          match_order: i / 2,
+          match_order: i,
+          team_a_id: null,
+          team_b_id: null,
+          score_a: 0,
+          score_b: 0,
+          next_match_id: null,
         };
 
-        allMatches.push(match);
+        currentRound.push(match);
+        matches.push(match);
+        matchId++;
+      }
 
-        nextRound.push({
-          name: "TBD",
+      // connect ke next match
+      if (previousRound.length > 0) {
+        previousRound.forEach((m, index) => {
+          m.next_match_id =
+            currentRound[Math.floor(index / 2)]?.id || null;
         });
       }
 
-      currentRoundTeams = nextRound;
-      round++;
+      previousRound = currentRound;
     }
 
-    const { error } = await supabase.from("matches").insert(allMatches);
+    const { error } = await supabase.from("matches").insert(matches);
 
     if (error) {
       alert(error.message);
@@ -103,32 +123,56 @@ export default function AdminMatches() {
   };
 
   // =========================
-  // FORMAT BRACKET (IMPORTANT)
+  // FORMAT BRACKET (JOIN TEAM)
   // =========================
   const formatBracket = (matches = []) => {
-    return matches.map((m, i) => ({
-      id: m.id,
-      name: `Match ${i + 1}`,
-      nextMatchId: matches[i + Math.floor(matches.length / 2)]?.id || null,
-      tournamentRoundText: `Round ${m.round}`,
-      startTime: "2024-01-01",
-      state: "SCHEDULED",
+    return matches.map((m) => {
+      const teamA = teams.find((t) => t.id === m.team_a_id);
+      const teamB = teams.find((t) => t.id === m.team_b_id);
 
-      participants: [
-        {
-          id: `${m.id}-a`,
-          name: m.team_a || "TBD",
-          resultText: m.score_a?.toString() || "",
-          isWinner: (m.score_a || 0) > (m.score_b || 0),
-        },
-        {
-          id: `${m.id}-b`,
-          name: m.team_b || "TBD",
-          resultText: m.score_b?.toString() || "",
-          isWinner: (m.score_b || 0) > (m.score_a || 0),
-        },
-      ],
-    }));
+      return {
+        id: m.id,
+        name: `Match ${m.match_order}`,
+        nextMatchId: m.next_match_id,
+        tournamentRoundText: `Round ${m.round}`,
+        startTime: "2024-01-01",
+        state: "SCHEDULED",
+
+        participants: [
+          {
+            id: `${m.id}-a`,
+            name: teamA?.name || "TBD",
+            resultText: m.score_a?.toString() || "",
+            isWinner: (m.score_a || 0) > (m.score_b || 0),
+          },
+          {
+            id: `${m.id}-b`,
+            name: teamB?.name || "TBD",
+            resultText: m.score_b?.toString() || "",
+            isWinner: (m.score_b || 0) > (m.score_a || 0),
+          },
+        ],
+      };
+    });
+  };
+
+  // =========================
+  // ASSIGN TEAM
+  // =========================
+  const assignTeam = async (matchId, position, teamId) => {
+    const field = position === "A" ? "team_a_id" : "team_b_id";
+
+    const { error } = await supabase
+      .from("matches")
+      .update({ [field]: teamId })
+      .eq("id", matchId);
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    fetchMatches();
   };
 
   // =========================
@@ -175,19 +219,31 @@ export default function AdminMatches() {
       <h1>Match / Bracket Management</h1>
 
       {/* =========================
-          AUTO GENERATE BUTTON
+          CONTROL PANEL
       ========================= */}
-      <button
-        onClick={generateBracket}
-        style={{
-          marginTop: "20px",
-          padding: "10px 20px",
-          background: "#9929EA",
-          borderRadius: "10px",
-        }}
-      >
-        Generate Bracket Otomatis
-      </button>
+      <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
+        <select onChange={(e) => setTournamentId(e.target.value)}>
+          <option value="">Pilih Tournament</option>
+          {tournaments.map((t) => (
+            <option key={t.id} value={t.id}>
+              {t.name}
+            </option>
+          ))}
+        </select>
+
+        <select onChange={(e) => setBracketSize(Number(e.target.value))}>
+          <option value={8}>8 Slot</option>
+          <option value={16}>16 Slot</option>
+          <option value={32}>32 Slot</option>
+          <option value={64}>64 Slot</option>
+          <option value={128}>128 Slot</option>
+          <option value={256}>256 Slot</option>
+        </select>
+
+        <button onClick={generateBracket}>
+          Generate Bracket
+        </button>
+      </div>
 
       {/* =========================
           BRACKET VIEW
@@ -205,21 +261,47 @@ export default function AdminMatches() {
       </div>
 
       {/* =========================
-          MODAL EDIT SCORE
+          MODAL EDIT
       ========================= */}
       {selectedMatch && (
         <div className="modal">
           <div className="modal-box">
-            <h3>Edit Score</h3>
+            <h3>Edit Match</h3>
 
-            <p>{selectedMatch.team_a}</p>
+            <p>Team A</p>
+            <select
+              onChange={(e) =>
+                assignTeam(selectedMatch.id, "A", e.target.value)
+              }
+            >
+              <option>Pilih Team</option>
+              {teams.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.name}
+                </option>
+              ))}
+            </select>
+
             <input
               type="number"
               value={scoreA}
               onChange={(e) => setScoreA(e.target.value)}
             />
 
-            <p>{selectedMatch.team_b}</p>
+            <p>Team B</p>
+            <select
+              onChange={(e) =>
+                assignTeam(selectedMatch.id, "B", e.target.value)
+              }
+            >
+              <option>Pilih Team</option>
+              {teams.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.name}
+                </option>
+              ))}
+            </select>
+
             <input
               type="number"
               value={scoreB}
@@ -228,7 +310,9 @@ export default function AdminMatches() {
 
             <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
               <button onClick={handleSaveScore}>Save</button>
-              <button onClick={() => setSelectedMatch(null)}>Close</button>
+              <button onClick={() => setSelectedMatch(null)}>
+                Close
+              </button>
             </div>
           </div>
         </div>
