@@ -108,12 +108,6 @@ export default function PublicBracketPage() {
 
   return (
     <div className="home">
-      {/* NAVBAR */}
-      <div className="navbar">
-        <div className="logo">
-          Tourna<span>Hub</span>
-        </div>
-      </div>
 
       {/* HEADER */}
       <div className="section">

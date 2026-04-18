@@ -6,139 +6,174 @@ export default function Home() {
   return (
     <div className="home">
 
+      {/* ========================= */}
       {/* HERO */}
-<section className="hero">
-  
-  <div className="hero-content">
-    
-    {/* LEFT - TEXT */}
-    <div className="hero-left">
-      <h1>
-        Di medan perang Semesta{" "}
-        <span className="gradient-text">hanya satu yang akan berdiri di puncak</span>
-      </h1>
+      {/* ========================= */}
+      <section className="hero">
+        <div className="hero-content">
 
-      <p>
-        Ini saatnya Battle for supremacy!
-      </p>
+          {/* LEFT */}
+          <div className="hero-left">
+            <h1>
+              Di medan perang Semesta,{" "}
+              <span className="gradient-text">
+                hanya satu yang akan berdiri di puncak
+              </span>
+            </h1>
 
-      <div className="hero-buttons">
-        <Link href="/tournaments" className="btn-white">
-          Lihat Tournament
-        </Link>
+            <p>
+              Saatnya buktikan skill timmu dan raih supremasi di turnamen esports
+              yang kompetitif dan profesional.
+            </p>
 
-        <Link href="/about" className="btn-outline">
-          Tentang Kami
-        </Link>
-      </div>
-    </div>
+            <div className="hero-buttons">
+              <Link href="/tournaments" className="btn-white">
+                Lihat Tournament
+              </Link>
 
-    {/* RIGHT - LOGO */}
-    <div className="hero-right">
-      <img src="/logo_shadow.png" alt="Logo Tournament" />
-    </div>
+              <Link href="/about" className="btn-outline">
+                Tentang Kami
+              </Link>
+            </div>
+          </div>
 
-  </div>
+          {/* RIGHT */}
+          <div className="hero-right">
+            <img src="/logo_shadow.png" alt="Semesta Esports Logo" />
+          </div>
 
-</section>
+        </div>
+      </section>
 
+      {/* ========================= */}
       {/* ABOUT */}
+      {/* ========================= */}
       <section className="section">
         <h2>Who We Are</h2>
+
         <p>
-          Semesta Esoprts adalah platform dan komunitas yang berfokus pada penyelenggaraan
-          turnamen esports yang kompetitif, profesional, dan terbuka untuk semua kalangan.
-          Kami hadir untuk menjadi wadah bagi para pemain, tim, dan komunitas gaming dalam
-          mengembangkan potensi, menunjukkan skill, serta merasakan atmosfer kompetisi yang
-          berkualitas.
+          Semesta Esports adalah platform dan komunitas yang berfokus pada
+          penyelenggaraan turnamen esports yang kompetitif, profesional,
+          dan terbuka untuk semua kalangan.
         </p>
+
         <p>
-          Berawal dari semangat untuk membangun ekosistem esports yang terstruktur, Semesta Esports
-          berkomitmen menghadirkan turnamen seperti Semesta Cup dengan sistem yang rapi, transparan,
-          dan mudah diakses. Kami percaya bahwa setiap pemain, baik pemula maupun profesional, 
-          berhak mendapatkan kesempatan yang sama untuk bersinar.
+          Kami hadir sebagai wadah bagi para pemain dan tim untuk berkembang,
+          menunjukkan skill, serta merasakan atmosfer kompetisi yang nyata
+          dan berkualitas.
         </p>
+
         <p>
-        Tidak hanya sekedar turnamen, Semesta Esports juga bertujuan membangun komunitas yang sold, 
-        sportif, dan terus berkembang. Kami ingin menjadi bagian dari perjalanan para pemain dalam 
-        meraih prestasi, sekaligus mendorong pertumbuhan industri esports ke arah yang lebih positif 
-        dan berkelanjutan.  
+          Lebih dari sekadar turnamen, kami membangun ekosistem yang solid,
+          sportif, dan berkelanjutan untuk masa depan esports.
         </p>
       </section>
 
-      {/* SERVICES */}
+      {/* ========================= */}
+      {/* FEATURES */}
+      {/* ========================= */}
       <section className="features">
         <div className="card">
           <h3>Competitive Tournament</h3>
           <p>
-            Ikuti berbagai turnamen Esports seperti Semesta Cup dengan sistem kompetisi yang terstruktur 
-            dan profesional, dirancang untuk memberikan pengalaman bermain yang maksimal bagi setiap tim.
+            Turnamen dengan sistem terstruktur dan profesional untuk pengalaman
+            kompetitif yang maksimal.
           </p>
         </div>
 
         <div className="card">
-          <h3>Live brackets & Match Updates</h3>
+          <h3>Live Brackets</h3>
           <p>
-            Pantau jalannya turnamen secara real-time melalui tampilan braket yang rapi dan mudah dipahami, 
-            lengkap dengan update skor setiap pertandingan.
+            Pantau jalannya turnamen secara real-time dengan tampilan bracket
+            yang rapi dan mudah dipahami.
           </p>
         </div>
 
         <div className="card">
-          <h3>Exposure & recognition</h3>
+          <h3>Exposure & Recognition</h3>
           <p>
-            Tunjukkan skill timmu ke publik dan dapatkan kesempatan dikenal lebih luas di dunia kompetitif.
+            Tunjukkan skill timmu dan dapatkan exposure untuk dikenal lebih luas
+            di dunia esports.
           </p>
         </div>
       </section>
 
+      {/* ========================= */}
       {/* WHY US */}
+      {/* ========================= */}
       <section className="section">
         <h2>Why Choose Us</h2>
+
         <p>
-          Kami bukan sekadar membuat tournament, tapi menciptakan
-          pengalaman kompetitif yang berkesan untuk setiap peserta.
+          Kami tidak hanya membuat turnamen — kami menciptakan pengalaman
+          kompetitif yang serius, transparan, dan berkesan untuk setiap pemain.
         </p>
       </section>
 
-{/* PARTNERS */}
-<section className="partners">
+      {/* ========================= */}
+      {/* TRUST / STATS (NEW) */}
+      {/* ========================= */}
+      <section className="features">
+        <div className="card">
+          <h3>100+</h3>
+          <p>Tim telah berpartisipasi</p>
+        </div>
 
-  <h2>Official Partner</h2>
+        <div className="card">
+          <h3>10+</h3>
+          <p>Turnamen berhasil diselenggarakan</p>
+        </div>
 
-  <div className="marquee">
-    <div className="marquee-track">
-      <img src="/feed-logo.jpeg" alt="" />
-      <img src="/logo_RRQ.png" alt="" />
-      <img src="/pocari-sweat-logo.png" alt="" />
+        <div className="card">
+          <h3>1000+</h3>
+          <p>Match dimainkan</p>
+        </div>
+      </section>
 
-      {/* DUPLICATE (WAJIB buat looping) */}     
-      <img src="/feed-logo.jpeg" alt="" />
-      <img src="/logo_RRQ.png" alt="" />
-      <img src="/pocari-sweat-logo.png" alt="" />
-    </div>
-  </div>
+      {/* ========================= */}
+      {/* PARTNERS */}
+      {/* ========================= */}
+      <section className="section">
 
-  <h2 className="sponsor-title">Our Sponsors</h2>
+        <h2>Official Partners</h2>
 
-  <div className="marquee">
-    <div className="marquee-track">
-      <img src="/pertamina-logo.png" alt="" />
-      <img src="/warkop-iklas.png" alt="" />
-      <img src="/logo-wismilak.png" alt="" />
+        <div className="marquee">
+          <div className="marquee-track">
+            <img src="/feed-logo.jpeg" alt="Partner" />
+            <img src="/logo_RRQ.png" alt="Partner" />
+            <img src="/pocari-sweat-logo.png" alt="Partner" />
 
-      {/* DUPLICATE */}
-      <img src="/pertamina-logo.png" alt="" />
-      <img src="/warkop-iklas.png" alt="" />
-      <img src="/logo-wismilak.png" alt="" />
-    </div>
-  </div>
+            <img src="/feed-logo.jpeg" alt="Partner" />
+            <img src="/logo_RRQ.png" alt="Partner" />
+            <img src="/pocari-sweat-logo.png" alt="Partner" />
+          </div>
+        </div>
 
-</section>
+        <h2 style={{ marginTop: "60px" }}>Sponsors</h2>
 
+        <div className="marquee">
+          <div className="marquee-track">
+            <img src="/pertamina-logo.png" alt="Sponsor" />
+            <img src="/warkop-iklas.png" alt="Sponsor" />
+            <img src="/logo-wismilak.png" alt="Sponsor" />
+
+            <img src="/pertamina-logo.png" alt="Sponsor" />
+            <img src="/warkop-iklas.png" alt="Sponsor" />
+            <img src="/logo-wismilak.png" alt="Sponsor" />
+          </div>
+        </div>
+
+      </section>
+
+      {/* ========================= */}
       {/* CTA */}
+      {/* ========================= */}
       <section className="cta">
         <h2>Siap untuk bertanding?</h2>
+        <p style={{ marginBottom: "20px" }}>
+          Daftarkan timmu sekarang dan buktikan siapa yang pantas jadi juara.
+        </p>
+
         <Link href="/tournaments" className="btn-primary">
           Explore Tournament
         </Link>
