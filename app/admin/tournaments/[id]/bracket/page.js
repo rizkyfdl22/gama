@@ -162,10 +162,13 @@ export default function AdminBracketPage() {
       <div style={{ marginTop: "40px", overflowX: "auto" }}>
         {matches.length > 0 ? (
           <SingleEliminationBracket
-            matches={formatBracket()}
-            matchComponent={Match}
-            onMatchClick={handleMatchClick} // 🔥 FIX UTAMA
-          />
+  matches={formatBracket()}
+  matchComponent={(props) => (
+    <div onClick={() => handleMatchClick(props.match)}>
+      <Match {...props} />
+    </div>
+  )}
+/>
         ) : (
           <p>Belum ada bracket</p>
         )}
