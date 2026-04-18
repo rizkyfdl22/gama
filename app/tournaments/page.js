@@ -50,20 +50,20 @@ export default function TournamentsPage() {
                 <h3>{t.title}</h3>
 
                 <p style={{ marginTop: "10px" }}>
-                  🎮 {t.game}
+                   {t.game}
                 </p>
 
-                <p>📅 {t.date}</p>
+                <p> {t.date}</p>
 
                 <p>
-                  💰{" "}
+                  {" "}
                   {t.price === 0
                     ? "Free"
                     : `Rp ${t.price.toLocaleString("id-ID")}`}
                 </p>
 
                 <p>
-                  👥 Max {t.max_participants} Teams
+                   Max {t.max_participants} Teams
                 </p>
               </div>
             </Link>
