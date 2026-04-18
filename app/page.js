@@ -130,41 +130,45 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ========================= */}
-      {/* PARTNERS */}
-      {/* ========================= */}
-      <section className="section">
+     <section className="partners-section">
 
-        <h2>Official Partners</h2>
+  <h2 className="partners-title gradient-text">Official Partners</h2>
 
-        <div className="marquee">
-          <div className="marquee-track">
-            <img src="/feed-logo.jpeg" alt="Partner" />
-            <img src="/logo_RRQ.png" alt="Partner" />
-            <img src="/pocari-sweat-logo.png" alt="Partner" />
+  <div className="partners-box">
+    <div className="marquee">
+      <div className="marquee-track">
+        <img src="/feed-logo.jpeg" alt="Partner" />
+        <img src="/logo_RRQ.png" alt="Partner" />
+        <img src="/pocari-sweat-logo.png" alt="Partner" />
 
-            <img src="/feed-logo.jpeg" alt="Partner" />
-            <img src="/logo_RRQ.png" alt="Partner" />
-            <img src="/pocari-sweat-logo.png" alt="Partner" />
-          </div>
-        </div>
+        {/* DUPLICATE */}
+        <img src="/feed-logo.jpeg" alt="Partner" />
+        <img src="/logo_RRQ.png" alt="Partner" />
+        <img src="/pocari-sweat-logo.png" alt="Partner" />
+      </div>
+    </div>
+  </div>
 
-        <h2 style={{ marginTop: "60px" }}>Sponsors</h2>
+  <h2 className="partners-title gradient-text" style={{ marginTop: "60px" }}>
+    Sponsors
+  </h2>
 
-        <div className="marquee">
-          <div className="marquee-track">
-            <img src="/pertamina-logo.png" alt="Sponsor" />
-            <img src="/warkop-iklas.png" alt="Sponsor" />
-            <img src="/logo-wismilak.png" alt="Sponsor" />
+  <div className="partners-box">
+    <div className="marquee">
+      <div className="marquee-track">
+        <img src="/pertamina-logo.png" alt="Sponsor" />
+        <img src="/warkop-iklas.png" alt="Sponsor" />
+        <img src="/logo-wismilak.png" alt="Sponsor" />
 
-            <img src="/pertamina-logo.png" alt="Sponsor" />
-            <img src="/warkop-iklas.png" alt="Sponsor" />
-            <img src="/logo-wismilak.png" alt="Sponsor" />
-          </div>
-        </div>
+        {/* DUPLICATE */}
+        <img src="/pertamina-logo.png" alt="Sponsor" />
+        <img src="/warkop-iklas.png" alt="Sponsor" />
+        <img src="/logo-wismilak.png" alt="Sponsor" />
+      </div>
+    </div>
+  </div>
 
-      </section>
-
+</section>
       {/* ========================= */}
       {/* CTA */}
       {/* ========================= */}
