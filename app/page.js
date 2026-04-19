@@ -127,12 +127,20 @@ export default function Home() {
     <div className="marquee">
       <div className="marquee-track">
         <img src="/feed-logo.jpeg" alt="Partner" />
-        <img src="/logo_RRQ.png" alt="Partner" />
+        <img src="/LOGO_RRQ.png" alt="Partner" />
         <img src="/pocari-sweat-logo.png" alt="Partner" />
 
         {/* DUPLICATE */}
         <img src="/feed-logo.jpeg" alt="Partner" />
-        <img src="/logo_RRQ.png" alt="Partner" />
+        <img src="/LOGO_RRQ.png" alt="Partner" />
+        <img src="/pocari-sweat-logo.png" alt="Partner" />
+        {/* DUPLICATE */}
+        <img src="/feed-logo.jpeg" alt="Partner" />
+        <img src="/LOGO_RRQ.png" alt="Partner" />
+        <img src="/pocari-sweat-logo.png" alt="Partner" />
+        {/* DUPLICATE */}
+        <img src="/feed-logo.jpeg" alt="Partner" />
+        <img src="/LOGO_RRQ.png" alt="Partner" />
         <img src="/pocari-sweat-logo.png" alt="Partner" />
       </div>
     </div>
@@ -149,6 +157,14 @@ export default function Home() {
         <img src="/warkop-iklas.png" alt="Sponsor" />
         <img src="/logo-wismilak.png" alt="Sponsor" />
 
+        {/* DUPLICATE */}
+        <img src="/pertamina-logo.png" alt="Sponsor" />
+        <img src="/warkop-iklas.png" alt="Sponsor" />
+        <img src="/logo-wismilak.png" alt="Sponsor" />
+        {/* DUPLICATE */}
+        <img src="/pertamina-logo.png" alt="Sponsor" />
+        <img src="/warkop-iklas.png" alt="Sponsor" />
+        <img src="/logo-wismilak.png" alt="Sponsor" />
         {/* DUPLICATE */}
         <img src="/pertamina-logo.png" alt="Sponsor" />
         <img src="/warkop-iklas.png" alt="Sponsor" />
