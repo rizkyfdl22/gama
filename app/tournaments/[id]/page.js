@@ -119,14 +119,14 @@ export default function PublicBracketPage() {
       <div style={{ height: "80vh" }}>
         {matches.length > 0 ? (
           <TransformWrapper
-            initialScale={1}
-            minScale={1}
-            maxScale={1}
-            wheel={{ disabled: true }}
+            initialScale={0.8}
+            minScale={0.5}
+            maxScale={2}
+            wheel={{ step: 0.1 }}
             pinch={{ disabled: true }}
             doubleClick={{ disabled: true }}
             panning={{ velocityDisabled: true }}
-            limitToBounds={false} // 🔥 penting
+            limitToBounds={false}
           >
             <TransformComponent>
               <div
