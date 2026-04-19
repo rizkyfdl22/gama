@@ -5,6 +5,7 @@ import { supabase } from "@/app/lib/supabase";
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
 import useInView from "../../lib/useInView";
+import CustomMatch from "../../components/CustomMatch";
 
 const SingleEliminationBracket = dynamic(
   () =>
@@ -14,17 +15,9 @@ const SingleEliminationBracket = dynamic(
   { ssr: false }
 );
 
-const Match = dynamic(
-  () =>
-    import("@g-loot/react-tournament-brackets").then(
-      (mod) => mod.Match
-    ),
-  { ssr: false }
-);
-
 export default function PublicBracketPage() {
   const { id } = useParams();
-  useInView(); // 🔥 animasi scroll
+  useInView();
 
   const [matches, setMatches] = useState([]);
   const [teams, setTeams] = useState([]);
@@ -106,9 +99,6 @@ export default function PublicBracketPage() {
   return (
     <div className="home">
 
-      {/* ========================= */}
-      {/* HEADER */}
-      {/* ========================= */}
       <div className="section fade-up">
         <h2 className="gradient-text">
           {tournament?.title || "Tournament"}
@@ -119,20 +109,19 @@ export default function PublicBracketPage() {
         </p>
       </div>
 
-      {/* ========================= */}
-      {/* BRACKET CONTAINER */}
-      {/* ========================= */}
       <div className="bracket-wrapper fade-up delay-1">
-        {matches.length > 0 ? (
-          <SingleEliminationBracket
-            matches={formatBracket()}
-            matchComponent={Match}
-          />
-        ) : (
-          <p className="empty-text">
-            Belum ada bracket
-          </p>
-        )}
+        <div style={{ minWidth: "1000px" }}>
+          {matches.length > 0 ? (
+            <SingleEliminationBracket
+              matches={formatBracket()}
+              matchComponent={CustomMatch}
+            />
+          ) : (
+            <p className="empty-text">
+              Belum ada bracket
+            </p>
+          )}
+        </div>
       </div>
 
     </div>

@@ -706,29 +706,79 @@ a {
 }
 
 /* ========================= */
-/* MATCH STYLE OVERRIDE */
+/* CUSTOM MATCH UI */
 /* ========================= */
 
-/* target library internal */
-.match {
-  background: rgba(255,255,255,0.05) !important;
-  border-radius: 12px !important;
-  border: 1px solid rgba(255,255,255,0.1) !important;
+.custom-match {
+  width: 220px;
+  padding: 12px;
+
+  border-radius: 14px;
+
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+
+  backdrop-filter: blur(6px);
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 
   transition: 0.3s;
 }
 
-.match:hover {
-  transform: scale(1.03);
-  background: rgba(255,255,255,0.08) !important;
+.custom-match:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(153, 41, 234, 0.3);
 }
 
-/* winner highlight */
-.match .participant.winner {
-  color: var(--pink) !important;
-  font-weight: 600;
+/* TEAM ROW */
+.team {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 6px 10px;
+  border-radius: 8px;
+
+  background: rgba(255,255,255,0.04);
 }
 
+/* TEAM NAME */
+.team-name {
+  font-size: 13px;
+  color: var(--gray);
+}
+
+/* SCORE */
+.score {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* VS TEXT */
+.vs {
+  text-align: center;
+  font-size: 10px;
+  color: var(--gray);
+}
+
+/* WINNER */
+.team.winner {
+  color: var(--white);
+  background: linear-gradient(
+    90deg,
+    rgba(153, 41, 234, 0.3),
+    rgba(255, 95, 207, 0.3)
+  );
+
+  border: 1px solid rgba(255, 95, 207, 0.4);
+}
+
+/* WINNER GLOW */
+.team.winner .score {
+  color: var(--pink);
+}
 /* ========================= */
 /* FOOTER */
 /* ========================= */
