@@ -119,40 +119,38 @@ export default function PublicBracketPage() {
 
       {/* BRACKET */}
       <div
-        style={{
-          padding: "40px",
-          overflowX: "auto",
-        }}
-      >
-        {matches.length > 0 ? (
-          <div
-            style={{
-              transform: "scale(0.7)", // 🔥 KECILIN DI SINI
-              transformOrigin: "top left",
-              width: "fit-content",
-              height: "600px",
-              overflow: "hidden",
-              background: "#0a0a0a",
-              padding: "20px",
-              borderRadius: "12px",
-            }}
-          >
-            <SingleEliminationBracket
-              matches={formatBracket()}
-              matchComponent={Match}
-            />
-          </div>
-        ) : (
-          <p
-            style={{
-              textAlign: "center",
-              color: "var(--gray)",
-            }}
-          >
-            Belum ada bracket
-          </p>
-        )}
-      </div>
+  style={{
+    padding: "40px",
+    overflowX: "auto",
+  }}
+>
+  {matches.length > 0 ? (
+    <div
+      style={{
+        transform: "scale(0.7)",
+        transformOrigin: "top left",
+        width: "fit-content",
+        background: "#0a0a0a",
+        padding: "20px",
+        borderRadius: "12px",
+      }}
+    >
+      <SingleEliminationBracket
+        matches={formatBracket()}
+        matchComponent={Match}
+      />
+    </div>
+  ) : (
+    <p
+      style={{
+        textAlign: "center",
+        color: "var(--gray)",
+      }}
+    >
+      Belum ada bracket
+    </p>
+  )}
+</div>
     </div>
   );
 }
