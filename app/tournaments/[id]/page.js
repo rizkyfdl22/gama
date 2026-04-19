@@ -1,9 +1,14 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/app/lib/supabase";
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
+
+import {
+  TransformWrapper,
+  TransformComponent,
+} from "react-zoom-pan-pinch";
 
 // FIX SSR
 const SingleEliminationBracket = dynamic(
@@ -30,26 +35,10 @@ export default function PublicBracketPage() {
   const [tournament, setTournament] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const bracketRef = useRef(null);
-  const [height, setHeight] = useState("auto");
-
   useEffect(() => {
     if (id) fetchData();
   }, [id]);
 
-  useEffect(() => {
-    // 🔥 AUTO TRIM HEIGHT (hilangin ruang kosong bawah)
-    if (bracketRef.current) {
-      setTimeout(() => {
-        const realHeight = bracketRef.current.scrollHeight;
-        setHeight(realHeight * 0.7); // sesuai scale
-      }, 300);
-    }
-  }, [matches]);
-
-  // =========================
-  // FETCH DATA
-  // =========================
   const fetchData = async () => {
     setLoading(true);
 
@@ -77,9 +66,6 @@ export default function PublicBracketPage() {
     setLoading(false);
   };
 
-  // =========================
-  // FORMAT BRACKET
-  // =========================
   const formatBracket = () => {
     return matches.map((m) => {
       const teamA = teams.find((t) => t.id === m.team_a_id);
@@ -92,7 +78,6 @@ export default function PublicBracketPage() {
         tournamentRoundText: `Round ${m.round}`,
         startTime: "2024-01-01",
         state: "DONE",
-
         participants: [
           {
             id: `${m.id}-a`,
@@ -112,16 +97,12 @@ export default function PublicBracketPage() {
   };
 
   if (loading) {
-    return (
-      <div className="home">
-        <div style={{ padding: "40px" }}>Loading bracket...</div>
-      </div>
-    );
+    return <div style={{ padding: "40px" }}>Loading...</div>;
   }
 
   return (
     <div className="home">
-      
+
       {/* HEADER */}
       <div className="section">
         <h2 className="gradient-text">
@@ -133,26 +114,28 @@ export default function PublicBracketPage() {
       {/* BRACKET */}
       <div
         style={{
-          padding: "20px",
-          overflowX: "auto",
+          height: "80vh",
+          background: "#050505",
+          borderRadius: "12px",
+          overflow: "hidden",
         }}
       >
-        {matches.length > 0 ? (
-          <div
-            style={{
-              height: height, // 🔥 AUTO HEIGHT (NO SPACE KOSONG)
-              overflow: "hidden",
+        <TransformWrapper
+          initialScale={0.7}
+          minScale={0.4}
+          maxScale={1.5}
+          centerOnInit
+        >
+          <TransformComponent
+            wrapperStyle={{
+              width: "100%",
+              height: "100%",
             }}
           >
             <div
-              ref={bracketRef}
               style={{
-                transform: "scale(0.7)",
-                transformOrigin: "top left",
                 width: "fit-content",
-                background: "#0a0a0a",
-                padding: "20px",
-                borderRadius: "12px",
+                padding: "40px",
               }}
             >
               <SingleEliminationBracket
@@ -160,17 +143,8 @@ export default function PublicBracketPage() {
                 matchComponent={Match}
               />
             </div>
-          </div>
-        ) : (
-          <p
-            style={{
-              textAlign: "center",
-              color: "var(--gray)",
-            }}
-          >
-            Belum ada bracket
-          </p>
-        )}
+          </TransformComponent>
+        </TransformWrapper>
       </div>
     </div>
   );
