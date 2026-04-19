@@ -20,25 +20,46 @@ export default function CreateTournament() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 🔒 VALIDASI DASAR
+    if (!form.title || !form.game || !form.date) {
+      alert("Lengkapi semua field!");
+      return;
+    }
+
     setLoading(true);
 
     let bannerUrl = null;
 
-    // ✅ 1. Upload banner ke Supabase Storage
+    // 🔥 VALIDASI FILE
     if (banner) {
-      const fileName = `${Date.now()}-${banner.name}`;
+      if (!banner.type.startsWith("image/")) {
+        alert("File harus berupa gambar!");
+        setLoading(false);
+        return;
+      }
 
-      const { data, error: uploadError } = await supabase.storage
+      if (banner.size > 2 * 1024 * 1024) {
+        alert("Ukuran maksimal 2MB!");
+        setLoading(false);
+        return;
+      }
+
+      const fileName = `tournament-${Date.now()}-${banner.name}`;
+
+      // ✅ UPLOAD KE STORAGE
+      const { error: uploadError } = await supabase.storage
         .from("tournament-banners")
         .upload(fileName, banner);
 
       if (uploadError) {
+        console.error("UPLOAD ERROR:", uploadError);
         alert(uploadError.message);
         setLoading(false);
         return;
       }
 
-      // ✅ 2. Ambil public URL
+      // ✅ AMBIL URL
       const { data: publicUrlData } = supabase.storage
         .from("tournament-banners")
         .getPublicUrl(fileName);
@@ -46,19 +67,38 @@ export default function CreateTournament() {
       bannerUrl = publicUrlData.publicUrl;
     }
 
-    // ✅ 3. Insert ke database
+    // 🔥 FIX DATE FORMAT (INI YANG PENTING)
+    let formattedDate = null;
+
+    try {
+      formattedDate = new Date(form.date).toISOString();
+    } catch (err) {
+      alert("Format tanggal tidak valid!");
+      setLoading(false);
+      return;
+    }
+
+    // 🧪 DEBUG (boleh hapus nanti)
+    console.log("DATA KIRIM:", {
+      ...form,
+      date: formattedDate,
+      banner_url: bannerUrl,
+    });
+
+    // ✅ INSERT KE DATABASE
     const { error } = await supabase.from("tournaments").insert([
       {
         title: form.title,
         game: form.game,
-        date: form.date,
-        price: Number(form.price),
-        max_participants: Number(form.max_participants),
-        banner_url: bannerUrl, // 🔥 masuk sini
+        date: formattedDate,
+        price: Number(form.price) || 0,
+        max_participants: Number(form.max_participants) || 0,
+        banner_url: bannerUrl,
       },
     ]);
 
     if (error) {
+      console.error("DB ERROR:", error);
       alert(error.message);
       setLoading(false);
       return;
@@ -74,7 +114,12 @@ export default function CreateTournament() {
 
       <form
         onSubmit={handleSubmit}
-        style={{ marginTop: "20px", display: "flex", flexDirection: "column", gap: "10px" }}
+        style={{
+          marginTop: "20px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+        }}
       >
         <input
           placeholder="Title"
@@ -97,14 +142,12 @@ export default function CreateTournament() {
         <input
           placeholder="Price"
           type="number"
-          required
           onChange={(e) => setForm({ ...form, price: e.target.value })}
         />
 
         <input
           placeholder="Max Participants"
           type="number"
-          required
           onChange={(e) =>
             setForm({ ...form, max_participants: e.target.value })
           }
@@ -116,6 +159,19 @@ export default function CreateTournament() {
           accept="image/*"
           onChange={(e) => setBanner(e.target.files[0])}
         />
+
+        {/* PREVIEW */}
+        {banner && (
+          <img
+            src={URL.createObjectURL(banner)}
+            alt="preview"
+            style={{
+              width: "100%",
+              borderRadius: "10px",
+              marginTop: "10px",
+            }}
+          />
+        )}
 
         <button type="submit" disabled={loading}>
           {loading ? "Uploading..." : "Create"}
