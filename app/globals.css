@@ -610,33 +610,42 @@ a {
 }
 
 /* ========================= */
-/* ANIMATIONS */
+/* SCROLL ANIMATION */
 /* ========================= */
 
 /* base hidden */
-.fade-up {
+.fade-up,
+.fade-left,
+.fade-right {
   opacity: 0;
+  transition: all 0.8s ease;
+}
+
+/* direction */
+.fade-up {
   transform: translateY(40px);
-  animation: fadeUp 0.8s ease forwards;
 }
 
 .fade-left {
-  opacity: 0;
   transform: translateX(-40px);
-  animation: fadeLeft 0.8s ease forwards;
 }
 
 .fade-right {
-  opacity: 0;
   transform: translateX(40px);
-  animation: fadeRight 0.8s ease forwards;
 }
 
-/* delay helpers */
-.delay-1 { animation-delay: 0.2s; }
-.delay-2 { animation-delay: 0.4s; }
-.delay-3 { animation-delay: 0.6s; }
-.delay-4 { animation-delay: 0.8s; }
+/* when visible */
+.show {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* delay */
+.delay-1 { transition-delay: 0.2s; }
+.delay-2 { transition-delay: 0.4s; }
+.delay-3 { transition-delay: 0.6s; }
+.delay-4 { transition-delay: 0.8s; }
+
 
 /* keyframes */
 @keyframes fadeUp {

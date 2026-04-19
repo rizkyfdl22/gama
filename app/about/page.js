@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 export default function AboutPage() {
+  useInView(); 
   return (
     <main className="home">
       {/* ========================= */}
