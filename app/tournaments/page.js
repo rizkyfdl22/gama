@@ -26,52 +26,57 @@ export default function TournamentsPage() {
   };
 
   return (
-    <div className="home">
-      <div className="section">
-        <h2 className="gradient-text">Explore Tournaments</h2>
-        <p>Temukan turnamen terbaik dan lihat bracket secara real-time</p>
+    <div className="tournaments-page">
+      {/* HERO */}
+      <div className="section center">
+        <h1 className="gradient-text">Explore Tournaments</h1>
+        <p className="subtitle">
+          Temukan turnamen terbaik dan lihat bracket secara real-time
+        </p>
       </div>
 
-      <div
-        style={{
-          marginTop: "60px",
-          padding: "0 40px",
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-          gap: "20px",
-          position: "relative",
-          zIndex: 10,
-        }}
-      >
+      {/* LIST */}
+      <div className="tournament-grid">
         {tournaments.length > 0 ? (
           tournaments.map((t) => (
             <Link key={t.id} href={`/tournaments/${t.id}`}>
-              <div className="card" style={{ cursor: "pointer" }}>
-                <h3>{t.title}</h3>
+              <div className="tournament-card">
+                
+                {/* HEADER */}
+                <div className="card-header">
+                  <h3>{t.title}</h3>
+                  <span className="game-badge">{t.game}</span>
+                </div>
 
-                <p style={{ marginTop: "10px" }}>
-                   {t.game}
-                </p>
+                {/* BODY */}
+                <div className="card-body">
+                  <p className="date">
+                    📅 {new Date(t.date).toLocaleDateString("id-ID")}
+                  </p>
 
-                <p> {t.date}</p>
+                  <p className="price">
+                    {t.price === 0
+                      ? "FREE ENTRY"
+                      : `Rp ${t.price.toLocaleString("id-ID")}`}
+                  </p>
 
-                <p>
-                  {" "}
-                  {t.price === 0
-                    ? "Free"
-                    : `Rp ${t.price.toLocaleString("id-ID")}`}
-                </p>
+                  <p className="slot">
+                    👥 Max {t.max_participants} Teams
+                  </p>
+                </div>
 
-                <p>
-                   Max {t.max_participants} Teams
-                </p>
+                {/* FOOTER */}
+                <div className="card-footer">
+                  <span>View Details →</span>
+                </div>
+
               </div>
             </Link>
           ))
         ) : (
-          <p style={{ textAlign: "center" }}>
-            Belum ada tournament
-          </p>
+          <div className="empty-state">
+            <p>Belum ada tournament</p>
+          </div>
         )}
       </div>
     </div>
