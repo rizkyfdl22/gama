@@ -5,11 +5,6 @@ import { supabase } from "@/app/lib/supabase";
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
 
-import {
-  TransformWrapper,
-  TransformComponent,
-} from "react-zoom-pan-pinch";
-
 // FIX SSR
 const SingleEliminationBracket = dynamic(
   () =>
@@ -39,6 +34,9 @@ export default function PublicBracketPage() {
     if (id) fetchData();
   }, [id]);
 
+  // =========================
+  // FETCH DATA
+  // =========================
   const fetchData = async () => {
     setLoading(true);
 
@@ -66,6 +64,9 @@ export default function PublicBracketPage() {
     setLoading(false);
   };
 
+  // =========================
+  // FORMAT BRACKET
+  // =========================
   const formatBracket = () => {
     return matches.map((m) => {
       const teamA = teams.find((t) => t.id === m.team_a_id);
@@ -78,6 +79,7 @@ export default function PublicBracketPage() {
         tournamentRoundText: `Round ${m.round}`,
         startTime: "2024-01-01",
         state: "DONE",
+
         participants: [
           {
             id: `${m.id}-a`,
@@ -97,12 +99,15 @@ export default function PublicBracketPage() {
   };
 
   if (loading) {
-    return <div style={{ padding: "40px" }}>Loading...</div>;
+    return (
+      <div className="home">
+        <div style={{ padding: "40px" }}>Loading bracket...</div>
+      </div>
+    );
   }
 
   return (
     <div className="home">
-
       {/* HEADER */}
       <div className="section">
         <h2 className="gradient-text">
@@ -112,39 +117,17 @@ export default function PublicBracketPage() {
       </div>
 
       {/* BRACKET */}
-      <div
-        style={{
-          height: "80vh",
-          background: "#050505",
-          borderRadius: "12px",
-          overflow: "hidden",
-        }}
-      >
-        <TransformWrapper
-          initialScale={0.7}
-          minScale={0.4}
-          maxScale={1.5}
-          centerOnInit
-        >
-          <TransformComponent
-            wrapperStyle={{
-              width: "100%",
-              height: "100%",
-            }}
-          >
-            <div
-              style={{
-                width: "fit-content",
-                padding: "40px",
-              }}
-            >
-              <SingleEliminationBracket
-                matches={formatBracket()}
-                matchComponent={Match}
-              />
-            </div>
-          </TransformComponent>
-        </TransformWrapper>
+      <div style={{ padding: "40px", overflowX: "auto" }}>
+        {matches.length > 0 ? (
+          <SingleEliminationBracket
+            matches={formatBracket()}
+            matchComponent={Match}
+          />
+        ) : (
+          <p style={{ textAlign: "center", color: "var(--gray)" }}>
+            Belum ada bracket
+          </p>
+        )}
       </div>
     </div>
   );
