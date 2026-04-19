@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/app/lib/supabase";
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
@@ -30,9 +30,22 @@ export default function PublicBracketPage() {
   const [tournament, setTournament] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const bracketRef = useRef(null);
+  const [height, setHeight] = useState("auto");
+
   useEffect(() => {
     if (id) fetchData();
   }, [id]);
+
+  useEffect(() => {
+    // 🔥 AUTO TRIM HEIGHT (hilangin ruang kosong bawah)
+    if (bracketRef.current) {
+      setTimeout(() => {
+        const realHeight = bracketRef.current.scrollHeight;
+        setHeight(realHeight * 0.7); // sesuai scale
+      }, 300);
+    }
+  }, [matches]);
 
   // =========================
   // FETCH DATA
@@ -108,7 +121,7 @@ export default function PublicBracketPage() {
 
   return (
     <div className="home">
-
+      
       {/* HEADER */}
       <div className="section">
         <h2 className="gradient-text">
@@ -119,38 +132,46 @@ export default function PublicBracketPage() {
 
       {/* BRACKET */}
       <div
-  style={{
-    padding: "10px",
-    overflowX: "auto",
-  }}
->
-  {matches.length > 0 ? (
-    <div
-      style={{
-        transform: "scale(0.7)",
-        transformOrigin: "top left",
-        width: "fit-content",
-        background: "#0a0a0a",
-        padding: "20px",
-        borderRadius: "12px",
-      }}
-    >
-      <SingleEliminationBracket
-        matches={formatBracket()}
-        matchComponent={Match}
-      />
-    </div>
-  ) : (
-    <p
-      style={{
-        textAlign: "center",
-        color: "var(--gray)",
-      }}
-    >
-      Belum ada bracket
-    </p>
-  )}
-</div>
+        style={{
+          padding: "20px",
+          overflowX: "auto",
+        }}
+      >
+        {matches.length > 0 ? (
+          <div
+            style={{
+              height: height, // 🔥 AUTO HEIGHT (NO SPACE KOSONG)
+              overflow: "hidden",
+            }}
+          >
+            <div
+              ref={bracketRef}
+              style={{
+                transform: "scale(0.7)",
+                transformOrigin: "top left",
+                width: "fit-content",
+                background: "#0a0a0a",
+                padding: "20px",
+                borderRadius: "12px",
+              }}
+            >
+              <SingleEliminationBracket
+                matches={formatBracket()}
+                matchComponent={Match}
+              />
+            </div>
+          </div>
+        ) : (
+          <p
+            style={{
+              textAlign: "center",
+              color: "var(--gray)",
+            }}
+          >
+            Belum ada bracket
+          </p>
+        )}
+      </div>
     </div>
   );
 }
