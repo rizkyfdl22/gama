@@ -36,6 +36,7 @@ export default function PublicBracketPage() {
   const [loading, setLoading] = useState(true);
 
   const [selectedRound, setSelectedRound] = useState(1);
+  const [viewMode, setViewMode] = useState("full"); // 🔥 toggle
 
   useEffect(() => {
     if (id) fetchData();
@@ -66,7 +67,6 @@ export default function PublicBracketPage() {
     setTeams(teamsData || []);
     setMatches(matchData || []);
 
-    // set default ke round pertama
     if (matchData && matchData.length > 0) {
       const firstRound = Math.min(...matchData.map((m) => m.round));
       setSelectedRound(firstRound);
@@ -75,12 +75,10 @@ export default function PublicBracketPage() {
     setLoading(false);
   };
 
-  // ambil semua round unik
   const rounds = [...new Set(matches.map((m) => m.round))].sort(
     (a, b) => a - b
   );
 
-  // helper nama round
   const getRoundName = (round) => {
     const totalRounds = Math.max(...rounds);
 
@@ -91,35 +89,38 @@ export default function PublicBracketPage() {
   };
 
   const formatBracket = () => {
-    return matches
-      .filter((m) => m.round === selectedRound)
-      .map((m) => {
-        const teamA = teams.find((t) => t.id === m.team_a_id);
-        const teamB = teams.find((t) => t.id === m.team_b_id);
+    const data =
+      viewMode === "round"
+        ? matches.filter((m) => m.round === selectedRound)
+        : matches;
 
-        return {
-          id: m.id,
-          name: `Match ${m.match_order + 1}`,
-          nextMatchId: null, // ❗ putus koneksi antar round
-          tournamentRoundText: getRoundName(m.round),
-          startTime: "2024-01-01",
-          state: "DONE",
-          participants: [
-            {
-              id: `${m.id}-a`,
-              name: teamA?.name || "TBD",
-              resultText: m.score_a?.toString() || "",
-              isWinner: (m.score_a || 0) > (m.score_b || 0),
-            },
-            {
-              id: `${m.id}-b`,
-              name: teamB?.name || "TBD",
-              resultText: m.score_b?.toString() || "",
-              isWinner: (m.score_b || 0) > (m.score_a || 0),
-            },
-          ],
-        };
-      });
+    return data.map((m) => {
+      const teamA = teams.find((t) => t.id === m.team_a_id);
+      const teamB = teams.find((t) => t.id === m.team_b_id);
+
+      return {
+        id: m.id,
+        name: `Match ${m.match_order + 1}`,
+        nextMatchId: viewMode === "round" ? null : m.next_match_id,
+        tournamentRoundText: getRoundName(m.round),
+        startTime: "2024-01-01",
+        state: "DONE",
+        participants: [
+          {
+            id: `${m.id}-a`,
+            name: teamA?.name || "TBD",
+            resultText: m.score_a?.toString() || "",
+            isWinner: (m.score_a || 0) > (m.score_b || 0),
+          },
+          {
+            id: `${m.id}-b`,
+            name: teamB?.name || "TBD",
+            resultText: m.score_b?.toString() || "",
+            isWinner: (m.score_b || 0) > (m.score_a || 0),
+          },
+        ],
+      };
+    });
   };
 
   if (loading) {
@@ -136,33 +137,71 @@ export default function PublicBracketPage() {
         <p>{tournament?.game}</p>
       </div>
 
-      {/* ROUND SELECTOR */}
+      {/* 🔥 TOGGLE VIEW */}
       <div
         style={{
-          marginBottom: "20px",
           display: "flex",
           gap: "10px",
-          flexWrap: "wrap",
+          marginBottom: "20px",
         }}
       >
-        {rounds.map((r) => (
-          <button
-            key={r}
-            onClick={() => setSelectedRound(r)}
-            style={{
-              padding: "8px 16px",
-              borderRadius: "8px",
-              border: "none",
-              cursor: "pointer",
-              background: selectedRound === r ? "#9929EA" : "#222",
-              color: "#fff",
-              transition: "0.2s",
-            }}
-          >
-            {getRoundName(r)}
-          </button>
-        ))}
+        <button
+          onClick={() => setViewMode("full")}
+          style={{
+            padding: "8px 16px",
+            borderRadius: "8px",
+            border: "none",
+            cursor: "pointer",
+            background: viewMode === "full" ? "#9929EA" : "#222",
+            color: "#fff",
+          }}
+        >
+          Full Bracket
+        </button>
+
+        <button
+          onClick={() => setViewMode("round")}
+          style={{
+            padding: "8px 16px",
+            borderRadius: "8px",
+            border: "none",
+            cursor: "pointer",
+            background: viewMode === "round" ? "#9929EA" : "#222",
+            color: "#fff",
+          }}
+        >
+          Per Round
+        </button>
       </div>
+
+      {/* 🔥 ROUND SELECTOR (ONLY IF ROUND MODE) */}
+      {viewMode === "round" && (
+        <div
+          style={{
+            marginBottom: "20px",
+            display: "flex",
+            gap: "10px",
+            flexWrap: "wrap",
+          }}
+        >
+          {rounds.map((r) => (
+            <button
+              key={r}
+              onClick={() => setSelectedRound(r)}
+              style={{
+                padding: "8px 16px",
+                borderRadius: "8px",
+                border: "none",
+                cursor: "pointer",
+                background: selectedRound === r ? "#FF5FCF" : "#222",
+                color: "#fff",
+              }}
+            >
+              {getRoundName(r)}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* BRACKET */}
       <div
