@@ -21,7 +21,6 @@ export default function CreateTournament() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 🔒 VALIDASI DASAR
     if (!form.title || !form.game || !form.date) {
       alert("Lengkapi semua field!");
       return;
@@ -31,8 +30,9 @@ export default function CreateTournament() {
 
     let bannerUrl = null;
 
-    // 🔥 VALIDASI FILE
+    // 🔥 UPLOAD BANNER (FIX TOTAL)
     if (banner) {
+      // validasi file
       if (!banner.type.startsWith("image/")) {
         alert("File harus berupa gambar!");
         setLoading(false);
@@ -47,55 +47,63 @@ export default function CreateTournament() {
 
       const fileName = `tournament-${Date.now()}-${banner.name}`;
 
-      // ✅ UPLOAD KE STORAGE
-      const { error: uploadError } = await supabase.storage
+      const { data, error: uploadError } = await supabase.storage
         .from("tournament-banners")
         .upload(fileName, banner);
 
-      if (uploadError) {
-        console.error("UPLOAD ERROR:", uploadError);
-        alert(uploadError.message);
+      console.log("UPLOAD RESULT:", data);
+      console.log("UPLOAD ERROR:", uploadError);
+
+      // 🚨 STOP kalau upload gagal
+      if (uploadError || !data) {
+        alert("Upload banner gagal! Cek console.");
         setLoading(false);
         return;
       }
 
-      // ✅ AMBIL URL
+      // ambil URL
       const { data: publicUrlData } = supabase.storage
         .from("tournament-banners")
         .getPublicUrl(fileName);
 
-      bannerUrl = publicUrlData.publicUrl;
+      bannerUrl = publicUrlData?.publicUrl;
+
+      // 🚨 pastikan URL valid
+      if (!bannerUrl) {
+        alert("Gagal mendapatkan URL banner");
+        setLoading(false);
+        return;
+      }
     }
 
-    // 🔥 FIX DATE FORMAT (INI YANG PENTING)
-    let formattedDate = null;
-
+    // 🔥 FORMAT DATE
+    let formattedDate;
     try {
       formattedDate = new Date(form.date).toISOString();
-    } catch (err) {
+    } catch {
       alert("Format tanggal tidak valid!");
       setLoading(false);
       return;
     }
 
-    // 🧪 DEBUG (boleh hapus nanti)
-    console.log("DATA KIRIM:", {
-      ...form,
+    // 🔥 PAYLOAD CLEAN (ANTI ERROR)
+    const payload = {
+      title: form.title,
+      game: form.game,
       date: formattedDate,
-      banner_url: bannerUrl,
-    });
+      price: Number(form.price) || 0,
+      max_participants: Number(form.max_participants) || 0,
+    };
 
-    // ✅ INSERT KE DATABASE
-    const { error } = await supabase.from("tournaments").insert([
-      {
-        title: form.title,
-        game: form.game,
-        date: formattedDate,
-        price: Number(form.price) || 0,
-        max_participants: Number(form.max_participants) || 0,
-        banner_url: bannerUrl,
-      },
-    ]);
+    // hanya kirim banner kalau ada
+    if (bannerUrl) {
+      payload.banner_url = bannerUrl;
+    }
+
+    console.log("DATA KIRIM:", payload);
+
+    // 🔥 INSERT
+    const { error } = await supabase.from("tournaments").insert([payload]);
 
     if (error) {
       console.error("DB ERROR:", error);
@@ -153,14 +161,12 @@ export default function CreateTournament() {
           }
         />
 
-        {/* 🔥 UPLOAD BANNER */}
         <input
           type="file"
           accept="image/*"
           onChange={(e) => setBanner(e.target.files[0])}
         />
 
-        {/* PREVIEW */}
         {banner && (
           <img
             src={URL.createObjectURL(banner)}
