@@ -73,7 +73,7 @@ a {
 /* NAVBAR */
 /* ========================= */
 .navbar {
-  position: relative;
+  position: absolute;
   z-index: 10;
 
   display: flex;
