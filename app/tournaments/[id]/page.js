@@ -35,8 +35,9 @@ export default function PublicBracketPage() {
   const [tournament, setTournament] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // 🔥 NEW STATE
+  const [viewMode, setViewMode] = useState("full"); // full | round
   const [selectedRound, setSelectedRound] = useState(1);
-  const [viewMode, setViewMode] = useState("full"); // 🔥 toggle
 
   useEffect(() => {
     if (id) fetchData();
@@ -66,43 +67,28 @@ export default function PublicBracketPage() {
     setTournament(tData);
     setTeams(teamsData || []);
     setMatches(matchData || []);
-
-    if (matchData && matchData.length > 0) {
-      const firstRound = Math.min(...matchData.map((m) => m.round));
-      setSelectedRound(firstRound);
-    }
-
     setLoading(false);
   };
 
-  const rounds = [...new Set(matches.map((m) => m.round))].sort(
-    (a, b) => a - b
-  );
+  // 🔥 GET UNIQUE ROUNDS
+  const rounds = [...new Set(matches.map((m) => m.round))];
 
-  const getRoundName = (round) => {
-    const totalRounds = Math.max(...rounds);
-
-    if (round === totalRounds) return "Final";
-    if (round === totalRounds - 1) return "Semifinal";
-    if (round === totalRounds - 2) return "Quarter Final";
-    return `Round ${round}`;
+  // 🔥 FILTER MATCHES
+  const getFilteredMatches = () => {
+    if (viewMode === "full") return matches;
+    return matches.filter((m) => m.round === selectedRound);
   };
 
   const formatBracket = () => {
-    const data =
-      viewMode === "round"
-        ? matches.filter((m) => m.round === selectedRound)
-        : matches;
-
-    return data.map((m) => {
+    return getFilteredMatches().map((m) => {
       const teamA = teams.find((t) => t.id === m.team_a_id);
       const teamB = teams.find((t) => t.id === m.team_b_id);
 
       return {
         id: m.id,
         name: `Match ${m.match_order + 1}`,
-        nextMatchId: viewMode === "round" ? null : m.next_match_id,
-        tournamentRoundText: getRoundName(m.round),
+        nextMatchId: viewMode === "full" ? m.next_match_id : null, // 🔥 penting!
+        tournamentRoundText: `Round ${m.round}`,
         startTime: "2024-01-01",
         state: "DONE",
         participants: [
@@ -129,6 +115,7 @@ export default function PublicBracketPage() {
 
   return (
     <div className="home">
+
       {/* HEADER */}
       <div className="section">
         <h2 className="gradient-text">
@@ -137,71 +124,29 @@ export default function PublicBracketPage() {
         <p>{tournament?.game}</p>
       </div>
 
-      {/* 🔥 TOGGLE VIEW */}
-      <div
-        style={{
-          display: "flex",
-          gap: "10px",
-          marginBottom: "20px",
-        }}
-      >
-        <button
-          onClick={() => setViewMode("full")}
-          style={{
-            padding: "8px 16px",
-            borderRadius: "8px",
-            border: "none",
-            cursor: "pointer",
-            background: viewMode === "full" ? "#9929EA" : "#222",
-            color: "#fff",
-          }}
-        >
+      {/* 🔥 FILTER CONTROL */}
+      <div style={{ marginBottom: "20px" }}>
+        <button onClick={() => setViewMode("full")}>
           Full Bracket
         </button>
 
-        <button
-          onClick={() => setViewMode("round")}
-          style={{
-            padding: "8px 16px",
-            borderRadius: "8px",
-            border: "none",
-            cursor: "pointer",
-            background: viewMode === "round" ? "#9929EA" : "#222",
-            color: "#fff",
-          }}
-        >
+        <button onClick={() => setViewMode("round")}>
           Per Round
         </button>
-      </div>
 
-      {/* 🔥 ROUND SELECTOR (ONLY IF ROUND MODE) */}
-      {viewMode === "round" && (
-        <div
-          style={{
-            marginBottom: "20px",
-            display: "flex",
-            gap: "10px",
-            flexWrap: "wrap",
-          }}
-        >
-          {rounds.map((r) => (
-            <button
-              key={r}
-              onClick={() => setSelectedRound(r)}
-              style={{
-                padding: "8px 16px",
-                borderRadius: "8px",
-                border: "none",
-                cursor: "pointer",
-                background: selectedRound === r ? "#FF5FCF" : "#222",
-                color: "#fff",
-              }}
-            >
-              {getRoundName(r)}
-            </button>
-          ))}
-        </div>
-      )}
+        {viewMode === "round" && (
+          <select
+            value={selectedRound}
+            onChange={(e) => setSelectedRound(Number(e.target.value))}
+          >
+            {rounds.map((r) => (
+              <option key={r} value={r}>
+                Round {r}
+              </option>
+            ))}
+          </select>
+        )}
+      </div>
 
       {/* BRACKET */}
       <div
@@ -213,8 +158,8 @@ export default function PublicBracketPage() {
         }}
       >
         <TransformWrapper
-          initialScale={0.8}
-          minScale={0.5}
+          initialScale={0.7}
+          minScale={0.4}
           maxScale={1.5}
           centerOnInit
         >
