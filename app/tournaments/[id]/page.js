@@ -35,9 +35,7 @@ export default function PublicBracketPage() {
   const [tournament, setTournament] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 🔥 NEW STATE
-  const [viewMode, setViewMode] = useState("full"); // full | round
-  const [selectedRound, setSelectedRound] = useState(1);
+  const [selectedRound, setSelectedRound] = useState("all");
 
   useEffect(() => {
     if (id) fetchData();
@@ -70,24 +68,25 @@ export default function PublicBracketPage() {
     setLoading(false);
   };
 
-  // 🔥 GET UNIQUE ROUNDS
+  // 🔥 ambil semua round unik
   const rounds = [...new Set(matches.map((m) => m.round))];
 
-  // 🔥 FILTER MATCHES
-  const getFilteredMatches = () => {
-    if (viewMode === "full") return matches;
-    return matches.filter((m) => m.round === selectedRound);
-  };
+  // 🔥 filter match berdasarkan round
+  const filteredMatches =
+    selectedRound === "all"
+      ? matches
+      : matches.filter((m) => m.round === selectedRound);
 
   const formatBracket = () => {
-    return getFilteredMatches().map((m) => {
+    return filteredMatches.map((m) => {
       const teamA = teams.find((t) => t.id === m.team_a_id);
       const teamB = teams.find((t) => t.id === m.team_b_id);
 
       return {
         id: m.id,
         name: `Match ${m.match_order + 1}`,
-        nextMatchId: viewMode === "full" ? m.next_match_id : null, // 🔥 penting!
+        nextMatchId:
+          selectedRound === "all" ? m.next_match_id : null, // 🔥 penting biar tidak nyambung ke round lain
         tournamentRoundText: `Round ${m.round}`,
         startTime: "2024-01-01",
         state: "DONE",
@@ -124,28 +123,24 @@ export default function PublicBracketPage() {
         <p>{tournament?.game}</p>
       </div>
 
-      {/* 🔥 FILTER CONTROL */}
-      <div style={{ marginBottom: "20px" }}>
-        <button onClick={() => setViewMode("full")}>
+      {/* 🔥 ROUND FILTER */}
+      <div style={{ display: "flex", gap: "10px", marginBottom: "20px", flexWrap: "wrap" }}>
+        <button
+          onClick={() => setSelectedRound("all")}
+          className={selectedRound === "all" ? "active-btn" : ""}
+        >
           Full Bracket
         </button>
 
-        <button onClick={() => setViewMode("round")}>
-          Per Round
-        </button>
-
-        {viewMode === "round" && (
-          <select
-            value={selectedRound}
-            onChange={(e) => setSelectedRound(Number(e.target.value))}
+        {rounds.map((r) => (
+          <button
+            key={r}
+            onClick={() => setSelectedRound(r)}
+            className={selectedRound === r ? "active-btn" : ""}
           >
-            {rounds.map((r) => (
-              <option key={r} value={r}>
-                Round {r}
-              </option>
-            ))}
-          </select>
-        )}
+            Round {r}
+          </button>
+        ))}
       </div>
 
       {/* BRACKET */}
