@@ -130,6 +130,8 @@ export default function PublicBracketPage() {
               transform: "scale(0.7)", // 🔥 KECILIN DI SINI
               transformOrigin: "top left",
               width: "fit-content",
+              height: "600px",
+              overflow: "hidden",
               background: "#0a0a0a",
               padding: "20px",
               borderRadius: "12px",
