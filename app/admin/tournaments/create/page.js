@@ -45,7 +45,7 @@ export default function CreateTournament() {
         return;
       }
 
-      const fileName = `tournament-${Date.now()}-${banner.name}`;
+      const fileName = `public/tournament-${Date.now()}-${banner.name}`;
 
       const { data, error: uploadError } = await supabase.storage
         .from("tournament-banners")
