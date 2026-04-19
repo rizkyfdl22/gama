@@ -35,6 +35,8 @@ export default function PublicBracketPage() {
   const [tournament, setTournament] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const [selectedRound, setSelectedRound] = useState(1);
+
   useEffect(() => {
     if (id) fetchData();
   }, [id]);
@@ -63,37 +65,61 @@ export default function PublicBracketPage() {
     setTournament(tData);
     setTeams(teamsData || []);
     setMatches(matchData || []);
+
+    // set default ke round pertama
+    if (matchData && matchData.length > 0) {
+      const firstRound = Math.min(...matchData.map((m) => m.round));
+      setSelectedRound(firstRound);
+    }
+
     setLoading(false);
   };
 
-  const formatBracket = () => {
-    return matches.map((m) => {
-      const teamA = teams.find((t) => t.id === m.team_a_id);
-      const teamB = teams.find((t) => t.id === m.team_b_id);
+  // ambil semua round unik
+  const rounds = [...new Set(matches.map((m) => m.round))].sort(
+    (a, b) => a - b
+  );
 
-      return {
-        id: m.id,
-        name: `Match ${m.match_order + 1}`,
-        nextMatchId: m.next_match_id,
-        tournamentRoundText: `Round ${m.round}`,
-        startTime: "2024-01-01",
-        state: "DONE",
-        participants: [
-          {
-            id: `${m.id}-a`,
-            name: teamA?.name || "TBD",
-            resultText: m.score_a?.toString() || "",
-            isWinner: (m.score_a || 0) > (m.score_b || 0),
-          },
-          {
-            id: `${m.id}-b`,
-            name: teamB?.name || "TBD",
-            resultText: m.score_b?.toString() || "",
-            isWinner: (m.score_b || 0) > (m.score_a || 0),
-          },
-        ],
-      };
-    });
+  // helper nama round
+  const getRoundName = (round) => {
+    const totalRounds = Math.max(...rounds);
+
+    if (round === totalRounds) return "Final";
+    if (round === totalRounds - 1) return "Semifinal";
+    if (round === totalRounds - 2) return "Quarter Final";
+    return `Round ${round}`;
+  };
+
+  const formatBracket = () => {
+    return matches
+      .filter((m) => m.round === selectedRound)
+      .map((m) => {
+        const teamA = teams.find((t) => t.id === m.team_a_id);
+        const teamB = teams.find((t) => t.id === m.team_b_id);
+
+        return {
+          id: m.id,
+          name: `Match ${m.match_order + 1}`,
+          nextMatchId: null, // ❗ putus koneksi antar round
+          tournamentRoundText: getRoundName(m.round),
+          startTime: "2024-01-01",
+          state: "DONE",
+          participants: [
+            {
+              id: `${m.id}-a`,
+              name: teamA?.name || "TBD",
+              resultText: m.score_a?.toString() || "",
+              isWinner: (m.score_a || 0) > (m.score_b || 0),
+            },
+            {
+              id: `${m.id}-b`,
+              name: teamB?.name || "TBD",
+              resultText: m.score_b?.toString() || "",
+              isWinner: (m.score_b || 0) > (m.score_a || 0),
+            },
+          ],
+        };
+      });
   };
 
   if (loading) {
@@ -102,13 +128,40 @@ export default function PublicBracketPage() {
 
   return (
     <div className="home">
-
       {/* HEADER */}
       <div className="section">
         <h2 className="gradient-text">
           {tournament?.title || "Tournament"}
         </h2>
         <p>{tournament?.game}</p>
+      </div>
+
+      {/* ROUND SELECTOR */}
+      <div
+        style={{
+          marginBottom: "20px",
+          display: "flex",
+          gap: "10px",
+          flexWrap: "wrap",
+        }}
+      >
+        {rounds.map((r) => (
+          <button
+            key={r}
+            onClick={() => setSelectedRound(r)}
+            style={{
+              padding: "8px 16px",
+              borderRadius: "8px",
+              border: "none",
+              cursor: "pointer",
+              background: selectedRound === r ? "#9929EA" : "#222",
+              color: "#fff",
+              transition: "0.2s",
+            }}
+          >
+            {getRoundName(r)}
+          </button>
+        ))}
       </div>
 
       {/* BRACKET */}
@@ -121,8 +174,8 @@ export default function PublicBracketPage() {
         }}
       >
         <TransformWrapper
-          initialScale={0.7}
-          minScale={0.4}
+          initialScale={0.8}
+          minScale={0.5}
           maxScale={1.5}
           centerOnInit
         >
