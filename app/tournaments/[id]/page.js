@@ -120,7 +120,7 @@ export default function PublicBracketPage() {
       {/* BRACKET */}
       <div
   style={{
-    padding: "40px",
+    padding: "10px",
     overflowX: "auto",
   }}
 >
