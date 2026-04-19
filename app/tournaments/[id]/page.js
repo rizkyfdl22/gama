@@ -39,9 +39,6 @@ export default function PublicBracketPage() {
     if (id) fetchData();
   }, [id]);
 
-  // =========================
-  // FETCH DATA
-  // =========================
   const fetchData = async () => {
     setLoading(true);
 
@@ -69,9 +66,6 @@ export default function PublicBracketPage() {
     setLoading(false);
   };
 
-  // =========================
-  // FORMAT BRACKET
-  // =========================
   const formatBracket = () => {
     return matches.map((m) => {
       const teamA = teams.find((t) => t.id === m.team_a_id);
@@ -121,35 +115,26 @@ export default function PublicBracketPage() {
         <p>{tournament?.game}</p>
       </div>
 
-      {/* BRACKET WITH ZOOM */}
-      <div style={{ padding: "20px", height: "80vh" }}>
+      {/* BRACKET */}
+      <div style={{ height: "80vh", overflow: "hidden" }}>
         {matches.length > 0 ? (
           <TransformWrapper
-            initialScale={0.8}
-            minScale={0.5}
-            maxScale={2}
-            centerOnInit
-            wheel={{ step: 0.1 }}
+            initialScale={1}
+            minScale={1}
+            maxScale={1}
+            wheel={{ disabled: true }}
+            pinch={{ disabled: true }}
+            doubleClick={{ disabled: true }}
+            panning={{ velocityDisabled: true }}
           >
-            {({ zoomIn, zoomOut, resetTransform }) => (
-              <>
-                {/* CONTROLS */}
-                <div style={{ marginBottom: "10px" }}>
-                  <button onClick={() => zoomIn()}>+</button>
-                  <button onClick={() => zoomOut()}>-</button>
-                  <button onClick={() => resetTransform()}>Reset</button>
-                </div>
-
-                <TransformComponent>
-                  <div style={{ minWidth: "1200px" }}>
-                    <SingleEliminationBracket
-                      matches={formatBracket()}
-                      matchComponent={Match}
-                    />
-                  </div>
-                </TransformComponent>
-              </>
-            )}
+            <TransformComponent>
+              <div style={{ minWidth: "1200px", padding: "40px" }}>
+                <SingleEliminationBracket
+                  matches={formatBracket()}
+                  matchComponent={Match}
+                />
+              </div>
+            </TransformComponent>
           </TransformWrapper>
         ) : (
           <p style={{ textAlign: "center", color: "var(--gray)" }}>
