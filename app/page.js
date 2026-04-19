@@ -86,35 +86,7 @@ export default function Home() {
 
   </div>
 
-</section>      {/* ========================= */}
-      {/* FEATURES */}
-      {/* ========================= */}
-      <section className="features">
-        <div className="card">
-          <h3>Competitive Tournament</h3>
-          <p>
-            Turnamen dengan sistem terstruktur dan profesional untuk pengalaman
-            kompetitif yang maksimal.
-          </p>
-        </div>
-
-        <div className="card">
-          <h3>Live Brackets</h3>
-          <p>
-            Pantau jalannya turnamen secara real-time dengan tampilan bracket
-            yang rapi dan mudah dipahami.
-          </p>
-        </div>
-
-        <div className="card">
-          <h3>Exposure & Recognition</h3>
-          <p>
-            Tunjukkan skill timmu dan dapatkan exposure untuk dikenal lebih luas
-            di dunia esports.
-          </p>
-        </div>
-      </section>
-
+</section>    
       {/* ========================= */}
       {/* WHY US */}
       {/* ========================= */}
