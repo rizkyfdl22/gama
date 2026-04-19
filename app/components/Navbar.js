@@ -58,7 +58,8 @@ export default function Navbar() {
 
       <div className="nav-links">
         <Link href="/">Home</Link>
-        <Link href="/tournaments">Tournament</Link>
+        <Link href="/tournaments/ff08f154-aed5-40c0-8d2f-7f74ebcb452b">
+        Tournament</Link>
         <Link href="#">How It Works</Link>
       </div>
 

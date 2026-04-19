@@ -29,7 +29,7 @@ export default function Home() {
             </p>
 
             <div className="hero-buttons delay-2">
-              <Link href="/tournaments" className="btn-white">
+              <Link href="/tournaments/aed5-40c0-8d2f-7f74ebcb452b" className="btn-white">
                 Lihat Tournament
               </Link>
 
