@@ -116,7 +116,7 @@ export default function PublicBracketPage() {
       </div>
 
       {/* BRACKET */}
-      <div style={{ height: "80vh", overflow: "hidden" }}>
+      <div style={{ height: "80vh" }}>
         {matches.length > 0 ? (
           <TransformWrapper
             initialScale={1}
@@ -126,9 +126,17 @@ export default function PublicBracketPage() {
             pinch={{ disabled: true }}
             doubleClick={{ disabled: true }}
             panning={{ velocityDisabled: true }}
+            limitToBounds={false} // 🔥 penting
           >
             <TransformComponent>
-              <div style={{ minWidth: "1200px", padding: "40px" }}>
+              <div
+                className="bracket-wrapper"
+                style={{
+                  minWidth: "1400px",
+                  width: "max-content",
+                  padding: "40px",
+                }}
+              >
                 <SingleEliminationBracket
                   matches={formatBracket()}
                   matchComponent={Match}

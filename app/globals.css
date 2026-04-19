@@ -40,7 +40,7 @@ a {
 /* ========================= */
 .home {
   position: relative;
-  min-height: auto;
+  min-height: 100vh;
   overflow: hidden;
 }
 
@@ -673,6 +673,13 @@ a {
     opacity: 1;
     transform: translateX(0);
   }
+}
+
+.bracket-wrapper {
+  cursor: grab;
+}
+.bracket-wrapper:active {
+  cursor: grabbing;
 }
 
 /* ========================= */
