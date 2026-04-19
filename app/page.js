@@ -45,31 +45,48 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ========================= */}
-      {/* ABOUT */}
-      {/* ========================= */}
-      <section className="section">
-        <h2>Who We Are</h2>
+     <section className="about-section">
 
-        <p>
-          Semesta Esports adalah platform dan komunitas yang berfokus pada
-          penyelenggaraan turnamen esports yang kompetitif, profesional,
-          dan terbuka untuk semua kalangan.
-        </p>
+  <div className="about-container">
 
-        <p>
-          Kami hadir sebagai wadah bagi para pemain dan tim untuk berkembang,
-          menunjukkan skill, serta merasakan atmosfer kompetisi yang nyata
-          dan berkualitas.
-        </p>
+    {/* LEFT */}
+    <div className="about-left">
+      <h2 className="gradient-text">Who We Are</h2>
 
-        <p>
-          Lebih dari sekadar turnamen, kami membangun ekosistem yang solid,
-          sportif, dan berkelanjutan untuk masa depan esports.
-        </p>
-      </section>
+      <p className="about-desc">
+        Semesta Esports adalah platform dan komunitas yang menghadirkan
+        turnamen esports kompetitif, profesional, dan terbuka untuk semua.
+      </p>
 
-      {/* ========================= */}
+      <p className="about-desc">
+        Kami menjadi wadah bagi pemain dan tim untuk berkembang,
+        menunjukkan skill, dan merasakan atmosfer kompetisi yang nyata.
+      </p>
+    </div>
+
+    {/* RIGHT (HIGHLIGHT POINT) */}
+    <div className="about-right">
+
+      <div className="about-card">
+        <h3>Competitive</h3>
+        <p>Turnamen dengan sistem yang fair dan profesional.</p>
+      </div>
+
+      <div className="about-card">
+        <h3>Community</h3>
+        <p>Membangun ekosistem esports yang solid dan suportif.</p>
+      </div>
+
+      <div className="about-card">
+        <h3>Opportunity</h3>
+        <p>Kesempatan bagi semua pemain untuk bersinar.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>      {/* ========================= */}
       {/* FEATURES */}
       {/* ========================= */}
       <section className="features">
