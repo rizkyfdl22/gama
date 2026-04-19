@@ -73,15 +73,21 @@ a {
 /* NAVBAR */
 /* ========================= */
 .navbar {
-  position: absolute;
-  z-index: 10;
+  position: absolute; /* 🔥 penting */
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  z-index: 100;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   padding: 24px 40px;
-}
+
+  background: transparent; /* pastikan transparan */
+}}
 
 .logo {
   font-size: 18px;
