@@ -1,5 +1,6 @@
 "use client";
 
+import useInView from "@/lib/useInView";
 import Link from "next/link";
 
 export default function Home() {
