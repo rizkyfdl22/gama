@@ -35,8 +35,6 @@ export default function PublicBracketPage() {
   const [tournament, setTournament] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const [selectedRound, setSelectedRound] = useState("all");
-
   useEffect(() => {
     if (id) fetchData();
   }, [id]);
@@ -68,25 +66,15 @@ export default function PublicBracketPage() {
     setLoading(false);
   };
 
-  // 🔥 ambil semua round unik
-  const rounds = [...new Set(matches.map((m) => m.round))];
-
-  // 🔥 filter match berdasarkan round
-  const filteredMatches =
-    selectedRound === "all"
-      ? matches
-      : matches.filter((m) => m.round === selectedRound);
-
   const formatBracket = () => {
-    return filteredMatches.map((m) => {
+    return matches.map((m) => {
       const teamA = teams.find((t) => t.id === m.team_a_id);
       const teamB = teams.find((t) => t.id === m.team_b_id);
 
       return {
         id: m.id,
         name: `Match ${m.match_order + 1}`,
-        nextMatchId:
-          selectedRound === "all" ? m.next_match_id : null, // 🔥 penting biar tidak nyambung ke round lain
+        nextMatchId: m.next_match_id,
         tournamentRoundText: `Round ${m.round}`,
         startTime: "2024-01-01",
         state: "DONE",
@@ -121,26 +109,6 @@ export default function PublicBracketPage() {
           {tournament?.title || "Tournament"}
         </h2>
         <p>{tournament?.game}</p>
-      </div>
-
-      {/* 🔥 ROUND FILTER */}
-      <div style={{ display: "flex", gap: "10px", marginBottom: "20px", flexWrap: "wrap" }}>
-        <button
-          onClick={() => setSelectedRound("all")}
-          className={selectedRound === "all" ? "active-btn" : ""}
-        >
-          Full Bracket
-        </button>
-
-        {rounds.map((r) => (
-          <button
-            key={r}
-            onClick={() => setSelectedRound(r)}
-            className={selectedRound === r ? "active-btn" : ""}
-          >
-            Round {r}
-          </button>
-        ))}
       </div>
 
       {/* BRACKET */}
