@@ -676,60 +676,6 @@ a {
 }
 
 /* ========================= */
-/* BRACKET UI UPGRADE */
-/* ========================= */
-
-.bracket-wrapper {
-  margin: 40px;
-  padding: 30px;
-
-  border-radius: 20px;
-
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
-
-  backdrop-filter: blur(10px);
-
-  overflow-x: auto;
-}
-
-/* glow hover subtle */
-.bracket-wrapper:hover {
-  box-shadow: 0 0 40px rgba(153, 41, 234, 0.2);
-}
-
-/* empty text */
-.empty-text {
-  text-align: center;
-  color: var(--gray);
-  padding: 40px 0;
-}
-
-.custom-match-wrapper {
-  transform: scale(1.05);
-  transition: 0.3s;
-}
-
-.custom-match-wrapper:hover {
-  transform: scale(1.08);
-}
-
-/* override internal style (lebih aman) */
-.custom-match-wrapper [class*="match"] {
-  background: rgba(255,255,255,0.05) !important;
-  border-radius: 12px !important;
-  border: 1px solid rgba(255,255,255,0.1) !important;
-}
-
-.custom-match-wrapper [class*="participant"] {
-  color: var(--gray) !important;
-}
-
-.custom-match-wrapper [class*="winner"] {
-  color: var(--pink) !important;
-  font-weight: bold;
-}
-/* ========================= */
 /* FOOTER */
 /* ========================= */
 .footer {
