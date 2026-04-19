@@ -5,6 +5,11 @@ import { supabase } from "@/app/lib/supabase";
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
 
+import {
+  TransformWrapper,
+  TransformComponent,
+} from "react-zoom-pan-pinch";
+
 // FIX SSR
 const SingleEliminationBracket = dynamic(
   () =>
@@ -116,13 +121,36 @@ export default function PublicBracketPage() {
         <p>{tournament?.game}</p>
       </div>
 
-      {/* BRACKET */}
-      <div style={{ padding: "40px", overflowX: "auto" }}>
+      {/* BRACKET WITH ZOOM */}
+      <div style={{ padding: "20px", height: "80vh" }}>
         {matches.length > 0 ? (
-          <SingleEliminationBracket
-            matches={formatBracket()}
-            matchComponent={Match}
-          />
+          <TransformWrapper
+            initialScale={0.8}
+            minScale={0.5}
+            maxScale={2}
+            centerOnInit
+            wheel={{ step: 0.1 }}
+          >
+            {({ zoomIn, zoomOut, resetTransform }) => (
+              <>
+                {/* CONTROLS */}
+                <div style={{ marginBottom: "10px" }}>
+                  <button onClick={() => zoomIn()}>+</button>
+                  <button onClick={() => zoomOut()}>-</button>
+                  <button onClick={() => resetTransform()}>Reset</button>
+                </div>
+
+                <TransformComponent>
+                  <div style={{ minWidth: "1200px" }}>
+                    <SingleEliminationBracket
+                      matches={formatBracket()}
+                      matchComponent={Match}
+                    />
+                  </div>
+                </TransformComponent>
+              </>
+            )}
+          </TransformWrapper>
         ) : (
           <p style={{ textAlign: "center", color: "var(--gray)" }}>
             Belum ada bracket
