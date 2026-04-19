@@ -6,6 +6,7 @@ import Link from "next/link";
 
 export default function TournamentsPage() {
   const [tournaments, setTournaments] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchTournaments();
@@ -18,11 +19,13 @@ export default function TournamentsPage() {
       .order("date", { ascending: true });
 
     if (error) {
-      console.error(error);
+      console.error("FETCH ERROR:", error);
+      setLoading(false);
       return;
     }
 
     setTournaments(data || []);
+    setLoading(false);
   };
 
   return (
@@ -37,37 +40,24 @@ export default function TournamentsPage() {
 
       {/* LIST */}
       <div className="tournament-grid">
-        {tournaments.length > 0 ? (
+        {loading ? (
+          <p style={{ textAlign: "center" }}>Loading...</p>
+        ) : tournaments.length > 0 ? (
           tournaments.map((t) => (
             <Link key={t.id} href={`/tournaments/${t.id}`}>
-              <div className="tournament-card">
+              <div className="tournament-banner-card">
                 
-                {/* HEADER */}
-                <div className="card-header">
+                {/* BANNER */}
+                <img
+                  src={t.banner_url || "/default-banner.png"}
+                  alt={t.title}
+                  className="banner-img"
+                />
+
+                {/* OVERLAY */}
+                <div className="banner-overlay">
                   <h3>{t.title}</h3>
-                  <span className="game-badge">{t.game}</span>
-                </div>
-
-                {/* BODY */}
-                <div className="card-body">
-                  <p className="date">
-                    📅 {new Date(t.date).toLocaleDateString("id-ID")}
-                  </p>
-
-                  <p className="price">
-                    {t.price === 0
-                      ? "FREE ENTRY"
-                      : `Rp ${t.price.toLocaleString("id-ID")}`}
-                  </p>
-
-                  <p className="slot">
-                    👥 Max {t.max_participants} Teams
-                  </p>
-                </div>
-
-                {/* FOOTER */}
-                <div className="card-footer">
-                  <span>View Details →</span>
+                  <span>{t.game}</span>
                 </div>
 
               </div>
