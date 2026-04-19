@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/app/lib/supabase";
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
-import useInView from "@/lib/useInView";
+import useInView from "../../lib/useInView";
 
 const SingleEliminationBracket = dynamic(
   () =>
