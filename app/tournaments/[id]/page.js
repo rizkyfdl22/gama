@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/app/lib/supabase";
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
+import useInView from "@/lib/useInView";
 
-// FIX SSR
 const SingleEliminationBracket = dynamic(
   () =>
     import("@g-loot/react-tournament-brackets").then(
@@ -24,6 +24,7 @@ const Match = dynamic(
 
 export default function PublicBracketPage() {
   const { id } = useParams();
+  useInView(); // 🔥 animasi scroll
 
   const [matches, setMatches] = useState([]);
   const [teams, setTeams] = useState([]);
@@ -34,9 +35,6 @@ export default function PublicBracketPage() {
     if (id) fetchData();
   }, [id]);
 
-  // =========================
-  // FETCH DATA
-  // =========================
   const fetchData = async () => {
     setLoading(true);
 
@@ -64,9 +62,6 @@ export default function PublicBracketPage() {
     setLoading(false);
   };
 
-  // =========================
-  // FORMAT BRACKET
-  // =========================
   const formatBracket = () => {
     return matches.map((m) => {
       const teamA = teams.find((t) => t.id === m.team_a_id);
@@ -101,7 +96,9 @@ export default function PublicBracketPage() {
   if (loading) {
     return (
       <div className="home">
-        <div style={{ padding: "40px" }}>Loading bracket...</div>
+        <div className="section fade-up">
+          <p>Loading bracket...</p>
+        </div>
       </div>
     );
   }
@@ -109,27 +106,35 @@ export default function PublicBracketPage() {
   return (
     <div className="home">
 
+      {/* ========================= */}
       {/* HEADER */}
-      <div className="section">
+      {/* ========================= */}
+      <div className="section fade-up">
         <h2 className="gradient-text">
           {tournament?.title || "Tournament"}
         </h2>
-        <p>{tournament?.game}</p>
+
+        <p style={{ marginTop: "10px" }}>
+          {tournament?.game}
+        </p>
       </div>
 
-      {/* BRACKET */}
-      <div style={{ padding: "40px", overflowX: "auto" }}>
+      {/* ========================= */}
+      {/* BRACKET CONTAINER */}
+      {/* ========================= */}
+      <div className="bracket-wrapper fade-up delay-1">
         {matches.length > 0 ? (
           <SingleEliminationBracket
             matches={formatBracket()}
             matchComponent={Match}
           />
         ) : (
-          <p style={{ textAlign: "center", color: "var(--gray)" }}>
+          <p className="empty-text">
             Belum ada bracket
           </p>
         )}
       </div>
+
     </div>
   );
 }
