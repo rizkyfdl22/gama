@@ -32,6 +32,9 @@ export default function AdminBracketPage() {
   const [scoreA, setScoreA] = useState(0);
   const [scoreB, setScoreB] = useState(0);
 
+  // ✅ NEW: start time
+  const [startTime, setStartTime] = useState("");
+
   useEffect(() => {
     if (id) fetchData();
   }, [id]);
@@ -71,6 +74,9 @@ export default function AdminBracketPage() {
         tournamentRoundText: `Round ${m.round}`,
         state: "SCHEDULED",
 
+        // optional tampilkan waktu di bracket
+        startTime: m.start_time,
+
         participants: [
           {
             id: `${m.id}-a`,
@@ -90,7 +96,7 @@ export default function AdminBracketPage() {
   };
 
   // =========================
-  // CLICK MATCH → OPEN MODAL
+  // CLICK MATCH
   // =========================
   const handleMatchClick = (match) => {
     const m = matches.find((x) => x.id === match.id);
@@ -99,6 +105,9 @@ export default function AdminBracketPage() {
     setSelectedMatch({ ...m });
     setScoreA(m.score_a || 0);
     setScoreB(m.score_b || 0);
+
+    // ✅ format datetime-local
+    setStartTime(m.start_time ? m.start_time.slice(0, 16) : "");
   };
 
   // =========================
@@ -117,7 +126,6 @@ export default function AdminBracketPage() {
       return;
     }
 
-    // update local state
     setSelectedMatch((prev) => ({
       ...prev,
       [field]: teamId,
@@ -131,7 +139,7 @@ export default function AdminBracketPage() {
   };
 
   // =========================
-  // SAVE SCORE
+  // SAVE SCORE + START TIME
   // =========================
   const handleSave = async () => {
     const { error } = await supabase
@@ -139,6 +147,7 @@ export default function AdminBracketPage() {
       .update({
         score_a: Number(scoreA),
         score_b: Number(scoreB),
+        start_time: startTime ? new Date(startTime) : null,
       })
       .eq("id", selectedMatch.id);
 
@@ -161,20 +170,20 @@ export default function AdminBracketPage() {
       <div style={{ marginTop: "40px", overflowX: "auto" }}>
         {matches.length > 0 ? (
           <SingleEliminationBracket
-  matches={formatBracket()}
-  matchComponent={(props) => (
-    <div onClick={() => handleMatchClick(props.match)}>
-      <Match {...props} />
-    </div>
-  )}
-/>
+            matches={formatBracket()}
+            matchComponent={(props) => (
+              <div onClick={() => handleMatchClick(props.match)}>
+                <Match {...props} />
+              </div>
+            )}
+          />
         ) : (
           <p>Belum ada bracket</p>
         )}
       </div>
 
       {/* =========================
-          MODAL POPUP
+          MODAL
       ========================= */}
       {selectedMatch && (
         <div
@@ -194,9 +203,19 @@ export default function AdminBracketPage() {
               padding: "25px",
               borderRadius: "12px",
               width: "350px",
+              color: "#fff",
             }}
           >
             <h3>Edit Match</h3>
+
+            {/* START TIME */}
+            <p>Start Time</p>
+            <input
+              type="datetime-local"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+              style={{ width: "100%", marginBottom: "15px" }}
+            />
 
             {/* TEAM A */}
             <p>Team A</p>
