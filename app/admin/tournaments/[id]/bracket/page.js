@@ -69,7 +69,6 @@ export default function AdminBracketPage() {
         name: `Match ${m.match_order + 1}`,
         nextMatchId: m.next_match_id,
         tournamentRoundText: `Round ${m.round}`,
-        startTime: "2024-01-01",
         state: "SCHEDULED",
 
         participants: [
