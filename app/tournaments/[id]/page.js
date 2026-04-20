@@ -66,6 +66,9 @@ export default function PublicBracketPage() {
     setLoading(false);
   };
 
+  // =========================
+  // FORMAT BRACKET
+  // =========================
   const formatBracket = () => {
     return matches.map((m) => {
       const teamA = teams.find((t) => t.id === m.team_a_id);
@@ -76,7 +79,10 @@ export default function PublicBracketPage() {
         name: `Match ${m.match_order + 1}`,
         nextMatchId: m.next_match_id,
         tournamentRoundText: `Round ${m.round}`,
-        startTime: "2024-01-01",
+
+        // ✅ start time dari database
+        startTime: m.start_time,
+
         state: "DONE",
 
         participants: [
@@ -94,6 +100,17 @@ export default function PublicBracketPage() {
           },
         ],
       };
+    });
+  };
+
+  // =========================
+  // FORMAT TIME DISPLAY
+  // =========================
+  const formatTime = (time) => {
+    if (!time) return "TBD";
+    return new Date(time).toLocaleString("id-ID", {
+      dateStyle: "medium",
+      timeStyle: "short",
     });
   };
 
@@ -139,7 +156,34 @@ export default function PublicBracketPage() {
               >
                 <SingleEliminationBracket
                   matches={formatBracket()}
-                  matchComponent={Match}
+                  matchComponent={(props) => {
+                    const match = props.match;
+
+                    return (
+                      <div
+                        style={{
+                          cursor: "pointer",
+                          padding: "8px",
+                        }}
+                      >
+                        <Match {...props} />
+
+                        {/* =========================
+                            START TIME DISPLAY
+                        ========================= */}
+                        <div
+                          style={{
+                            fontSize: "11px",
+                            textAlign: "center",
+                            marginTop: "6px",
+                            color: "var(--gray, #aaa)",
+                          }}
+                        >
+                          🕒 {formatTime(match.startTime)}
+                        </div>
+                      </div>
+                    );
+                  }}
                 />
               </div>
             </TransformComponent>
