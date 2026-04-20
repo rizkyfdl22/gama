@@ -30,9 +30,7 @@ export default function CreateTournament() {
 
     let bannerUrl = null;
 
-    // 🔥 UPLOAD BANNER (FIX TOTAL)
     if (banner) {
-      // validasi file
       if (!banner.type.startsWith("image/")) {
         alert("File harus berupa gambar!");
         setLoading(false);
@@ -51,24 +49,18 @@ export default function CreateTournament() {
         .from("tournament-banners")
         .upload(fileName, banner);
 
-      console.log("UPLOAD RESULT:", data);
-      console.log("UPLOAD ERROR:", uploadError);
-
-      // 🚨 STOP kalau upload gagal
       if (uploadError || !data) {
-        alert("Upload banner gagal! Cek console.");
+        alert("Upload banner gagal!");
         setLoading(false);
         return;
       }
 
-      // ambil URL
       const { data: publicUrlData } = supabase.storage
         .from("tournament-banners")
         .getPublicUrl(fileName);
 
       bannerUrl = publicUrlData?.publicUrl;
 
-      // 🚨 pastikan URL valid
       if (!bannerUrl) {
         alert("Gagal mendapatkan URL banner");
         setLoading(false);
@@ -76,7 +68,6 @@ export default function CreateTournament() {
       }
     }
 
-    // 🔥 FORMAT DATE
     let formattedDate;
     try {
       formattedDate = new Date(form.date).toISOString();
@@ -86,7 +77,6 @@ export default function CreateTournament() {
       return;
     }
 
-    // 🔥 PAYLOAD CLEAN (ANTI ERROR)
     const payload = {
       title: form.title,
       game: form.game,
@@ -95,18 +85,11 @@ export default function CreateTournament() {
       max_participants: Number(form.max_participants) || 0,
     };
 
-    // hanya kirim banner kalau ada
-    if (bannerUrl) {
-      payload.banner_url = bannerUrl;
-    }
+    if (bannerUrl) payload.banner_url = bannerUrl;
 
-    console.log("DATA KIRIM:", payload);
-
-    // 🔥 INSERT
     const { error } = await supabase.from("tournaments").insert([payload]);
 
     if (error) {
-      console.error("DB ERROR:", error);
       alert(error.message);
       setLoading(false);
       return;
@@ -117,72 +100,83 @@ export default function CreateTournament() {
   };
 
   return (
-    <div style={{ padding: "40px", maxWidth: "500px" }}>
-      <h1>Create Tournament</h1>
+    <div className="admin-dashboard">
 
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          marginTop: "20px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-        }}
-      >
-        <input
-          placeholder="Title"
-          required
-          onChange={(e) => setForm({ ...form, title: e.target.value })}
-        />
+      {/* HEADER */}
+      <div className="admin-header">
+        <h1>
+          Create <span className="gradient-text">Tournament</span>
+        </h1>
+        <p>Buat tournament baru dengan detail lengkap</p>
+      </div>
 
-        <input
-          placeholder="Game"
-          required
-          onChange={(e) => setForm({ ...form, game: e.target.value })}
-        />
+      {/* FORM */}
+      <div className="admin-form card">
+        <form onSubmit={handleSubmit} className="form-grid">
 
-        <input
-          type="date"
-          required
-          onChange={(e) => setForm({ ...form, date: e.target.value })}
-        />
-
-        <input
-          placeholder="Price"
-          type="number"
-          onChange={(e) => setForm({ ...form, price: e.target.value })}
-        />
-
-        <input
-          placeholder="Max Participants"
-          type="number"
-          onChange={(e) =>
-            setForm({ ...form, max_participants: e.target.value })
-          }
-        />
-
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setBanner(e.target.files[0])}
-        />
-
-        {banner && (
-          <img
-            src={URL.createObjectURL(banner)}
-            alt="preview"
-            style={{
-              width: "100%",
-              borderRadius: "10px",
-              marginTop: "10px",
-            }}
+          <input
+            className="input"
+            placeholder="Title"
+            required
+            onChange={(e) => setForm({ ...form, title: e.target.value })}
           />
-        )}
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Uploading..." : "Create"}
-        </button>
-      </form>
+          <input
+            className="input"
+            placeholder="Game"
+            required
+            onChange={(e) => setForm({ ...form, game: e.target.value })}
+          />
+
+          <input
+            className="input"
+            type="date"
+            required
+            onChange={(e) => setForm({ ...form, date: e.target.value })}
+          />
+
+          <input
+            className="input"
+            type="number"
+            placeholder="Price"
+            onChange={(e) => setForm({ ...form, price: e.target.value })}
+          />
+
+          <input
+            className="input"
+            type="number"
+            placeholder="Max Participants"
+            onChange={(e) =>
+              setForm({ ...form, max_participants: e.target.value })
+            }
+          />
+
+          <input
+            className="input"
+            type="file"
+            accept="image/*"
+            onChange={(e) => setBanner(e.target.files[0])}
+          />
+
+          {/* PREVIEW */}
+          {banner && (
+            <img
+              src={URL.createObjectURL(banner)}
+              alt="preview"
+              className="banner-preview"
+            />
+          )}
+
+          <button
+            type="submit"
+            className="btn-primary"
+            disabled={loading}
+          >
+            {loading ? "Uploading..." : "Create Tournament"}
+          </button>
+
+        </form>
+      </div>
     </div>
   );
 }

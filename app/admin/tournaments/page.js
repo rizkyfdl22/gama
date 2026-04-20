@@ -8,63 +8,60 @@ export default function AdminTournaments() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const { data, error } = await supabase
-        .from("tournaments")
-        .select("*");
-
-      if (error) {
-        console.error(error);
-        return;
-      }
-
-      setData(data || []);
-    };
-
     fetchData();
   }, []);
 
-  return (
-    <div style={{ padding: "40px" }}>
-      <h1>Admin Tournaments</h1>
+  async function fetchData() {
+    const { data, error } = await supabase
+      .from("tournaments")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-      {/* CREATE */}
-      <Link href="/admin/tournaments/create">
-        <button>Create Tournament</button>
-      </Link>
+    if (!error) setData(data || []);
+  }
+
+  return (
+    <div className="admin-dashboard">
+
+      {/* HEADER */}
+      <div className="admin-header">
+        <h1>
+          Manage <span className="gradient-text">Tournaments</span>
+        </h1>
+        <p>Kelola bracket, team, dan detail tournament</p>
+      </div>
 
       {/* LIST */}
-      <div style={{ marginTop: "20px" }}>
+      <div className="admin-tournament-list">
         {data.length > 0 ? (
           data.map((item) => (
-            <div
-              key={item.id}
-              style={{
-                marginBottom: "15px",
-                padding: "15px",
-                border: "1px solid rgba(255,255,255,0.1)",
-                borderRadius: "10px",
-              }}
-            >
-              <h3>{item.title}</h3>
-              <p>{item.game}</p>
+            <div key={item.id} className="card tournament-item">
 
-              {/* ACTIONS */}
-              <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
-                
-                <Link href={`/admin/tournaments/${item.id}/bracket`}>
-                  <button>Manage Bracket</button>
-                </Link>
-
-                <Link href={`/admin/tournaments/${item.id}/teams`}>
-                  <button>Manage Teams</button>
-                </Link>
-
+              <div className="tournament-info">
+                <h3>{item.title}</h3>
+                <p>{item.game}</p>
               </div>
+
+              <div className="tournament-actions">
+                <Link
+                  href={`/admin/tournaments/${item.id}/bracket`}
+                  className="btn-outline small"
+                >
+                  Bracket
+                </Link>
+
+                <Link
+                  href={`/admin/tournaments/${item.id}/teams`}
+                  className="btn-outline small"
+                >
+                  Teams
+                </Link>
+              </div>
+
             </div>
           ))
         ) : (
-          <p>Belum ada tournament</p>
+          <p className="empty-text">Belum ada tournament</p>
         )}
       </div>
     </div>

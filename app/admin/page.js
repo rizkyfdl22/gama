@@ -67,7 +67,7 @@ export default function AdminPage() {
 
       {/* ACTION */}
       <div className="admin-actions">
-        <Link href="/admin/create" className="btn-primary">
+        <Link href="/admin/tournaments/create" className="btn-primary">
           + Buat Tournament
         </Link>
       </div>
