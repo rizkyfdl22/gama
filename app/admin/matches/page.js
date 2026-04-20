@@ -52,25 +52,30 @@ export default function AdminMatches() {
     const { data } = await supabase
       .from("matches")
       .select("*")
-      .eq("tournament_id", tournamentId);
+      .eq("tournament_id", tournamentId)
+      .order("round", { ascending: true })
+      .order("match_order", { ascending: true });
 
     setMatches(data || []);
     setLoading(false);
   };
 
   // =========================
-  // GENERATE (FIXED 🔥)
+  // GENERATE BRACKET 🔥
   // =========================
   const generateBracket = async () => {
-    if (!tournamentId) return alert("Pilih tournament dulu");
+    if (!tournamentId) {
+      alert("Pilih tournament dulu");
+      return;
+    }
 
-    // 1. delete lama
+    // hapus lama
     await supabase.from("matches").delete().eq("tournament_id", tournamentId);
 
     let allMatches = [];
     let rounds = Math.log2(bracketSize);
 
-    // 2. buat match
+    // buat match
     for (let round = 1; round <= rounds; round++) {
       const matchCount = bracketSize / Math.pow(2, round);
 
@@ -79,16 +84,12 @@ export default function AdminMatches() {
           tournament_id: tournamentId,
           round,
           match_order: i,
-          team_a_id: null,
-          team_b_id: null,
-          score_a: 0,
-          score_b: 0,
           next_match_id: null,
         });
       }
     }
 
-    // 3. insert + ambil ID
+    // insert + ambil id
     const { data, error } = await supabase
       .from("matches")
       .insert(allMatches)
@@ -99,7 +100,7 @@ export default function AdminMatches() {
       return;
     }
 
-    // 4. CONNECT MATCHES 🔥
+    // CONNECT TREE 🔥 (INI KUNCI)
     for (let i = 0; i < data.length; i++) {
       const current = data[i];
 
@@ -121,35 +122,23 @@ export default function AdminMatches() {
   };
 
   // =========================
-  // FORMAT BRACKET
+  // FORMAT
   // =========================
   const formatted = matches.map((m) => ({
     id: m.id,
     name: `Match ${m.match_order + 1}`,
     nextMatchId: m.next_match_id,
     tournamentRoundText: `Round ${m.round}`,
-    startTime: "2024-01-01",
+    startTime: new Date().toISOString(),
     state: "SCHEDULED",
     participants: [
-      {
-        id: `${m.id}-a`,
-        name: "TBD",
-      },
-      {
-        id: `${m.id}-b`,
-        name: "TBD",
-      },
+      { id: `${m.id}-a`, name: "TBD" },
+      { id: `${m.id}-b`, name: "TBD" },
     ],
   }));
 
-  // =========================
-  // LOADING
-  // =========================
   if (loading) return <p className="admin-loading">Loading...</p>;
 
-  // =========================
-  // UI
-  // =========================
   return (
     <div className="admin-dashboard">
 
@@ -158,12 +147,11 @@ export default function AdminMatches() {
         <h1>
           Generate <span className="gradient-text">Bracket</span>
         </h1>
-        <p>Buat struktur bracket tournament</p>
+        <p>Hanya membuat struktur bracket tournament</p>
       </div>
 
       {/* CONTROL */}
       <div className="admin-controls card">
-
         <select
           className="input"
           onChange={(e) => setTournamentId(e.target.value)}
