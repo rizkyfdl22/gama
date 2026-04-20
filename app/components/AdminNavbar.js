@@ -10,7 +10,6 @@ export default function AdminNavbar() {
   const menus = [
     { name: "Dashboard", path: "/admin" },
     { name: "Tournaments", path: "/admin/tournaments" },
-    { name: "Participants", path: "/admin/teams" },
     { name: "Brackets", path: "/admin/matches" },
   ];
 
