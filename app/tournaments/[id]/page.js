@@ -66,6 +66,21 @@ export default function PublicBracketPage() {
     setLoading(false);
   };
 
+  // format waktu tanpa ISO
+  const formatTime = (time) => {
+    if (!time) return "TBD";
+
+    const date = new Date(time);
+
+    return date.toLocaleString("id-ID", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
   const formatBracket = () => {
     return matches.map((m) => {
       const teamA = teams.find((t) => t.id === m.team_a_id);
@@ -77,7 +92,8 @@ export default function PublicBracketPage() {
         nextMatchId: m.next_match_id,
         tournamentRoundText: `Round ${m.round}`,
 
-        startTime: m.start_time,
+        // 🔥 FIX UTAMA: sudah tidak ISO lagi
+        startTime: formatTime(m.start_time),
 
         state: "DONE",
 
@@ -96,19 +112,6 @@ export default function PublicBracketPage() {
           },
         ],
       };
-    });
-  };
-
-  // FIX FORMAT TIME (tanpa ISO)
-  const formatTime = (time) => {
-    if (!time) return "TBD";
-
-    return new Date(time).toLocaleString("id-ID", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
     });
   };
 
@@ -157,10 +160,6 @@ export default function PublicBracketPage() {
 
                     return (
                       <div style={{ padding: "8px", cursor: "pointer" }}>
-                        
-                        {/* =========================
-                            TIME (PINDAH KE ATAS)
-                        ========================= */}
                         <div
                           style={{
                             fontSize: "11px",
@@ -169,10 +168,9 @@ export default function PublicBracketPage() {
                             color: "var(--gray, #aaa)",
                           }}
                         >
-                          🕒 {formatTime(match.startTime)}
+                          🕒 {match.startTime}
                         </div>
 
-                        {/* MATCH CARD */}
                         <Match {...props} />
                       </div>
                     );
