@@ -66,9 +66,6 @@ export default function PublicBracketPage() {
     setLoading(false);
   };
 
-  // =========================
-  // FORMAT BRACKET
-  // =========================
   const formatBracket = () => {
     return matches.map((m) => {
       const teamA = teams.find((t) => t.id === m.team_a_id);
@@ -80,7 +77,6 @@ export default function PublicBracketPage() {
         nextMatchId: m.next_match_id,
         tournamentRoundText: `Round ${m.round}`,
 
-        // ✅ start time dari database
         startTime: m.start_time,
 
         state: "DONE",
@@ -103,14 +99,16 @@ export default function PublicBracketPage() {
     });
   };
 
-  // =========================
-  // FORMAT TIME DISPLAY
-  // =========================
+  // FIX FORMAT TIME (tanpa ISO)
   const formatTime = (time) => {
     if (!time) return "TBD";
+
     return new Date(time).toLocaleString("id-ID", {
-      dateStyle: "medium",
-      timeStyle: "short",
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -124,7 +122,6 @@ export default function PublicBracketPage() {
 
   return (
     <div className="home">
-      {/* HEADER */}
       <div className="section">
         <h2 className="gradient-text">
           {tournament?.title || "Tournament"}
@@ -132,7 +129,6 @@ export default function PublicBracketPage() {
         <p>{tournament?.game}</p>
       </div>
 
-      {/* BRACKET */}
       <div style={{ height: "80vh" }}>
         {matches.length > 0 ? (
           <TransformWrapper
@@ -160,57 +156,24 @@ export default function PublicBracketPage() {
                     const match = props.match;
 
                     return (
-                      <div
-                        style={{
-                          cursor: "pointer",
-                          padding: "8px",
-                        }}
-                      >
-                      matchComponent={(props) => {
-  const match = props.match;
-
-  return (
-    <div style={{ padding: "6px" }}>
-      
-      {/* TIME DI ATAS (FIX FINAL) */}
-      <div
-        style={{
-          fontSize: "12px",
-          textAlign: "center",
-          marginBottom: "6px",
-          color: "#aaa",
-          fontWeight: "500",
-        }}
-      >
-        🕒 {formatTime(match.startTime)}
-      </div>
-
-      {/* WRAP MATCH BIAR RAPI */}
-      <div
-        style={{
-          background: "transparent",
-        }}
-      >
-        <Match {...props} />
-      </div>
-
-    </div>
-  );
-}}
-
+                      <div style={{ padding: "8px", cursor: "pointer" }}>
+                        
                         {/* =========================
-                            START TIME DISPLAY
+                            TIME (PINDAH KE ATAS)
                         ========================= */}
                         <div
                           style={{
                             fontSize: "11px",
                             textAlign: "center",
-                            marginTop: "6px",
+                            marginBottom: "6px",
                             color: "var(--gray, #aaa)",
                           }}
                         >
                           🕒 {formatTime(match.startTime)}
                         </div>
+
+                        {/* MATCH CARD */}
+                        <Match {...props} />
                       </div>
                     );
                   }}
