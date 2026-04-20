@@ -27,6 +27,9 @@ export default function AdminMatches() {
   const [bracketSize, setBracketSize] = useState(8);
   const [loading, setLoading] = useState(false);
 
+  // =========================
+  // INIT
+  // =========================
   useEffect(() => {
     fetchTournaments();
   }, []);
@@ -56,17 +59,18 @@ export default function AdminMatches() {
   };
 
   // =========================
-  // GENERATE
+  // GENERATE (FIXED 🔥)
   // =========================
   const generateBracket = async () => {
     if (!tournamentId) return alert("Pilih tournament dulu");
 
-    // hapus lama
+    // 1. delete lama
     await supabase.from("matches").delete().eq("tournament_id", tournamentId);
 
     let allMatches = [];
     let rounds = Math.log2(bracketSize);
 
+    // 2. buat match
     for (let round = 1; round <= rounds; round++) {
       const matchCount = bracketSize / Math.pow(2, round);
 
@@ -79,17 +83,45 @@ export default function AdminMatches() {
           team_b_id: null,
           score_a: 0,
           score_b: 0,
+          next_match_id: null,
         });
       }
     }
 
-    await supabase.from("matches").insert(allMatches);
+    // 3. insert + ambil ID
+    const { data, error } = await supabase
+      .from("matches")
+      .insert(allMatches)
+      .select();
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    // 4. CONNECT MATCHES 🔥
+    for (let i = 0; i < data.length; i++) {
+      const current = data[i];
+
+      const next = data.find(
+        (m) =>
+          m.round === current.round + 1 &&
+          Math.floor(current.match_order / 2) === m.match_order
+      );
+
+      if (next) {
+        await supabase
+          .from("matches")
+          .update({ next_match_id: next.id })
+          .eq("id", current.id);
+      }
+    }
 
     fetchMatches();
   };
 
   // =========================
-  // FORMAT
+  // FORMAT BRACKET
   // =========================
   const formatted = matches.map((m) => ({
     id: m.id,
@@ -110,8 +142,14 @@ export default function AdminMatches() {
     ],
   }));
 
+  // =========================
+  // LOADING
+  // =========================
   if (loading) return <p className="admin-loading">Loading...</p>;
 
+  // =========================
+  // UI
+  // =========================
   return (
     <div className="admin-dashboard">
 
