@@ -166,7 +166,37 @@ export default function PublicBracketPage() {
                           padding: "8px",
                         }}
                       >
-                        <Match {...props} />
+                      matchComponent={(props) => {
+  const match = props.match;
+
+  return (
+    <div style={{ padding: "6px" }}>
+      
+      {/* TIME DI ATAS (FIX FINAL) */}
+      <div
+        style={{
+          fontSize: "12px",
+          textAlign: "center",
+          marginBottom: "6px",
+          color: "#aaa",
+          fontWeight: "500",
+        }}
+      >
+        🕒 {formatTime(match.startTime)}
+      </div>
+
+      {/* WRAP MATCH BIAR RAPI */}
+      <div
+        style={{
+          background: "transparent",
+        }}
+      >
+        <Match {...props} />
+      </div>
+
+    </div>
+  );
+}}
 
                         {/* =========================
                             START TIME DISPLAY
