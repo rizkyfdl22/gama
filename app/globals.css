@@ -95,7 +95,7 @@ a {
 }
 
 .logo-img {
-  height: 180px;
+  height: 60px;
   width: auto;
   filter: drop-shadow(0 0 8px #9929EA);
 }
@@ -942,7 +942,7 @@ a {
 }
 
 .footer-logo-img {
-  height: 100px;
+  height: 150px;
   width: auto;
   filter: drop-shadow(0 0 6px rgba(153, 41, 234, 0.5));
 }
