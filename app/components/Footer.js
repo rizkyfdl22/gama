@@ -14,8 +14,6 @@ export default function Footer() {
             <Image
               src="/WHITE PANJANG.png"
               alt="Semesta Esports Logo"
-              width={160}
-              height={50}
             />
           </Link>
           <p>
