@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "../lib/supabase";
 import { useRouter } from "next/navigation";
@@ -9,7 +10,7 @@ export default function Navbar() {
   const [user, setUser] = useState(null);
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const dropdownRef = useRef();
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const getUser = async () => {
@@ -42,7 +43,8 @@ export default function Navbar() {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleLogout = async () => {
@@ -52,14 +54,22 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      <h1 className="logo">
-        Semesta<span>Esports</span>
-      </h1>
+      {/* LOGO IMAGE */}
+      <Link href="/" className="logo">
+        <Image
+          src="/WHITE PANJANG.png"
+          alt="Semesta Esports Logo"
+          width={160}
+          height={50}
+          priority
+        />
+      </Link>
 
       <div className="nav-links">
         <Link href="/">Home</Link>
         <Link href="/tournaments/ff08f154-aed5-40c0-8d2f-7f74ebcb452b">
-        Tournament</Link>
+          Tournament
+        </Link>
         <Link href="#">How It Works</Link>
       </div>
 

@@ -1,13 +1,23 @@
+"use client";
+
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer-container">
-        
+
         {/* BRAND */}
         <div className="footer-brand">
-          <h2>Semesta Esports</h2>
+          <Link href="/" className="footer-logo">
+            <Image
+              src="/WHITE.png"
+              alt="Semesta Esports Logo"
+              width={160}
+              height={50}
+            />
+          </Link>
           <p>
             Platform turnamen esports untuk para pemain kompetitif.
             Bergabung dan buktikan skill kamu di arena.
@@ -25,15 +35,15 @@ export default function Footer() {
         <div className="footer-contact">
           <h4>Contact</h4>
           <p>Tangerang Selatan, Indonesia</p>
-          <p>📧semestaesports@gmail.com</p>
-          <p>+62 822 1397 6285 </p>
+          <p>📧 semestaesports@gmail.com</p>
+          <p>+62 822 1397 6285</p>
         </div>
 
         {/* SOCIAL */}
         <div className="footer-social">
           <h4>Follow Us</h4>
           <div className="social-icons">
-            <a href="#" target="_blank">Instagram</a>
+            <a href="https://instagram.com/semesta.esports" target="_blank">Instagram</a>
             <a href="#" target="_blank">TikTok</a>
             <a href="#" target="_blank">YouTube</a>
             <a href="#" target="_blank">Discord</a>
