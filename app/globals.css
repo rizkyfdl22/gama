@@ -94,8 +94,10 @@ a {
   align-items: center;
 }
 
-.logo img {
-  object-fit: contain;
+.logo-img {
+  height: 65px;
+  width: auto;
+  filter: drop-shadow(0 0 8px #9929EA);
 }
 
 /* NAV LINKS */
@@ -939,8 +941,14 @@ a {
   font-size: 14px;
 }
 
-.footer-logo {
-  display: inline-block;
+.footer-logo-img {
+  height: 55px;
+  width: auto;
+  filter: drop-shadow(0 0 6px rgba(153, 41, 234, 0.5));
+}
+
+.footer-logo-img:hover {
+  opacity: 1;
 }
 
 .footer-links,

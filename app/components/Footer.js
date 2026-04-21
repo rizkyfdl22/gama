@@ -12,9 +12,13 @@ export default function Footer() {
         <div className="footer-brand">
           <Link href="/" className="footer-logo">
             <Image
-              src="/WHITE PANJANG.png"
-              alt="Semesta Esports Logo"
-            />
+          src="/WHITE PANJANG.png"
+          alt="Semesta Esports Logo"
+          width={0}
+          height={0}
+          sizes="100vw"
+           className="footer-logo-img"
+/>
           </Link>
           <p>
             Platform turnamen esports untuk para pemain kompetitif.

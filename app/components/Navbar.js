@@ -57,10 +57,13 @@ export default function Navbar() {
       {/* LOGO IMAGE */}
       <Link href="/" className="logo">
         <Image
-          src="/WHITE PANJANG.png"
-          alt="Semesta Esports Logo"
-          priority
-        />
+        src="/WHITE PANJANG.png"
+        alt="Semesta Esports Logo"
+        width={0}
+        height={0}
+        sizes="100vw"
+        className="logo-img"
+/>
       </Link>
 
       <div className="nav-links">
