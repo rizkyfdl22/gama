@@ -12,7 +12,7 @@ export default function Footer() {
         <div className="footer-brand">
           <Link href="/" className="footer-logo">
             <Image
-              src="/WHITE.png"
+              src="/WHITE PANJANG.png"
               alt="Semesta Esports Logo"
               width={160}
               height={50}

@@ -60,7 +60,7 @@ export default function Navbar() {
           src="/WHITE PANJANG.png"
           alt="Semesta Esports Logo"
           width={160}
-          height={50}
+          height={80}
           priority
         />
       </Link>
