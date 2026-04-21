@@ -7,8 +7,6 @@ import { supabase } from "../lib/supabase";
 import { useRouter } from "next/navigation";
 
 export default function Navbar() {
-  const [user, setUser] = useState(null);
-  const [open, setOpen] = useState(false);
   const router = useRouter();
   const dropdownRef = useRef(null);
 
@@ -75,25 +73,6 @@ export default function Navbar() {
       </div>
 
       <div className="nav-actions">
-        {user ? (
-          <div className="dropdown" ref={dropdownRef}>
-            <button
-              className="user-btn"
-              onClick={() => setOpen(!open)}
-            >
-              {user.email}
-            </button>
-
-            {open && (
-              <div className="dropdown-menu">
-                <button onClick={handleLogout}>Logout</button>
-              </div>
-            )}
-          </div>
-        ) : (
-          <Link href="/login">Login</Link>
-        )}
-
         <Link href="/tournaments" className="btn-primary">
           Explore
         </Link>

@@ -1,17 +1,30 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { supabase } from "@/app/lib/supabase";
 import styles from "./AdminNavbar.module.css";
 
 export default function AdminNavbar() {
   const pathname = usePathname();
+  const router = useRouter();
 
   const menus = [
     { name: "Dashboard", path: "/admin" },
     { name: "Tournaments", path: "/admin/tournaments" },
     { name: "Brackets", path: "/admin/matches" },
   ];
+
+  // 🔥 LOGOUT FUNCTION
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      console.error("Logout error:", error.message);
+    } else {
+      router.push("/login"); // redirect ke login
+    }
+  };
 
   return (
     <aside className={styles.sidebar}>
@@ -34,6 +47,11 @@ export default function AdminNavbar() {
           );
         })}
       </nav>
+
+      {/* 🔥 LOGOUT BUTTON */}
+      <button onClick={handleLogout} className={styles.logout}>
+        Logout
+      </button>
     </aside>
   );
 }

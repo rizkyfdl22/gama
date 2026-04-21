@@ -26,3 +26,18 @@
 .active {
   background: var(--purple);
 }
+
+.logout {
+  margin-top: auto;
+  padding: 10px;
+  border: none;
+  background: #ff4d4f;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.logout:hover {
+  opacity: 0.8;
+}
