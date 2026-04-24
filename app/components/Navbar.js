@@ -69,7 +69,7 @@ export default function Navbar() {
         <Link href="/tournaments/ff08f154-aed5-40c0-8d2f-7f74ebcb452b">
           Tournament
         </Link>
-        <Link href="/rules">How It Works</Link>
+        <Link href="/rules">Rules</Link>
       </div>
 
       <div className="nav-actions">
