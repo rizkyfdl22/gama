@@ -54,12 +54,6 @@ export default function TournamentsPage() {
                   className="banner-img"
                 />
 
-                {/* OVERLAY */}
-                <div className="banner-overlay">
-                  <h3>{t.title}</h3>
-                  <span>{t.game}</span>
-                </div>
-
               </div>
             </Link>
           ))
