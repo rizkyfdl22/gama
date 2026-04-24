@@ -31,13 +31,14 @@ export default function Footer() {
           <h4>Explore</h4>
           <Link href="/">Home</Link>
           <Link href="/tournaments">Tournaments</Link>
+          <Link href="/rules">Rules</Link>
         </div>
 
         {/* CONTACT */}
         <div className="footer-contact">
           <h4>Contact</h4>
           <p>Tangerang Selatan, Indonesia</p>
-          <p>📧 semestaesports@gmail.com</p>
+          <p>semestaesport@gmail.com</p>
           <p>+62 822 1397 6285</p>
         </div>
 
