@@ -919,6 +919,70 @@ a {
 }
 
 /* ========================= */
+/* RULES PAGE */
+/* ========================= */
+
+.rules-container {
+  position: relative;
+  z-index: 10;
+
+  max-width: 900px;
+  margin: 120px auto 60px;
+  padding: 0 20px;
+}
+
+/* TITLE */
+.rules-title {
+  text-align: center;
+  font-size: 36px;
+  margin-bottom: 40px;
+}
+
+/* CARD STYLE (reuse vibe .card) */
+.rules-card {
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  transition: 0.3s;
+}
+
+.rules-card:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* HEADER */
+.rules-card h2 {
+  margin-bottom: 10px;
+  font-size: 18px;
+
+  background: linear-gradient(90deg, var(--purple), var(--pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* LIST */
+.rules-card ul {
+  padding-left: 18px;
+}
+
+.rules-card li {
+  margin-bottom: 6px;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+/* IMPORTANT (highlight merah) */
+.rules-important {
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+/* ========================= */
 /* FOOTER */
 /* ========================= */
 .footer {
