@@ -10,6 +10,8 @@ export default function Navbar() {
   const router = useRouter();
   const dropdownRef = useRef(null);
 
+  const [search, setSearch] = useState("");
+
   useEffect(() => {
     const getUser = async () => {
       const {
@@ -50,29 +52,47 @@ export default function Navbar() {
     router.push("/login");
   };
 
+  // 🔍 HANDLE SEARCH
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (!search.trim()) return;
+
+    router.push(`/tournaments?search=${search}`);
+  };
+
   return (
     <nav className="navbar">
-      {/* LOGO IMAGE */}
+      {/* LOGO */}
       <Link href="/" className="logo">
         <Image
-        src="/WHITE.png"
-        alt="Semesta Esports Logo"
-        width={0}
-        height={0}
-        sizes="100vw"
-        className="logo-img"
-/>
+          src="/WHITE.png"
+          alt="Semesta Esports Logo"
+          width={0}
+          height={0}
+          sizes="100vw"
+          className="logo-img"
+        />
       </Link>
 
+      {/* MENU */}
       <div className="nav-links">
         <Link href="/">Home</Link>
-        <Link href="/tournaments/">
-          Tournament
-        </Link>
+        <Link href="/tournaments">Tournament</Link>
         <Link href="/rules">Rules</Link>
       </div>
 
+      {/* RIGHT SIDE */}
       <div className="nav-actions">
+        {/* 🔍 SEARCH */}
+        <form onSubmit={handleSearch} className="nav-search">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </form>
+
         <Link href="/tournaments" className="btn-primary">
           Explore
         </Link>

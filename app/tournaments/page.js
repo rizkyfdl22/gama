@@ -6,11 +6,17 @@ import Link from "next/link";
 
 export default function TournamentsPage() {
   const [tournaments, setTournaments] = useState([]);
+  const [filtered, setFiltered] = useState([]);
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchTournaments();
   }, []);
+
+  useEffect(() => {
+    handleSearch();
+  }, [search, tournaments]);
 
   const fetchTournaments = async () => {
     const { data, error } = await supabase
@@ -25,7 +31,18 @@ export default function TournamentsPage() {
     }
 
     setTournaments(data || []);
+    setFiltered(data || []);
     setLoading(false);
+  };
+
+  const handleSearch = () => {
+    const keyword = search.toLowerCase();
+
+    const result = tournaments.filter((t) =>
+      t.title.toLowerCase().includes(keyword)
+    );
+
+    setFiltered(result);
   };
 
   return (
@@ -36,30 +53,37 @@ export default function TournamentsPage() {
         <p className="subtitle">
           Temukan turnamen terbaik dan lihat bracket secara real-time
         </p>
+
+        {/* SEARCH BAR */}
+        <div className="search-box">
+          <input
+            type="text"
+            placeholder="Cari tournament..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
       </div>
 
       {/* LIST */}
       <div className="tournament-grid">
         {loading ? (
           <p style={{ textAlign: "center" }}>Loading...</p>
-        ) : tournaments.length > 0 ? (
-          tournaments.map((t) => (
+        ) : filtered.length > 0 ? (
+          filtered.map((t) => (
             <Link key={t.id} href={`/tournaments/${t.id}`}>
               <div className="tournament-banner-card">
-                
-                {/* BANNER */}
                 <img
                   src={t.banner_url || "/default-banner.png"}
                   alt={t.title}
                   className="banner-img"
                 />
-
               </div>
             </Link>
           ))
         ) : (
           <div className="empty-state">
-            <p>Belum ada tournament</p>
+            <p>Tournament tidak ditemukan</p>
           </div>
         )}
       </div>

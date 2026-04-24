@@ -141,6 +141,34 @@ a {
 }
 
 /* ========================= */
+/* NAVBAR SEARCH */
+/* ========================= */
+
+.nav-search input {
+  width: 160px;
+  padding: 8px 14px;
+
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.1);
+
+  background: rgba(255,255,255,0.05);
+  color: var(--white);
+
+  outline: none;
+  transition: 0.3s;
+}
+
+.nav-search input::placeholder {
+  color: var(--gray);
+}
+
+.nav-search input:focus {
+  width: 200px;
+  border-color: var(--purple);
+  box-shadow: 0 0 8px rgba(153, 41, 234, 0.5);
+}
+
+/* ========================= */
 /* BUTTONS */
 /* ========================= */
 .btn-primary,
@@ -916,6 +944,40 @@ a {
 .banner-overlay span {
   font-size: 12px;
   opacity: 0.8;
+}
+
+/* ========================= */
+/* SEARCH BAR */
+/* ========================= */
+
+.search-box {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.search-box input {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 18px;
+
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.1);
+
+  background: rgba(255,255,255,0.05);
+  color: var(--white);
+
+  outline: none;
+  transition: 0.3s;
+}
+
+.search-box input::placeholder {
+  color: var(--gray);
+}
+
+.search-box input:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 10px rgba(153, 41, 234, 0.5);
 }
 
 /* ========================= */
