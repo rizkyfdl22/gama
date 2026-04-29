@@ -36,6 +36,10 @@ export default function TournamentDetailPage() {
   const [loading, setLoading] = useState(true);
   const [showBracket, setShowBracket] = useState(false);
 
+  // 🔥 NEW STATE (toggle)
+  const [showDescription, setShowDescription] = useState(false);
+  const [showRules, setShowRules] = useState(false);
+
   useEffect(() => {
     if (id) fetchData();
   }, [id]);
@@ -49,7 +53,6 @@ export default function TournamentDetailPage() {
       .eq("id", id)
       .single();
 
-    // 🔥 VALIDASI
     if (error || !tData) {
       setTournament(null);
       setLoading(false);
@@ -118,7 +121,6 @@ export default function TournamentDetailPage() {
     });
   };
 
-  // 🔥 LOADING
   if (loading) {
     return (
       <div className="home">
@@ -127,7 +129,6 @@ export default function TournamentDetailPage() {
     );
   }
 
-  // 🔥 NOT FOUND (biar ID ngasal ga kebuka)
   if (!tournament) {
     return (
       <div className="home">
@@ -149,7 +150,6 @@ export default function TournamentDetailPage() {
       {/* ================== CARD DETAIL ================== */}
       {!showBracket && (
         <div className="tournament-card">
-          
           <div className="card-header">
             <h2>{tournament.title}</h2>
             <span className="game-badge">{tournament.game}</span>
@@ -159,7 +159,8 @@ export default function TournamentDetailPage() {
           <div className="card-meta">
             <div>👥 {teams.length} Teams</div>
             <div>
-              📅 {tournament.start_date
+              📅{" "}
+              {tournament.start_date
                 ? new Date(tournament.start_date).toLocaleString("id-ID", {
                     day: "2-digit",
                     month: "short",
@@ -172,18 +173,34 @@ export default function TournamentDetailPage() {
             <div>🏆 {tournament.prize || "No Prize"}</div>
           </div>
 
-          {/* DESKRIPSI */}
+          {/* DESKRIPSI (TOGGLE) */}
           <div className="card-section">
-            <h3>Deskripsi</h3>
-            <p>{tournament.description || "Belum ada deskripsi"}</p>
+            <h3
+              style={{ cursor: "pointer" }}
+              onClick={() => setShowDescription(!showDescription)}
+            >
+              Deskripsi {showDescription ? "▲" : "▼"}
+            </h3>
+
+            {showDescription && (
+              <p>{tournament.description || "Belum ada deskripsi"}</p>
+            )}
           </div>
 
-          {/* RULES */}
+          {/* RULES (TOGGLE) */}
           <div className="card-section">
-            <h3>Rules</h3>
-            <p className="rules">
-              {tournament.rules || "Belum ada rules"}
-            </p>
+            <h3
+              style={{ cursor: "pointer" }}
+              onClick={() => setShowRules(!showRules)}
+            >
+              Rules {showRules ? "▲" : "▼"}
+            </h3>
+
+            {showRules && (
+              <p className="rules">
+                {tournament.rules || "Belum ada rules"}
+              </p>
+            )}
           </div>
 
           {/* BUTTON */}
