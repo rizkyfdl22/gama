@@ -38,8 +38,8 @@ export default function Footer() {
         <div className="footer-contact">
           <h4>Contact</h4>
           <p>Tangerang Selatan, Indonesia</p>
-          <p>semestaesport@gmail.com</p>
-          <p>+62 822 1397 6285</p>
+          <p>admin@semestaesports.id</p>
+          <p>+62 821 2205 2162</p>
         </div>
 
         {/* SOCIAL */}

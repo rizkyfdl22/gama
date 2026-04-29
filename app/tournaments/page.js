@@ -51,7 +51,7 @@ export default function TournamentsPage() {
       <div className="section center">
         <h1 className="gradient-text">Explore Tournaments</h1>
         <p className="subtitle">
-          Temukan turnamen terbaik dan lihat bracket secara real-time
+          Temukan turnamen yang sedang berjalan dan lihat bracket secara real-time
         </p>
 
         {/* SEARCH BAR */}

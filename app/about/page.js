@@ -79,7 +79,7 @@ Ini adalah medan pertempuran digital.
             <div className="about-card fade-up delay-2">
               <h3>Why Us</h3>
               <p>
-                ami tidak hanya membuat turnamen — kami menciptakan pengalaman
+                Kami tidak hanya membuat turnamen — kami menciptakan pengalaman
           kompetitif yang serius, transparan, dan berkesan untuk setiap pemain.
               </p>
             </div>
