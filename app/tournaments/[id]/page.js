@@ -36,7 +36,7 @@ export default function TournamentDetailPage() {
   const [loading, setLoading] = useState(true);
   const [showBracket, setShowBracket] = useState(false);
 
-  // TOGGLE STATE
+  // TOGGLE
   const [showDescription, setShowDescription] = useState(false);
   const [showRules, setShowRules] = useState(false);
   const [showTeams, setShowTeams] = useState(false);
@@ -140,106 +140,91 @@ export default function TournamentDetailPage() {
 
   return (
     <div className="home">
-      {/* HEADER */}
-      <div style={{ padding: "20px" }}>
+      <div className="tournament-detail">
+        {/* HEADER */}
         <h2 className="gradient-text">{tournament.title}</h2>
         <p>{tournament.game}</p>
 
-        <div style={{ marginTop: "10px", color: "#aaa" }}>
+        <div className="tournament-meta">
           👥 {teams.length} Teams • 📅{" "}
           {tournament.start_date
             ? new Date(tournament.start_date).toLocaleString("id-ID")
             : "TBD"}{" "}
           • 🏆 {tournament.prize || "No Prize"}
         </div>
+
+        {!showBracket && (
+          <>
+            {/* DESKRIPSI */}
+            <h3
+              className="toggle-title"
+              onClick={() => setShowDescription(!showDescription)}
+            >
+              Deskripsi {showDescription ? "▲" : "▼"}
+            </h3>
+
+            {showDescription && (
+              <div className="toggle-content">
+                {tournament.description || "Belum ada deskripsi"}
+              </div>
+            )}
+
+            {/* RULES */}
+            <h3
+              className="toggle-title"
+              onClick={() => setShowRules(!showRules)}
+            >
+              Rules {showRules ? "▲" : "▼"}
+            </h3>
+
+            {showRules && (
+              <div className="toggle-content rules-text">
+                {tournament.rules || "Belum ada rules"}
+              </div>
+            )}
+
+            {/* PESERTA */}
+            <h3
+              className="toggle-title"
+              onClick={() => setShowTeams(!showTeams)}
+            >
+              Peserta Tournament {showTeams ? "▲" : "▼"}
+            </h3>
+
+            {showTeams && (
+              <div className="toggle-content team-list">
+                {teams.length > 0 ? (
+                  teams.map((team) => (
+                    <div key={team.id} className="team-item">
+                      • {team.name}
+                    </div>
+                  ))
+                ) : (
+                  <p style={{ color: "#aaa" }}>
+                    Belum ada tim yang mendaftar
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* BUTTON */}
+            <button
+              className="btn-clean"
+              onClick={() => setShowBracket(true)}
+            >
+              Lihat Bracket
+            </button>
+          </>
+        )}
       </div>
-
-      {!showBracket && (
-        <div style={{ padding: "20px" }}>
-          {/* DESKRIPSI */}
-          <h3
-            style={{ cursor: "pointer" }}
-            onClick={() => setShowDescription(!showDescription)}
-          >
-            Deskripsi {showDescription ? "▲" : "▼"}
-          </h3>
-
-          {showDescription && (
-            <p style={{ marginBottom: "20px" }}>
-              {tournament.description || "Belum ada deskripsi"}
-            </p>
-          )}
-
-          {/* RULES */}
-          <h3
-            style={{ cursor: "pointer" }}
-            onClick={() => setShowRules(!showRules)}
-          >
-            Rules {showRules ? "▲" : "▼"}
-          </h3>
-
-          {showRules && (
-            <p style={{ marginBottom: "20px" }}>
-              {tournament.rules || "Belum ada rules"}
-            </p>
-          )}
-
-          {/* PESERTA */}
-          <h3
-            style={{ cursor: "pointer" }}
-            onClick={() => setShowTeams(!showTeams)}
-          >
-            Peserta Tournament {showTeams ? "▲" : "▼"}
-          </h3>
-
-          {showTeams && (
-            <div style={{ marginBottom: "20px" }}>
-              {teams.length > 0 ? (
-                teams.map((team) => (
-                  <div key={team.id} style={{ padding: "6px 0" }}>
-                    • {team.name}
-                  </div>
-                ))
-              ) : (
-                <p style={{ color: "#aaa" }}>
-                  Belum ada tim yang mendaftar
-                </p>
-              )}
-            </div>
-          )}
-
-          {/* BUTTON */}
-          <button
-            onClick={() => setShowBracket(true)}
-            style={{
-              marginTop: "20px",
-              padding: "10px 16px",
-              borderRadius: "8px",
-              border: "none",
-              background: "#2d3436",
-              color: "#fff",
-              cursor: "pointer",
-            }}
-          >
-            Lihat Bracket
-          </button>
-        </div>
-      )}
 
       {/* BRACKET */}
       {showBracket && (
         <div style={{ height: "80vh" }}>
           <button
+            className="btn-clean"
             onClick={() => setShowBracket(false)}
-            style={{
-              margin: "20px",
-              padding: "10px 16px",
-              borderRadius: "8px",
-              border: "none",
-              background: "#2d3436",
-              color: "#fff",
-              cursor: "pointer",
-            }}
+            style={{ margin: "20px" }}
           >
             ← Kembali
           </button>
