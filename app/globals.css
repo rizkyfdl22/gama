@@ -725,6 +725,44 @@ a {
   transform: scale(1.02);
 }
 
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.team-card {
+  background: #14141c;
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.team-card:hover {
+  background: #1f1f2a;
+  transform: translateY(-3px);
+}
+
+.team-avatar {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.team-name {
+  font-size: 14px;
+  color: #ddd;
+}
+
 /* ========================= */
 /* ADMIN DASHBOARD */
 /* ========================= */

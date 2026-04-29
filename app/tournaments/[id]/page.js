@@ -167,6 +167,25 @@ export default function TournamentDetailPage() {
           >
             Lihat Bracket
           </button>
+          {/* ================== TEAM LIST ================== */}
+<div className="card-section">
+  <h3>Peserta Tournament</h3>
+
+  {teams.length > 0 ? (
+    <div className="team-grid">
+      {teams.map((team) => (
+        <div key={team.id} className="team-card">
+          <div className="team-avatar">
+            {team.name?.charAt(0).toUpperCase()}
+          </div>
+          <div className="team-name">{team.name}</div>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <p style={{ color: "#aaa" }}>Belum ada tim yang mendaftar</p>
+  )}
+</div>
         </div>
       )}
 
