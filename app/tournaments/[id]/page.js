@@ -36,9 +36,10 @@ export default function TournamentDetailPage() {
   const [loading, setLoading] = useState(true);
   const [showBracket, setShowBracket] = useState(false);
 
-  // 🔥 NEW STATE (toggle)
+  // TOGGLE STATE
   const [showDescription, setShowDescription] = useState(false);
   const [showRules, setShowRules] = useState(false);
+  const [showTeams, setShowTeams] = useState(false);
 
   useEffect(() => {
     if (id) fetchData();
@@ -80,9 +81,7 @@ export default function TournamentDetailPage() {
   const formatTime = (time) => {
     if (!time) return "TBD";
 
-    const date = new Date(time);
-
-    return date.toLocaleString("id-ID", {
+    return new Date(time).toLocaleString("id-ID", {
       day: "2-digit",
       month: "short",
       year: "numeric",
@@ -142,100 +141,92 @@ export default function TournamentDetailPage() {
   return (
     <div className="home">
       {/* HEADER */}
-      <div className="section">
+      <div style={{ padding: "20px" }}>
         <h2 className="gradient-text">{tournament.title}</h2>
         <p>{tournament.game}</p>
+
+        <div style={{ marginTop: "10px", color: "#aaa" }}>
+          👥 {teams.length} Teams • 📅{" "}
+          {tournament.start_date
+            ? new Date(tournament.start_date).toLocaleString("id-ID")
+            : "TBD"}{" "}
+          • 🏆 {tournament.prize || "No Prize"}
+        </div>
       </div>
 
-      {/* ================== CARD DETAIL ================== */}
       {!showBracket && (
-        <div className="tournament-card">
-          <div className="card-header">
-            <h2>{tournament.title}</h2>
-            <span className="game-badge">{tournament.game}</span>
-          </div>
+        <div style={{ padding: "20px" }}>
+          {/* DESKRIPSI */}
+          <h3
+            style={{ cursor: "pointer" }}
+            onClick={() => setShowDescription(!showDescription)}
+          >
+            Deskripsi {showDescription ? "▲" : "▼"}
+          </h3>
 
-          {/* META */}
-          <div className="card-meta">
-            <div>👥 {teams.length} Teams</div>
-            <div>
-              📅{" "}
-              {tournament.start_date
-                ? new Date(tournament.start_date).toLocaleString("id-ID", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })
-                : "TBD"}
+          {showDescription && (
+            <p style={{ marginBottom: "20px" }}>
+              {tournament.description || "Belum ada deskripsi"}
+            </p>
+          )}
+
+          {/* RULES */}
+          <h3
+            style={{ cursor: "pointer" }}
+            onClick={() => setShowRules(!showRules)}
+          >
+            Rules {showRules ? "▲" : "▼"}
+          </h3>
+
+          {showRules && (
+            <p style={{ marginBottom: "20px" }}>
+              {tournament.rules || "Belum ada rules"}
+            </p>
+          )}
+
+          {/* PESERTA */}
+          <h3
+            style={{ cursor: "pointer" }}
+            onClick={() => setShowTeams(!showTeams)}
+          >
+            Peserta Tournament {showTeams ? "▲" : "▼"}
+          </h3>
+
+          {showTeams && (
+            <div style={{ marginBottom: "20px" }}>
+              {teams.length > 0 ? (
+                teams.map((team) => (
+                  <div key={team.id} style={{ padding: "6px 0" }}>
+                    • {team.name}
+                  </div>
+                ))
+              ) : (
+                <p style={{ color: "#aaa" }}>
+                  Belum ada tim yang mendaftar
+                </p>
+              )}
             </div>
-            <div>🏆 {tournament.prize || "No Prize"}</div>
-          </div>
-
-          {/* DESKRIPSI (TOGGLE) */}
-          <div className="card-section">
-            <h3
-              style={{ cursor: "pointer" }}
-              onClick={() => setShowDescription(!showDescription)}
-            >
-              Deskripsi {showDescription ? "▲" : "▼"}
-            </h3>
-
-            {showDescription && (
-              <p>{tournament.description || "Belum ada deskripsi"}</p>
-            )}
-          </div>
-
-          {/* RULES (TOGGLE) */}
-          <div className="card-section">
-            <h3
-              style={{ cursor: "pointer" }}
-              onClick={() => setShowRules(!showRules)}
-            >
-              Rules {showRules ? "▲" : "▼"}
-            </h3>
-
-            {showRules && (
-              <p className="rules">
-                {tournament.rules || "Belum ada rules"}
-              </p>
-            )}
-          </div>
+          )}
 
           {/* BUTTON */}
           <button
-            className="btn-bracket"
             onClick={() => setShowBracket(true)}
+            style={{
+              marginTop: "20px",
+              padding: "10px 16px",
+              borderRadius: "8px",
+              border: "none",
+              background: "#2d3436",
+              color: "#fff",
+              cursor: "pointer",
+            }}
           >
             Lihat Bracket
           </button>
-
-          {/* TEAM LIST */}
-          <div className="card-section">
-            <h3>Peserta Tournament</h3>
-
-            {teams.length > 0 ? (
-              <div className="team-grid">
-                {teams.map((team) => (
-                  <div key={team.id} className="team-card">
-                    <div className="team-avatar">
-                      {team.name?.charAt(0).toUpperCase()}
-                    </div>
-                    <div className="team-name">{team.name}</div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p style={{ color: "#aaa" }}>
-                Belum ada tim yang mendaftar
-              </p>
-            )}
-          </div>
         </div>
       )}
 
-      {/* ================== BRACKET ================== */}
+      {/* BRACKET */}
       {showBracket && (
         <div style={{ height: "80vh" }}>
           <button
@@ -265,13 +256,7 @@ export default function TournamentDetailPage() {
               limitToBounds={false}
             >
               <TransformComponent>
-                <div
-                  style={{
-                    minWidth: "1400px",
-                    width: "max-content",
-                    padding: "40px",
-                  }}
-                >
+                <div style={{ minWidth: "1400px", padding: "40px" }}>
                   <SingleEliminationBracket
                     matches={formatBracket()}
                     matchComponent={(props) => {

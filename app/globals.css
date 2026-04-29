@@ -661,18 +661,6 @@ a {
   transform: translateY(-4px);
 }
 
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.card-header h2 {
-  font-size: 24px;
-  font-weight: bold;
-}
-
 .game-badge {
   background: #6c5ce7;
   padding: 6px 12px;
