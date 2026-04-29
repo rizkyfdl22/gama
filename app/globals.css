@@ -650,7 +650,6 @@ a {
 /* TOURNAMENT DETAIL CLEAN */
 /* ========================= */
 
-/* container */
 .tournament-detail {
   max-width: 900px;
   margin: 120px auto 60px;
@@ -659,11 +658,48 @@ a {
   z-index: 10;
 }
 
-/* header info */
-.tournament-meta {
-  margin-top: 10px;
-  color: var(--gray);
+/* ========================= */
+/* HEADER (LIQUIPEDIA STYLE) */
+/* ========================= */
+
+.tournament-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.tournament-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.tournament-game {
   font-size: 14px;
+  color: var(--gray);
+  margin-bottom: 10px;
+}
+
+/* META */
+.tournament-meta {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 14px;
+  color: #aaa;
+}
+
+/* DIVIDER */
+.tournament-divider {
+  margin: 20px auto;
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.2),
+    transparent
+  );
 }
 
 /* ========================= */
@@ -671,15 +707,10 @@ a {
 /* ========================= */
 
 .toggle-title {
-  margin-top: 30px;
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 16px;
+  margin-top: 20px;
   cursor: pointer;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
+  color: var(--white);
   transition: 0.3s;
 }
 
@@ -687,47 +718,36 @@ a {
   color: var(--pink);
 }
 
-/* garis bawah */
-.toggle-title::after {
-  content: "";
-  display: block;
-  width: 100%;
-  height: 1px;
-  background: rgba(255,255,255,0.08);
-  margin-top: 10px;
-}
-
-/* isi toggle */
+/* CONTENT */
 .toggle-content {
   margin-top: 10px;
-  line-height: 1.7;
+  margin-bottom: 10px;
+  padding-left: 10px;
+
+  line-height: 1.6;
   color: #ccc;
 
-  animation: fadeIn 0.3s ease;
+  border-left: 2px solid rgba(255,255,255,0.1);
 }
 
-/* rules biar enter kebaca */
+/* RULES */
 .rules-text {
   white-space: pre-line;
 }
 
-/* ========================= */
-/* TEAM LIST SIMPLE */
-/* ========================= */
-
+/* TEAM LIST */
 .team-list {
   margin-top: 10px;
 }
 
 .team-item {
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 4px 0;
   color: #ddd;
   transition: 0.2s;
 }
 
 .team-item:hover {
-  color: #fff;
+  color: var(--pink);
   transform: translateX(4px);
 }
 
@@ -736,12 +756,13 @@ a {
 /* ========================= */
 
 .btn-clean {
-  margin-top: 30px;
-  padding: 12px 20px;
-  border-radius: 10px;
-  border: none;
+  margin-top: 25px;
+  padding: 10px 18px;
 
-  background: linear-gradient(90deg, var(--purple), var(--pink));
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.2);
+
+  background: transparent;
   color: var(--white);
 
   cursor: pointer;
@@ -749,10 +770,40 @@ a {
 }
 
 .btn-clean:hover {
-  transform: translateY(-2px);
-  opacity: 0.9;
+  background: rgba(255,255,255,0.08);
+  border-color: var(--pink);
+  transform: translateY(-1px);
 }
 
+/* ========================= */
+/* BRACKET WRAPPER */
+/* ========================= */
+
+.bracket-wrapper {
+  cursor: grab;
+}
+
+.bracket-wrapper:active {
+  cursor: grabbing;
+}
+
+/* ========================= */
+/* RESPONSIVE */
+/* ========================= */
+
+@media (max-width: 768px) {
+  .tournament-title {
+    font-size: 26px;
+  }
+
+  .tournament-meta {
+    font-size: 12px;
+  }
+
+  .tournament-divider {
+    width: 80%;
+  }
+}
 /* ========================= */
 /* ANIMATION */
 /* ========================= */

@@ -141,16 +141,27 @@ export default function TournamentDetailPage() {
   return (
     <div className="home">
       <div className="tournament-detail">
-        {/* HEADER */}
-        <h2 className="gradient-text">{tournament.title}</h2>
-        <p>{tournament.game}</p>
 
-        <div className="tournament-meta">
-          👥 {teams.length} Teams • 📅{" "}
-          {tournament.start_date
-            ? new Date(tournament.start_date).toLocaleString("id-ID")
-            : "TBD"}{" "}
-          • 🏆 {tournament.prize || "No Prize"}
+        {/* ================= HEADER (LIQUIPEDIA STYLE) ================= */}
+        <div className="tournament-header">
+          <h1 className="tournament-title">{tournament.title}</h1>
+
+          <p className="tournament-game">{tournament.game}</p>
+
+          <div className="tournament-meta">
+            <span>👥 {teams.length} Teams</span>
+            <span>•</span>
+            <span>
+              📅{" "}
+              {tournament.start_date
+                ? new Date(tournament.start_date).toLocaleString("id-ID")
+                : "TBD"}
+            </span>
+            <span>•</span>
+            <span>🏆 {tournament.prize || "No Prize"}</span>
+          </div>
+
+          <div className="tournament-divider" />
         </div>
 
         {!showBracket && (
@@ -218,7 +229,7 @@ export default function TournamentDetailPage() {
         )}
       </div>
 
-      {/* BRACKET */}
+      {/* ================= BRACKET ================= */}
       {showBracket && (
         <div style={{ height: "80vh" }}>
           <button
