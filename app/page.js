@@ -107,17 +107,17 @@ export default function Home() {
       {/* ========================= */}
       <section className="features">
         <div className="card fade-up">
-          <h3>100+</h3>
+          <h3>32+</h3>
           <p>Tim telah berpartisipasi</p>
         </div>
 
         <div className="card fade-up delay-1">
-          <h3>10+</h3>
+          <h3>4+</h3>
           <p>Turnamen berhasil diselenggarakan</p>
         </div>
 
         <div className="card fade-up delay-2">
-          <h3>1000+</h3>
+          <h3>100+</h3>
           <p>Match dimainkan</p>
         </div>
       </section>

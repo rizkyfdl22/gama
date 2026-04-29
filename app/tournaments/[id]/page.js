@@ -27,13 +27,14 @@ const Match = dynamic(
   { ssr: false }
 );
 
-export default function PublicBracketPage() {
+export default function TournamentDetailPage() {
   const { id } = useParams();
 
   const [matches, setMatches] = useState([]);
   const [teams, setTeams] = useState([]);
   const [tournament, setTournament] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showBracket, setShowBracket] = useState(false);
 
   useEffect(() => {
     if (id) fetchData();
@@ -66,7 +67,6 @@ export default function PublicBracketPage() {
     setLoading(false);
   };
 
-  // format waktu tanpa ISO
   const formatTime = (time) => {
     if (!time) return "TBD";
 
@@ -91,12 +91,8 @@ export default function PublicBracketPage() {
         name: `Match ${m.match_order + 1}`,
         nextMatchId: m.next_match_id,
         tournamentRoundText: `Round ${m.round}`,
-
-        // 🔥 FIX UTAMA: sudah tidak ISO lagi
         startTime: formatTime(m.start_time),
-
         state: "DONE",
-
         participants: [
           {
             id: `${m.id}-a`,
@@ -118,13 +114,14 @@ export default function PublicBracketPage() {
   if (loading) {
     return (
       <div className="home">
-        <div style={{ padding: "40px" }}>Loading bracket...</div>
+        <div style={{ padding: "40px" }}>Loading...</div>
       </div>
     );
   }
 
   return (
     <div className="home">
+      {/* HEADER */}
       <div className="section">
         <h2 className="gradient-text">
           {tournament?.title || "Tournament"}
@@ -132,59 +129,117 @@ export default function PublicBracketPage() {
         <p>{tournament?.game}</p>
       </div>
 
-      <div style={{ height: "80vh" }}>
-        {matches.length > 0 ? (
-          <TransformWrapper
-            initialScale={0.8}
-            minScale={0.5}
-            maxScale={2}
-            wheel={{ step: 0.1 }}
-            pinch={{ disabled: true }}
-            doubleClick={{ disabled: true }}
-            panning={{ velocityDisabled: true }}
-            limitToBounds={false}
+      {/* ================== CARD DETAIL ================== */}
+      {!showBracket && (
+        <div className="tournament-card">
+          
+          {/* HEADER */}
+          <div className="card-header">
+            <h2>{tournament?.title}</h2>
+            <span className="game-badge">{tournament?.game}</span>
+          </div>
+
+          {/* META */}
+          <div className="card-meta">
+            <div>👥 {teams.length} Teams</div>
+            <div>📅 {tournament?.start_date || "TBD"}</div>
+            <div>🏆 {tournament?.prize || "No Prize"}</div>
+          </div>
+
+          {/* DESKRIPSI */}
+          <div className="card-section">
+            <h3>Deskripsi</h3>
+            <p>{tournament?.description || "Belum ada deskripsi"}</p>
+          </div>
+
+          {/* RULES */}
+          <div className="card-section">
+            <h3>Rules</h3>
+            <p className="rules">
+              {tournament?.rules || "Belum ada rules"}
+            </p>
+          </div>
+
+          {/* BUTTON */}
+          <button
+            className="btn-bracket"
+            onClick={() => setShowBracket(true)}
           >
-            <TransformComponent>
-              <div
-                className="bracket-wrapper"
-                style={{
-                  minWidth: "1400px",
-                  width: "max-content",
-                  padding: "40px",
-                }}
-              >
-                <SingleEliminationBracket
-                  matches={formatBracket()}
-                  matchComponent={(props) => {
-                    const match = props.match;
+            Lihat Bracket
+          </button>
+        </div>
+      )}
 
-                    return (
-                      <div style={{ padding: "8px", cursor: "pointer" }}>
-                        <div
-                          style={{
-                            fontSize: "11px",
-                            textAlign: "center",
-                            marginBottom: "6px",
-                            color: "var(--gray, #aaa)",
-                          }}
-                        >
-                          🕒 {match.startTime}
-                        </div>
+      {/* ================== BRACKET ================== */}
+      {showBracket && (
+        <div style={{ height: "80vh" }}>
+          <button
+            onClick={() => setShowBracket(false)}
+            style={{
+              margin: "20px",
+              padding: "10px 16px",
+              borderRadius: "8px",
+              border: "none",
+              background: "#2d3436",
+              color: "#fff",
+              cursor: "pointer",
+            }}
+          >
+            ← Kembali
+          </button>
 
-                        <Match {...props} />
-                      </div>
-                    );
+          {matches.length > 0 ? (
+            <TransformWrapper
+              initialScale={0.8}
+              minScale={0.5}
+              maxScale={2}
+              wheel={{ step: 0.1 }}
+              pinch={{ disabled: true }}
+              doubleClick={{ disabled: true }}
+              panning={{ velocityDisabled: true }}
+              limitToBounds={false}
+            >
+              <TransformComponent>
+                <div
+                  style={{
+                    minWidth: "1400px",
+                    width: "max-content",
+                    padding: "40px",
                   }}
-                />
-              </div>
-            </TransformComponent>
-          </TransformWrapper>
-        ) : (
-          <p style={{ textAlign: "center", color: "var(--gray)" }}>
-            Belum ada bracket
-          </p>
-        )}
-      </div>
+                >
+                  <SingleEliminationBracket
+                    matches={formatBracket()}
+                    matchComponent={(props) => {
+                      const match = props.match;
+
+                      return (
+                        <div style={{ padding: "8px" }}>
+                          <div
+                            style={{
+                              fontSize: "11px",
+                              textAlign: "center",
+                              marginBottom: "6px",
+                              color: "#aaa",
+                            }}
+                          >
+                            🕒 {match.startTime}
+                          </div>
+
+                          <Match {...props} />
+                        </div>
+                      );
+                    }}
+                  />
+                </div>
+              </TransformComponent>
+            </TransformWrapper>
+          ) : (
+            <p style={{ textAlign: "center", color: "#aaa" }}>
+              Belum ada bracket
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 }
