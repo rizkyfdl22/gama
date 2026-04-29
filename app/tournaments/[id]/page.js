@@ -43,11 +43,18 @@ export default function TournamentDetailPage() {
   const fetchData = async () => {
     setLoading(true);
 
-    const { data: tData } = await supabase
+    const { data: tData, error } = await supabase
       .from("tournaments")
       .select("*")
       .eq("id", id)
       .single();
+
+    // 🔥 VALIDASI
+    if (error || !tData) {
+      setTournament(null);
+      setLoading(false);
+      return;
+    }
 
     const { data: teamsData } = await supabase
       .from("teams")
@@ -111,6 +118,7 @@ export default function TournamentDetailPage() {
     });
   };
 
+  // 🔥 LOADING
   if (loading) {
     return (
       <div className="home">
@@ -119,44 +127,62 @@ export default function TournamentDetailPage() {
     );
   }
 
+  // 🔥 NOT FOUND (biar ID ngasal ga kebuka)
+  if (!tournament) {
+    return (
+      <div className="home">
+        <div style={{ padding: "40px", textAlign: "center" }}>
+          <h2>Tournament tidak ditemukan</h2>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="home">
       {/* HEADER */}
       <div className="section">
-        <h2 className="gradient-text">
-          {tournament?.title || "Tournament"}
-        </h2>
-        <p>{tournament?.game}</p>
+        <h2 className="gradient-text">{tournament.title}</h2>
+        <p>{tournament.game}</p>
       </div>
 
       {/* ================== CARD DETAIL ================== */}
       {!showBracket && (
         <div className="tournament-card">
           
-          {/* HEADER */}
           <div className="card-header">
-            <h2>{tournament?.title}</h2>
-            <span className="game-badge">{tournament?.game}</span>
+            <h2>{tournament.title}</h2>
+            <span className="game-badge">{tournament.game}</span>
           </div>
 
           {/* META */}
           <div className="card-meta">
             <div>👥 {teams.length} Teams</div>
-            <div>📅 {tournament?.start_date || "TBD"}</div>
-            <div>🏆 {tournament?.prize || "No Prize"}</div>
+            <div>
+              📅 {tournament.start_date
+                ? new Date(tournament.start_date).toLocaleString("id-ID", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                : "TBD"}
+            </div>
+            <div>🏆 {tournament.prize || "No Prize"}</div>
           </div>
 
           {/* DESKRIPSI */}
           <div className="card-section">
             <h3>Deskripsi</h3>
-            <p>{tournament?.description || "Belum ada deskripsi"}</p>
+            <p>{tournament.description || "Belum ada deskripsi"}</p>
           </div>
 
           {/* RULES */}
           <div className="card-section">
             <h3>Rules</h3>
             <p className="rules">
-              {tournament?.rules || "Belum ada rules"}
+              {tournament.rules || "Belum ada rules"}
             </p>
           </div>
 
@@ -167,25 +193,28 @@ export default function TournamentDetailPage() {
           >
             Lihat Bracket
           </button>
-          {/* ================== TEAM LIST ================== */}
-<div className="card-section">
-  <h3>Peserta Tournament</h3>
 
-  {teams.length > 0 ? (
-    <div className="team-grid">
-      {teams.map((team) => (
-        <div key={team.id} className="team-card">
-          <div className="team-avatar">
-            {team.name?.charAt(0).toUpperCase()}
+          {/* TEAM LIST */}
+          <div className="card-section">
+            <h3>Peserta Tournament</h3>
+
+            {teams.length > 0 ? (
+              <div className="team-grid">
+                {teams.map((team) => (
+                  <div key={team.id} className="team-card">
+                    <div className="team-avatar">
+                      {team.name?.charAt(0).toUpperCase()}
+                    </div>
+                    <div className="team-name">{team.name}</div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p style={{ color: "#aaa" }}>
+                Belum ada tim yang mendaftar
+              </p>
+            )}
           </div>
-          <div className="team-name">{team.name}</div>
-        </div>
-      ))}
-    </div>
-  ) : (
-    <p style={{ color: "#aaa" }}>Belum ada tim yang mendaftar</p>
-  )}
-</div>
         </div>
       )}
 
