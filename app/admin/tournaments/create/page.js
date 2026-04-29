@@ -10,8 +10,10 @@ export default function CreateTournament() {
   const [form, setForm] = useState({
     title: "",
     game: "",
-    date: "",
-    price: "",
+    start_date: "",
+    prize: "",
+    description: "",
+    rules: "",
     max_participants: "",
   });
 
@@ -21,8 +23,8 @@ export default function CreateTournament() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!form.title || !form.game || !form.date) {
-      alert("Lengkapi semua field!");
+    if (!form.title || !form.game || !form.start_date) {
+      alert("Lengkapi field wajib!");
       return;
     }
 
@@ -30,6 +32,7 @@ export default function CreateTournament() {
 
     let bannerUrl = null;
 
+    // ================== UPLOAD BANNER ==================
     if (banner) {
       if (!banner.type.startsWith("image/")) {
         alert("File harus berupa gambar!");
@@ -68,26 +71,32 @@ export default function CreateTournament() {
       }
     }
 
+    // ================== FORMAT DATE ==================
     let formattedDate;
     try {
-      formattedDate = new Date(form.date).toISOString();
+      formattedDate = new Date(form.start_date).toISOString();
     } catch {
       alert("Format tanggal tidak valid!");
       setLoading(false);
       return;
     }
 
+    // ================== PAYLOAD ==================
     const payload = {
       title: form.title,
       game: form.game,
-      date: formattedDate,
-      price: Number(form.price) || 0,
+      start_date: formattedDate,
+      prize: form.prize,
+      description: form.description,
+      rules: form.rules,
       max_participants: Number(form.max_participants) || 0,
     };
 
     if (bannerUrl) payload.banner_url = bannerUrl;
 
-    const { error } = await supabase.from("tournaments").insert([payload]);
+    const { error } = await supabase
+      .from("tournaments")
+      .insert([payload]);
 
     if (error) {
       alert(error.message);
@@ -130,16 +139,17 @@ export default function CreateTournament() {
 
           <input
             className="input"
-            type="date"
+            type="datetime-local"
             required
-            onChange={(e) => setForm({ ...form, date: e.target.value })}
+            onChange={(e) =>
+              setForm({ ...form, start_date: e.target.value })
+            }
           />
 
           <input
             className="input"
-            type="number"
-            placeholder="Price"
-            onChange={(e) => setForm({ ...form, price: e.target.value })}
+            placeholder="Prize (contoh: Rp 1.000.000 + Trophy)"
+            onChange={(e) => setForm({ ...form, prize: e.target.value })}
           />
 
           <input
@@ -151,6 +161,27 @@ export default function CreateTournament() {
             }
           />
 
+          {/* DESKRIPSI */}
+          <textarea
+            className="input"
+            placeholder="Deskripsi Tournament"
+            rows={4}
+            onChange={(e) =>
+              setForm({ ...form, description: e.target.value })
+            }
+          />
+
+          {/* RULES */}
+          <textarea
+            className="input"
+            placeholder="Rules (pisahkan dengan enter)"
+            rows={5}
+            onChange={(e) =>
+              setForm({ ...form, rules: e.target.value })
+            }
+          />
+
+          {/* BANNER */}
           <input
             className="input"
             type="file"
