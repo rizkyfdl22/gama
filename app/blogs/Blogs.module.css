@@ -1,12 +1,15 @@
 .container {
-  padding: 40px;
+  padding: 100px 40px 40px; /* tambah jarak atas biar nggak nabrak navbar */
   position: relative;
   z-index: 1;
 }
 
 .title {
-  font-size: 32px;
-  margin-bottom: 30px;
+  font-size: 36px;
+  margin-bottom: 40px;
+  text-align: center; /* biar ke tengah */
+  letter-spacing: 1px;
+  text-shadow: 0 0 20px rgba(153, 41, 234, 0.3);
   background: linear-gradient(90deg, var(--purple), var(--pink));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -39,6 +42,7 @@
 
 .content {
   padding: 15px;
+  text-align: center; /* optional biar rapi */
 }
 
 .content h2 {
