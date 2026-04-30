@@ -13,7 +13,7 @@ export default function AdminNavbar() {
     { name: "Dashboard", path: "/admin" },
     { name: "Tournaments", path: "/admin/tournaments" },
     { name: "Brackets", path: "/admin/matches" },
-    { name: "Blogs", path: "/admin/blogs/create" },
+    { name: "Blogs", path: "/admin/blogs/" },
   ];
 
   // 🔥 LOGOUT FUNCTION

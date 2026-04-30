@@ -5,6 +5,7 @@ import { supabase } from "@/app/lib/supabase";
 import styles from "./CreateBlog.module.css";
 import { useRouter } from "next/navigation";
 import imageCompression from "browser-image-compression";
+import BlogEditor from "@/app/components/BlogEditor";
 
 export default function CreateBlog() {
   const router = useRouter();
@@ -23,13 +24,9 @@ export default function CreateBlog() {
   };
 
   const handleUpload = async () => {
-    if (!thumbnail) {
-      alert("Pilih gambar dulu!");
-      return null;
-    }
+    if (!thumbnail) return null;
 
     try {
-      // 🔥 COMPRESS IMAGE
       const options = {
         maxSizeMB: 0.5,
         maxWidthOrHeight: 1280,
@@ -37,9 +34,6 @@ export default function CreateBlog() {
       };
 
       const compressedFile = await imageCompression(thumbnail, options);
-
-      console.log("Before:", thumbnail.size / 1024, "KB");
-      console.log("After:", compressedFile.size / 1024, "KB");
 
       const fileExt = compressedFile.name.split(".").pop();
       const fileName = `blog-${Date.now()}.${fileExt}`;
@@ -61,7 +55,7 @@ export default function CreateBlog() {
       return data.publicUrl;
     } catch (err) {
       console.log(err);
-      alert("Gagal compress / upload gambar");
+      alert("Gagal upload thumbnail");
       return null;
     }
   };
@@ -85,6 +79,7 @@ export default function CreateBlog() {
     setLoading(false);
 
     if (!error) {
+      localStorage.removeItem("blog-draft"); // 🔥 clear draft
       router.push("/blogs");
     } else {
       console.log(error);
@@ -98,6 +93,7 @@ export default function CreateBlog() {
         <h1 className={styles.title}>Create Blog</h1>
 
         <form onSubmit={handleSubmit} className={styles.form}>
+          {/* TITLE */}
           <input
             type="text"
             placeholder="Judul blog..."
@@ -106,14 +102,10 @@ export default function CreateBlog() {
             required
           />
 
-          <textarea
-            placeholder="Isi blog (boleh HTML)..."
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            rows={10}
-            required
-          />
+          {/* 🔥 EDITOR PRO */}
+          <BlogEditor content={content} setContent={setContent} />
 
+          {/* THUMBNAIL */}
           <input
             type="file"
             accept="image/*"
@@ -127,7 +119,7 @@ export default function CreateBlog() {
             }}
           />
 
-          {/* 🔥 PREVIEW IMAGE */}
+          {/* PREVIEW */}
           {preview && (
             <img
               src={preview}
@@ -140,6 +132,7 @@ export default function CreateBlog() {
             />
           )}
 
+          {/* BUTTON */}
           <button type="submit" disabled={loading}>
             {loading ? "Posting..." : "Publish Blog"}
           </button>
