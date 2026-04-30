@@ -11,12 +11,12 @@ export default function Navbar() {
   const [search, setSearch] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // 🔍 HANDLE SEARCH
   const handleSearch = (e) => {
     e.preventDefault();
     if (!search.trim()) return;
 
     router.push(`/blogs?search=${search}`);
+    setMenuOpen(false); // 🔥 auto close setelah search
   };
 
   return (
@@ -33,7 +33,7 @@ export default function Navbar() {
         />
       </Link>
 
-      {/* 🔥 HAMBURGER */}
+      {/* HAMBURGER */}
       <div
         className={`hamburger ${menuOpen ? "active" : ""}`}
         onClick={() => setMenuOpen(!menuOpen)}
@@ -43,16 +43,37 @@ export default function Navbar() {
         <span></span>
       </div>
 
-      {/* MENU */}
-      <div className={`nav-links ${menuOpen ? "open" : ""}`}>
+      {/* 🔥 DROPDOWN MENU (SATU TEMPAT) */}
+      <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
+        <Link href="/" onClick={() => setMenuOpen(false)}>Home</Link>
+        <Link href="/tournaments" onClick={() => setMenuOpen(false)}>Tournament</Link>
+        <Link href="/blogs" onClick={() => setMenuOpen(false)}>Blogs</Link>
+        <Link href="/about" onClick={() => setMenuOpen(false)}>About Us</Link>
+
+        {/* SEARCH */}
+        <form onSubmit={handleSearch} className="nav-search">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </form>
+
+        <Link href="/tournaments" className="btn-primary" onClick={() => setMenuOpen(false)}>
+          Explore
+        </Link>
+      </div>
+
+      {/* DESKTOP MENU */}
+      <div className="nav-links">
         <Link href="/">Home</Link>
         <Link href="/tournaments">Tournament</Link>
         <Link href="/blogs">Blogs</Link>
         <Link href="/about">About Us</Link>
       </div>
 
-      {/* RIGHT SIDE */}
-      <div className={`nav-actions ${menuOpen ? "open" : ""}`}>
+      <div className="nav-actions">
         <form onSubmit={handleSearch} className="nav-search">
           <input
             type="text"
@@ -65,10 +86,6 @@ export default function Navbar() {
         <Link href="/tournaments" className="btn-primary">
           Explore
         </Link>
-        <Link href="/">Home</Link>
-        <Link href="/tournaments">Tournament</Link>
-        <Link href="/blogs">Blogs</Link>
-        <Link href="/about">About Us</Link>
       </div>
     </nav>
   );

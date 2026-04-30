@@ -253,52 +253,26 @@ a {
     display: flex;
   }
 
-  /* 🔥 MENU SLIDE */
   .nav-links,
   .nav-actions {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 70%;
-    height: 100vh;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
 
-    background: rgba(10,10,10,0.95);
-    backdrop-filter: blur(10px);
+    background: #0a0a0a;
 
     flex-direction: column;
-    align-items: flex-start;
-
-    padding: 100px 20px;
+    align-items: center;
     gap: 20px;
+    padding: 20px;
 
-    transition: 0.3s ease;
+    display: none;
   }
 
-  /* OPEN STATE */
   .nav-links.open,
   .nav-actions.open {
-    right: 0;
-  }
-
-  /* LINK FULL WIDTH */
-  .nav-links a {
-    width: 100%;
-    font-size: 16px;
-  }
-
-  /* SEARCH FULL */
-  .nav-search {
-    width: 100%;
-  }
-
-  .nav-search input {
-    width: 100%;
-  }
-
-  /* BUTTON FULL */
-  .btn-primary {
-    width: 100%;
-    text-align: center;
+    display: flex;
   }
 }
 /* ========================= */
