@@ -11,13 +11,13 @@ export default function BlogDetail() {
 
   useEffect(() => {
     const fetchBlog = async () => {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from("blogs")
         .select("*")
         .eq("slug", slug)
         .single();
 
-      if (!error) setBlog(data);
+      setBlog(data);
     };
 
     fetchBlog();
@@ -27,19 +27,24 @@ export default function BlogDetail() {
 
   return (
     <div className="home">
-    <div className={styles.container}>
-      <img src={blog.thumbnail} className={styles.image} />
-
-      <h1>{blog.title}</h1>
-      <p className={styles.date}>
-        {new Date(blog.created_at).toLocaleDateString()}
-      </p>
-
+      {/* 🔥 HERO */}
       <div
-        className={styles.content}
-        dangerouslySetInnerHTML={{ __html: blog.content }}
-      />
-    </div>
+        className={styles.hero}
+        style={{ backgroundImage: `url(${blog.thumbnail})` }}
+      >
+        <div className={styles.overlay}>
+          <h1>{blog.title}</h1>
+          <p>{new Date(blog.created_at).toLocaleDateString()}</p>
+        </div>
+      </div>
+
+      {/* 📄 CONTENT */}
+      <div className={styles.container}>
+        <div
+          className={styles.content}
+          dangerouslySetInnerHTML={{ __html: blog.content }}
+        />
+      </div>
     </div>
   );
 }

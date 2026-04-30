@@ -1,31 +1,83 @@
+/* 🔥 HERO */
+.hero {
+  height: 350px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+
+  position: relative;
+  z-index: 2;
+  margin-top: 80px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.overlay {
+  width: 100%;
+  padding: 40px;
+  background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+}
+
+.overlay h1 {
+  font-size: 38px;
+  margin-bottom: 10px;
+}
+
+.overlay p {
+  color: var(--gray);
+}
+
+/* 📄 CONTENT WRAPPER */
 .container {
   max-width: 800px;
   margin: auto;
-  padding: 40px;
+  padding: 40px 20px;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
-.image {
-  width: 100%;
-  border-radius: 12px;
-  margin-bottom: 20px;
-}
-
-.date {
-  color: var(--gray);
-  margin-bottom: 20px;
-}
-
+/* ✍️ CONTENT STYLE */
 .content {
   line-height: 1.8;
+  font-size: 16px;
+}
+
+/* Typography */
+.content h1 {
+  font-size: 30px;
+  margin: 20px 0;
+}
+
+.content h2 {
+  font-size: 24px;
+  margin: 18px 0;
 }
 
 .content p {
   margin-bottom: 16px;
 }
 
+.content img {
+  width: 100%;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.content ul {
+  padding-left: 20px;
+  margin-bottom: 16px;
+}
+
+.content blockquote {
+  border-left: 3px solid var(--purple);
+  padding-left: 10px;
+  color: var(--gray);
+  margin: 20px 0;
+}
+
+/* LOADING */
 .loading {
   text-align: center;
-  padding: 50px;
+  padding: 100px;
 }
