@@ -26,6 +26,7 @@ body {
   background: var(--black);
   color: var(--white);
   font-family: sans-serif;
+  padding-top: 80px;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -69,67 +70,11 @@ a {
   background: radial-gradient(circle, rgba(255, 95, 207, 0.3), transparent);
 }
 
-/* HAMBURGER */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-  gap: 5px;
-}
-
-.hamburger span {
-  width: 25px;
-  height: 3px;
-  background: white;
-  border-radius: 5px;
-  transition: 0.3s;
-}
-
-/* ANIMASI (opsional biar keren) */
-.hamburger.active span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
-
-.hamburger.active span:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(6px, -6px);
-}
-
-/* MOBILE */
-@media (max-width: 768px) {
-  .hamburger {
-    display: flex;
-  }
-
-  .nav-links,
-  .nav-actions {
-    position: absolute;
-    top: 70px;
-    left: 0;
-    width: 100%;
-    background: black;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    padding: 20px;
-
-    display: none;
-  }
-
-  .nav-links.open,
-  .nav-actions.open {
-    display: flex;
-  }
-}
-
 /* ========================= */
 /* NAVBAR */
 /* ========================= */
 .navbar {
-  position: absolute; /* 🔥 penting */
+  position: fixed; /* 🔥 biar gak ketiban konten */
   top: 0;
   left: 0;
   width: 100%;
@@ -140,23 +85,29 @@ a {
   justify-content: space-between;
   align-items: center;
 
-  padding: 24px 40px;
+  padding: 20px 30px;
 
-  background: transparent; /* pastikan transparan */
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
 }
 
+/* ========================= */
+/* LOGO */
+/* ========================= */
 .logo {
   display: flex;
   align-items: center;
 }
 
 .logo-img {
-  height: 60px;
+  height: 50px;
   width: auto;
   filter: drop-shadow(0 0 8px #9929EA);
 }
 
+/* ========================= */
 /* NAV LINKS */
+/* ========================= */
 .nav-links {
   display: flex;
   gap: 24px;
@@ -189,7 +140,9 @@ a {
   width: 100%;
 }
 
+/* ========================= */
 /* NAV ACTIONS */
+/* ========================= */
 .nav-actions {
   display: flex;
   align-items: center;
@@ -197,9 +150,8 @@ a {
 }
 
 /* ========================= */
-/* NAVBAR SEARCH */
+/* SEARCH */
 /* ========================= */
-
 .nav-search input {
   width: 160px;
   padding: 8px 14px;
@@ -251,7 +203,7 @@ a {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* BUTTON HOVER */
+/* HOVER */
 .btn-primary:hover,
 .btn-white:hover {
   opacity: 0.85;
@@ -262,6 +214,94 @@ a {
   background: rgba(255, 255, 255, 0.1);
 }
 
+/* ========================= */
+/* HAMBURGER */
+/* ========================= */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+  z-index: 101;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background: white;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+/* ANIMASI */
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* ========================= */
+/* MOBILE */
+/* ========================= */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  /* 🔥 MENU SLIDE */
+  .nav-links,
+  .nav-actions {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 70%;
+    height: 100vh;
+
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(10px);
+
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding: 100px 20px;
+    gap: 20px;
+
+    transition: 0.3s ease;
+  }
+
+  /* OPEN STATE */
+  .nav-links.open,
+  .nav-actions.open {
+    right: 0;
+  }
+
+  /* LINK FULL WIDTH */
+  .nav-links a {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  /* SEARCH FULL */
+  .nav-search {
+    width: 100%;
+  }
+
+  .nav-search input {
+    width: 100%;
+  }
+
+  /* BUTTON FULL */
+  .btn-primary {
+    width: 100%;
+    text-align: center;
+  }
+}
 /* ========================= */
 /* HERO */
 /* ========================= */
