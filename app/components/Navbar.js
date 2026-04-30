@@ -57,7 +57,7 @@ export default function Navbar() {
     e.preventDefault();
     if (!search.trim()) return;
 
-    router.push(`/tournaments?search=${search}`);
+    router.push(`/blogs?search=${search}`);
   };
 
   return (
@@ -79,7 +79,7 @@ export default function Navbar() {
         <Link href="/">Home</Link>
         <Link href="/tournaments">Tournament</Link>
         <Link href="/blogs">Blogs</Link>
-        <Link href="/about">Tentang Kami</Link>
+        <Link href="/about">About Us</Link>
       </div>
 
       {/* RIGHT SIDE */}

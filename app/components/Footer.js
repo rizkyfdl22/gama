@@ -31,7 +31,8 @@ export default function Footer() {
           <h4>Explore</h4>
           <Link href="/">Home</Link>
           <Link href="/tournaments">Tournaments</Link>
-          <Link href="/rules">Rules</Link>
+          <Link href="/blogs">News</Link>
+          <Link href="/about">About Us</Link>
         </div>
 
         {/* CONTACT */}
@@ -40,6 +41,7 @@ export default function Footer() {
           <p>Tangerang Selatan, Indonesia</p>
           <p>admin@semestaesports.id</p>
           <p>+62 821 2205 2162</p>
+          <p>+62 822 1397 6285</p>
         </div>
 
         {/* SOCIAL */}
