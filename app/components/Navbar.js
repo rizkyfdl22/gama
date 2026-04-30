@@ -2,55 +2,14 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState, useRef } from "react";
-import { supabase } from "../lib/supabase";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const router = useRouter();
-  const dropdownRef = useRef(null);
 
   const [search, setSearch] = useState("");
-
-  useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      setUser(user);
-    };
-
-    getUser();
-
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session?.user || null);
-      }
-    );
-
-    return () => {
-      listener.subscription.unsubscribe();
-    };
-  }, []);
-
-  // close dropdown kalau klik luar
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push("/login");
-  };
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // 🔍 HANDLE SEARCH
   const handleSearch = (e) => {
@@ -74,8 +33,18 @@ export default function Navbar() {
         />
       </Link>
 
+      {/* 🔥 HAMBURGER */}
+      <div
+        className={`hamburger ${menuOpen ? "active" : ""}`}
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
       {/* MENU */}
-      <div className="nav-links">
+      <div className={`nav-links ${menuOpen ? "open" : ""}`}>
         <Link href="/">Home</Link>
         <Link href="/tournaments">Tournament</Link>
         <Link href="/blogs">Blogs</Link>
@@ -83,8 +52,7 @@ export default function Navbar() {
       </div>
 
       {/* RIGHT SIDE */}
-      <div className="nav-actions">
-        {/* 🔍 SEARCH */}
+      <div className={`nav-actions ${menuOpen ? "open" : ""}`}>
         <form onSubmit={handleSearch} className="nav-search">
           <input
             type="text"

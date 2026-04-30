@@ -74,7 +74,7 @@ a {
 /* NAVBAR */
 /* ========================= */
 .navbar {
-  position: fixed; /* 🔥 biar gak ketiban konten */
+  position: absolute; /* 🔥 biar gak ketiban konten */
   top: 0;
   left: 0;
   width: 100%;
