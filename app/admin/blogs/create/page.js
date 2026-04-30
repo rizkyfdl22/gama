@@ -4,6 +4,7 @@ import { useState } from "react";
 import { supabase } from "@/app/lib/supabase";
 import styles from "./CreateBlog.module.css";
 import { useRouter } from "next/navigation";
+import imageCompression from "browser-image-compression";
 
 export default function CreateBlog() {
   const router = useRouter();
@@ -11,6 +12,7 @@ export default function CreateBlog() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
+  const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const generateSlug = (text) => {
@@ -21,24 +23,47 @@ export default function CreateBlog() {
   };
 
   const handleUpload = async () => {
-    if (!thumbnail) return null;
-
-    const fileName = `${Date.now()}-${thumbnail.name}`;
-
-    const { data, error } = await supabase.storage
-      .from("blog-images")
-      .upload(fileName, thumbnail);
-
-    if (error) {
-      console.log(error);
+    if (!thumbnail) {
+      alert("Pilih gambar dulu!");
       return null;
     }
 
-    const { data: publicUrl } = supabase.storage
-      .from("blog-images")
-      .getPublicUrl(fileName);
+    try {
+      // 🔥 COMPRESS IMAGE
+      const options = {
+        maxSizeMB: 0.5,
+        maxWidthOrHeight: 1280,
+        useWebWorker: true,
+      };
 
-    return publicUrl.publicUrl;
+      const compressedFile = await imageCompression(thumbnail, options);
+
+      console.log("Before:", thumbnail.size / 1024, "KB");
+      console.log("After:", compressedFile.size / 1024, "KB");
+
+      const fileExt = compressedFile.name.split(".").pop();
+      const fileName = `blog-${Date.now()}.${fileExt}`;
+
+      const { error } = await supabase.storage
+        .from("blog-images")
+        .upload(fileName, compressedFile);
+
+      if (error) {
+        console.log("UPLOAD ERROR:", error.message);
+        alert(error.message);
+        return null;
+      }
+
+      const { data } = supabase.storage
+        .from("blog-images")
+        .getPublicUrl(fileName);
+
+      return data.publicUrl;
+    } catch (err) {
+      console.log(err);
+      alert("Gagal compress / upload gambar");
+      return null;
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -63,6 +88,7 @@ export default function CreateBlog() {
       router.push("/blogs");
     } else {
       console.log(error);
+      alert("Gagal membuat blog");
     }
   };
 
@@ -90,8 +116,29 @@ export default function CreateBlog() {
 
           <input
             type="file"
-            onChange={(e) => setThumbnail(e.target.files[0])}
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              setThumbnail(file);
+
+              if (file) {
+                setPreview(URL.createObjectURL(file));
+              }
+            }}
           />
+
+          {/* 🔥 PREVIEW IMAGE */}
+          {preview && (
+            <img
+              src={preview}
+              alt="preview"
+              style={{
+                width: "100%",
+                borderRadius: "10px",
+                marginTop: "10px",
+              }}
+            />
+          )}
 
           <button type="submit" disabled={loading}>
             {loading ? "Posting..." : "Publish Blog"}

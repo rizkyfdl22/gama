@@ -998,6 +998,48 @@ a {
 
 
 /* ========================= */
+/* blogs editor */
+/* ========================= */
+
+.ProseMirror {
+  outline: none;
+  line-height: 1.8;
+}
+
+.ProseMirror h1 {
+  font-size: 28px;
+  margin: 20px 0 10px;
+}
+
+.ProseMirror h2 {
+  font-size: 22px;
+  margin: 16px 0 8px;
+}
+
+.ProseMirror p {
+  margin-bottom: 12px;
+}
+
+.ProseMirror ul {
+  padding-left: 20px;
+  margin-bottom: 12px;
+}
+
+.ProseMirror blockquote {
+  border-left: 3px solid var(--purple);
+  padding-left: 10px;
+  color: var(--gray);
+  margin: 10px 0;
+}
+
+.ProseMirror img {
+  max-width: 100%;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+
+/* ========================= */
 /* SCROLL ANIMATION */
 /* ========================= */
 
