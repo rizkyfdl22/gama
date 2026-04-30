@@ -26,7 +26,6 @@ body {
   background: var(--black);
   color: var(--white);
   font-family: sans-serif;
-  padding-top: 80px;
   -webkit-font-smoothing: antialiased;
 }
 

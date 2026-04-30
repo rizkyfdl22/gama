@@ -65,6 +65,10 @@ export default function Navbar() {
         <Link href="/tournaments" className="btn-primary">
           Explore
         </Link>
+        <Link href="/">Home</Link>
+        <Link href="/tournaments">Tournament</Link>
+        <Link href="/blogs">Blogs</Link>
+        <Link href="/about">About Us</Link>
       </div>
     </nav>
   );
