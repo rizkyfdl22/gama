@@ -78,7 +78,8 @@ export default function Navbar() {
       <div className="nav-links">
         <Link href="/">Home</Link>
         <Link href="/tournaments">Tournament</Link>
-        <Link href="/rules">Rules</Link>
+        <Link href="/blogs">Blogs</Link>
+        <Link href="/about">Tentang Kami</Link>
       </div>
 
       {/* RIGHT SIDE */}

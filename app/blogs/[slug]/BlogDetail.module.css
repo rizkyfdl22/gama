@@ -1,0 +1,31 @@
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.image {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.date {
+  color: var(--gray);
+  margin-bottom: 20px;
+}
+
+.content {
+  line-height: 1.8;
+}
+
+.content p {
+  margin-bottom: 16px;
+}
+
+.loading {
+  text-align: center;
+  padding: 50px;
+}
