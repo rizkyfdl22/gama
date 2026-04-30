@@ -11,12 +11,18 @@ export default function Navbar() {
   const [search, setSearch] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // 🔍 HANDLE SEARCH
   const handleSearch = (e) => {
     e.preventDefault();
     if (!search.trim()) return;
 
     router.push(`/blogs?search=${search}`);
-    setMenuOpen(false); // 🔥 auto close setelah search
+    setMenuOpen(false); // 🔥 auto close dropdown
+  };
+
+  // 🔥 CLOSE MENU SAAT KLIK LINK
+  const handleCloseMenu = () => {
+    setMenuOpen(false);
   };
 
   return (
@@ -33,7 +39,7 @@ export default function Navbar() {
         />
       </Link>
 
-      {/* HAMBURGER */}
+      {/* 🔥 HAMBURGER */}
       <div
         className={`hamburger ${menuOpen ? "active" : ""}`}
         onClick={() => setMenuOpen(!menuOpen)}
@@ -43,12 +49,12 @@ export default function Navbar() {
         <span></span>
       </div>
 
-      {/* 🔥 DROPDOWN MENU (SATU TEMPAT) */}
+      {/* 🔥 MOBILE DROPDOWN MENU */}
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
-        <Link href="/" onClick={() => setMenuOpen(false)}>Home</Link>
-        <Link href="/tournaments" onClick={() => setMenuOpen(false)}>Tournament</Link>
-        <Link href="/blogs" onClick={() => setMenuOpen(false)}>Blogs</Link>
-        <Link href="/about" onClick={() => setMenuOpen(false)}>About Us</Link>
+        <Link href="/" onClick={handleCloseMenu}>Home</Link>
+        <Link href="/tournaments" onClick={handleCloseMenu}>Tournament</Link>
+        <Link href="/blogs" onClick={handleCloseMenu}>Blogs</Link>
+        <Link href="/about" onClick={handleCloseMenu}>About Us</Link>
 
         {/* SEARCH */}
         <form onSubmit={handleSearch} className="nav-search">
@@ -60,7 +66,11 @@ export default function Navbar() {
           />
         </form>
 
-        <Link href="/tournaments" className="btn-primary" onClick={() => setMenuOpen(false)}>
+        <Link
+          href="/tournaments"
+          className="btn-primary"
+          onClick={handleCloseMenu}
+        >
           Explore
         </Link>
       </div>
