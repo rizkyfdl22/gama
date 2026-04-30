@@ -26,6 +26,7 @@ export default function BlogDetail() {
   if (!blog) return <p className={styles.loading}>Loading...</p>;
 
   return (
+    <div className="home">
     <div className={styles.container}>
       <img src={blog.thumbnail} className={styles.image} />
 
@@ -38,6 +39,7 @@ export default function BlogDetail() {
         className={styles.content}
         dangerouslySetInnerHTML={{ __html: blog.content }}
       />
+    </div>
     </div>
   );
 }

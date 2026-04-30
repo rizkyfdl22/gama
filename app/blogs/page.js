@@ -22,6 +22,7 @@ export default function BlogsPage() {
   }, []);
 
   return (
+    <div className="home">
     <div className={styles.container}>
       <h1 className={styles.title}>Tournament Blog</h1>
 
@@ -44,6 +45,7 @@ export default function BlogsPage() {
           </Link>
         ))}
       </div>
+    </div>
     </div>
   );
 }
