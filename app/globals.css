@@ -86,7 +86,7 @@ a {
 
   padding: 20px 30px;
 
-  background: rgba(0, 0, 0, 0.6);
+  background: transparent;
   backdrop-filter: blur(10px);
 }
 
