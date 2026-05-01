@@ -53,7 +53,7 @@ export default function Navbar() {
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
         <Link href="/" onClick={handleCloseMenu}>Home</Link>
         <Link href="/tournaments" onClick={handleCloseMenu}>Tournament</Link>
-        <Link href="/blogs" onClick={handleCloseMenu}>Blogs</Link>
+        <Link href="/blogs" onClick={handleCloseMenu}>News</Link>
         <Link href="/about" onClick={handleCloseMenu}>About Us</Link>
 
         {/* SEARCH */}
@@ -79,7 +79,7 @@ export default function Navbar() {
       <div className="nav-links">
         <Link href="/">Home</Link>
         <Link href="/tournaments">Tournament</Link>
-        <Link href="/blogs">Blogs</Link>
+        <Link href="/blogs">News</Link>
         <Link href="/about">About Us</Link>
       </div>
 
