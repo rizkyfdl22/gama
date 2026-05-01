@@ -19,12 +19,13 @@ export default function Home() {
             <h1>
               Battle for Supremacy{" "}
               <span className="gradient-text">
-                Semesta Cup Season 2
+                One mistake. One fight. One winner.
+                No second chances.
               </span>
             </h1>
 
             <p className="delay-1">
-              Coming Soon
+              Coming Soon.
             </p>
 
             <div className="hero-buttons delay-2">
