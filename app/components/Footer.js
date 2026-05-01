@@ -49,9 +49,7 @@ export default function Footer() {
           <h4>Follow Us</h4>
           <div className="social-icons">
             <a href="https://instagram.com/semesta.esports" target="_blank">Instagram</a>
-            <a href="#" target="_blank">TikTok</a>
-            <a href="#" target="_blank">YouTube</a>
-            <a href="#" target="_blank">Discord</a>
+            <a href="https://www.youtube.com/@semestaesports" target="_blank">YouTube</a>
           </div>
         </div>
 
