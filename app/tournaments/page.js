@@ -46,6 +46,7 @@ export default function TournamentsPage() {
   };
 
   return (
+    <div className="home">
     <div className="tournaments-page">
       {/* HERO */}
       <div className="section center">
@@ -87,6 +88,7 @@ export default function TournamentsPage() {
           </div>
         )}
       </div>
+    </div>
     </div>
   );
 }
