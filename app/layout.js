@@ -1,6 +1,5 @@
 import "./globals.css";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import LayoutWrapper from "./LayoutWrapper";
 
 export const metadata = {
   title: "Semesta Esports",
@@ -11,15 +10,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-
-        <Navbar />
-
-        <main>
-          {children}
-        </main>
-
-        <Footer />
-
+        <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
   );
