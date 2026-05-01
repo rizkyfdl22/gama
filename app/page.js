@@ -19,8 +19,7 @@ export default function Home() {
             <h1>
               Battle for Supremacy{" "}
               <span className="gradient-text">
-                Semesta Cup Season 2 returns with fiercer
-                competition, greater challenges, and only one ultimate champion.
+                Semesta Cup Season 2
               </span>
             </h1>
 
@@ -148,11 +147,12 @@ export default function Home() {
         <div className="partners-box delay-2">
           <div className="marquee">
             <div className="marquee-track">
+              {/* 
               <img src="/warkop-iklas.png" alt="Sponsor" />
 
-              {/* DUPLICATE */}
+              {/* DUPLICATE
               <img src="/warkop-iklas.png" alt="Sponsor" />
-              <img src="/warkop-iklas.png" alt="Sponsor" />
+              <img src="/warkop-iklas.png" alt="Sponsor" /> */}
             </div>
           </div>
         </div>
