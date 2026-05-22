@@ -16,7 +16,7 @@ export const metadata = {
   ],
 
   openGraph: {
-    title: "Blogs | Semesta Esports",
+    title: "Blogs",
 
     description:
       "Artikel dan berita terbaru dunia esports dari Semesta Esports.",

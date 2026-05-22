@@ -1,7 +1,7 @@
 import AboutPage from "./AboutPage";
 
 export const metadata = {
-  title: "About Us | Semesta Esports",
+  title: "About Us",
 
   description:
     "Kenali Semesta Esports, platform dan komunitas esports Indonesia yang menghadirkan tournament kompetitif, profesional, dan terbuka untuk semua pemain.",
@@ -15,7 +15,7 @@ export const metadata = {
   ],
 
   openGraph: {
-    title: "About Us | Semesta Esports",
+    title: "About Us",
 
     description:
       "Platform dan komunitas esports Indonesia untuk turnamen kompetitif.",

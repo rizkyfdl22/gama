@@ -1,7 +1,7 @@
 import HomePage from "./HomePage";
 
 export const metadata = {
-  title: "Semesta Esports | Tournament Platform",
+  title: "Semesta Esports",
 
   description:
     "Platform tournament esports kompetitif untuk komunitas dan pemain Indonesia. Ikuti turnamen, berita esports, dan event terbaru hanya di Semesta Esports.",
