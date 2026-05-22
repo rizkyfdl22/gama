@@ -1,7 +1,7 @@
 import BlogsPage from "./BlogsPage";
 
 export const metadata = {
-  title: "Blogs | Semesta Esports",
+  title: "Blogs",
 
   description:
     "Berita, artikel, dan update terbaru seputar esports, tournament, gaming, dan komunitas dari Semesta Esports.",
@@ -34,7 +34,7 @@ export const metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Blogs | Semesta Esports",
+    title: "Blogs",
 
     description:
       "Artikel dan berita terbaru dunia esports dari Semesta Esports.",
