@@ -2,9 +2,45 @@
 
 import useInView from "./lib/useInView";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { supabase } from "./lib/supabase";
 
 export default function Home() {
-  useInView(); 
+  useInView();
+
+  const [blogs, setBlogs] = useState([]);
+  const sliderRef = useRef(null);
+
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+
+  async function fetchBlogs() {
+    const { data, error } = await supabase
+      .from("blogs")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(6);
+
+    if (!error) {
+      setBlogs(data);
+    }
+  }
+
+  const scrollLeft = () => {
+    sliderRef.current.scrollBy({
+      left: -350,
+      behavior: "smooth",
+    });
+  };
+
+  const scrollRight = () => {
+    sliderRef.current.scrollBy({
+      left: 350,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div className="home">
 
@@ -29,8 +65,7 @@ export default function Home() {
             </p>
 
             <div className="hero-buttons delay-2">
-              <Link href="/tournaments/"
-               className="btn-white">
+              <Link href="/tournaments/" className="btn-white">
                 Explore Tournament
               </Link>
 
@@ -54,7 +89,6 @@ export default function Home() {
       <section className="about-section">
         <div className="about-container">
 
-          {/* LEFT */}
           <div className="about-left fade-left">
             <h2 className="gradient-text">Who We Are</h2>
 
@@ -69,7 +103,6 @@ export default function Home() {
             </p>
           </div>
 
-          {/* RIGHT */}
           <div className="about-right">
             <div className="about-card fade-up">
               <h3>Competitive</h3>
@@ -103,23 +136,39 @@ export default function Home() {
       </section>
 
       {/* ========================= */}
-      {/* STATS */}
+      {/* BLOGS */}
       {/* ========================= */}
-      <section className="features">
-        <div className="card fade-up">
-          <h3>64+</h3>
-          <p>Tim telah berpartisipasi</p>
+      <section className="latest-blogs fade-up">
+
+        <div className="blog-header">
+          <h2 className="gradient-text">Latest News</h2>
+
+          <div className="blog-nav">
+            <button onClick={scrollLeft}>‹</button>
+            <button onClick={scrollRight}>›</button>
+          </div>
         </div>
 
-        <div className="card fade-up delay-1">
-          <h3>2+</h3>
-          <p>Turnamen berhasil diselenggarakan</p>
+        <div className="blog-slider" ref={sliderRef}>
+          {blogs.map((blog) => (
+            <Link
+              href={`/blogs/${blog.slug}`}
+              className="blog-card"
+              key={blog.id}
+            >
+              <img src={blog.thumbnail} alt={blog.title} />
+
+              <div className="blog-content">
+                <h3>{blog.title}</h3>
+
+                <p>
+                  {blog.description?.slice(0, 100)}...
+                </p>
+              </div>
+            </Link>
+          ))}
         </div>
 
-        <div className="card fade-up delay-2">
-          <h3>50+</h3>
-          <p>Match dimainkan</p>
-        </div>
       </section>
 
       {/* ========================= */}
@@ -148,12 +197,6 @@ export default function Home() {
         <div className="partners-box delay-2">
           <div className="marquee">
             <div className="marquee-track">
-              {/* 
-              <img src="/warkop-iklas.png" alt="Sponsor" />
-
-              {/* DUPLICATE
-              <img src="/warkop-iklas.png" alt="Sponsor" />
-              <img src="/warkop-iklas.png" alt="Sponsor" /> */}
             </div>
           </div>
         </div>
