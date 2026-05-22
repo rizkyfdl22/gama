@@ -134,7 +134,39 @@ export default function Home() {
           kompetitif yang serius, transparan, dan berkesan untuk setiap pemain.
         </p>
       </section>
+      {/* ========================= */}
+      {/* PARTNERS */}
+      {/* ========================= */}
+      <section className="partners-section fade-up">
 
+        <h2 className="partners-title gradient-text">
+          Official Partners
+        </h2>
+
+        <div className="partners-box delay-1">
+          <div className="marquee">
+            <div className="marquee-track">
+            </div>
+          </div>
+        </div>
+
+        <h2
+          className="partners-title gradient-text"
+          style={{ marginTop: "60px" }}
+        >
+          Sponsors
+        </h2>
+
+        <div className="partners-box delay-2">
+          <div className="marquee">
+            <div className="marquee-track">
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      
       {/* ========================= */}
       {/* BLOGS */}
       {/* ========================= */}
@@ -171,37 +203,6 @@ export default function Home() {
 
       </section>
 
-      {/* ========================= */}
-      {/* PARTNERS */}
-      {/* ========================= */}
-      <section className="partners-section fade-up">
-
-        <h2 className="partners-title gradient-text">
-          Official Partners
-        </h2>
-
-        <div className="partners-box delay-1">
-          <div className="marquee">
-            <div className="marquee-track">
-            </div>
-          </div>
-        </div>
-
-        <h2
-          className="partners-title gradient-text"
-          style={{ marginTop: "60px" }}
-        >
-          Sponsors
-        </h2>
-
-        <div className="partners-box delay-2">
-          <div className="marquee">
-            <div className="marquee-track">
-            </div>
-          </div>
-        </div>
-
-      </section>
 
       {/* ========================= */}
       {/* CTA */}
