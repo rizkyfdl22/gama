@@ -1,85 +1,48 @@
-"use client";
+import BlogsPage from "./BlogsPage";
 
-import { useEffect, useState } from "react";
-import { supabase } from "@/app/lib/supabase";
-import Link from "next/link";
-import styles from "./Blogs.module.css";
+export const metadata = {
+  title: "Blogs | Semesta Esports",
 
-export default function BlogsPage() {
-  const [blogs, setBlogs] = useState([]);
-  const [search, setSearch] = useState("");
+  description:
+    "Berita, artikel, dan update terbaru seputar esports, tournament, gaming, dan komunitas dari Semesta Esports.",
 
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      const { data } = await supabase
-        .from("blogs")
-        .select("*")
-        .order("created_at", { ascending: false });
+  keywords: [
+    "esports",
+    "gaming",
+    "tournament",
+    "mobile legends",
+    "semesta esports",
+    "blog esports",
+  ],
 
-      setBlogs(data || []);
-    };
+  openGraph: {
+    title: "Blogs | Semesta Esports",
 
-    fetchBlogs();
-  }, []);
+    description:
+      "Artikel dan berita terbaru dunia esports dari Semesta Esports.",
 
-  const filteredBlogs = blogs.filter((blog) =>
-    blog.title.toLowerCase().includes(search.toLowerCase())
-  );
+    images: [
+      {
+        url: "/og-blog.jpg",
+        width: 1200,
+        height: 630,
+      },
+    ],
 
-  const latest = blogs[0];
+    type: "website",
+  },
 
-  return (
-    <div className="home">
-      {/* 🔥 HERO */}
-      {latest && (
-        <div
-          className={styles.hero}
-          style={{
-            backgroundImage: `url(${latest.thumbnail})`,
-          }}
-        >
-          <div className={styles.overlay}>
-            <span className={styles.badge}>Latest</span>
-            <h1>{latest.title}</h1>
-            <p>
-              {new Date(latest.created_at).toLocaleDateString()}
-            </p>
-          </div>
-        </div>
-      )}
+  twitter: {
+    card: "summary_large_image",
+    title: "Blogs | Semesta Esports",
 
-      <div className={styles.container}>
-        {/* 🔍 SEARCH */}
-        <div className={styles.topBar}>
-          <h2>Blogs</h2>
+    description:
+      "Artikel dan berita terbaru dunia esports dari Semesta Esports.",
 
-          <input
-            type="text"
-            placeholder="Search..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
+    images: ["/og-blog.jpg"],
+  },
+};
 
-        {/* 📰 GRID */}
-        <div className={styles.grid}>
-          {filteredBlogs.map((blog) => (
-            <Link href={`/blogs/${blog.slug}`} key={blog.id}>
-              <div className={styles.card}>
-                <img src={blog.thumbnail} alt={blog.title} />
-
-                <div className={styles.cardContent}>
-                  <h3>{blog.title}</h3>
-
-                  <p>
-                    {new Date(blog.created_at).toLocaleDateString()}
-                  </p>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+export default function Page() {
+  return <BlogsPage />;
 }
