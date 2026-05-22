@@ -12,12 +12,12 @@ export async function generateMetadata({ params }) {
 
   if (!blog) {
     return {
-      title: "Blog Not Found | Semesta Esports",
+      title: "Blog Not Found",
     };
   }
 
   return {
-    title: `${blog.title} | Semesta Esports`,
+    title: `${blog.title}`,
 
     description:
       blog.description ||
