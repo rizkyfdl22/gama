@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { supabase } from "@/app/lib/supabase";
 import BlogDetail from "./BlogDetail";
 
