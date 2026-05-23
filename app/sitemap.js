@@ -1,4 +1,4 @@
-import { supabase } from "./lib/supabase";
+import { supabaseServer } from "./lib/supabase/server";
 
 export default async function sitemap() {
   const baseUrl = "https://semestaesports.id";
@@ -22,7 +22,7 @@ export default async function sitemap() {
     },
   ];
 
-  const { data: blogs } = await supabase
+  const { data: blogs } = await supabaseServer
     .from("blogs")
     .select("slug, created_at");
 
