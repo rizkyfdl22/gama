@@ -164,18 +164,6 @@ export default function HomePage() {
 
         </div>
       </section>
-
-      {/* WHY US */}
-      <section className="section fade-up">
-        <h2>Why Choose Us</h2>
-
-        <p className="delay-1">
-          Kami tidak hanya membuat turnamen —
-          kami menciptakan pengalaman kompetitif
-          yang serius, transparan, dan berkesan.
-        </p>
-      </section>
-
       {/* PARTNERS */}
       <section className="partners-section fade-up">
 

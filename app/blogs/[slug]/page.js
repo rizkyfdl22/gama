@@ -31,6 +31,7 @@ export async function generateMetadata({ params }) {
       "news esports",
       "esports indonesia",
       "gaming",
+      "semesta esports",
       "mobile legends",
       blog.title,
     ],
