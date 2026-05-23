@@ -88,7 +88,7 @@ export default function BlogDetail({
       <section className={styles.relatedSection}>
 
         <div className={styles.relatedHeader}>
-          <h2>Related Blogs</h2>
+          <h2>Related News</h2>
 
           <div className={styles.blogNav}>
             <button onClick={scrollLeft}>
