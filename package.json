@@ -12,7 +12,7 @@
     "@g-loot/react-tournament-brackets": "^1.0.31-rc",
     "@supabase/auth-helpers-nextjs": "^0.15.0",
     "@supabase/ssr": "^0.10.2",
-    "@supabase/supabase-js": "^2.103.2",
+    "@supabase/supabase-js": "^2.106.1",
     "@tiptap/extension-image": "^3.22.5",
     "@tiptap/extension-placeholder": "^3.22.5",
     "@tiptap/extension-underline": "^3.22.5",
