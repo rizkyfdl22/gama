@@ -1,49 +1,14 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { supabase } from "@/app/lib/supabase";
-import { useParams } from "next/navigation";
+import { useRef } from "react";
 import Link from "next/link";
 import styles from "./BlogDetail.module.css";
 
-export default function BlogDetail() {
-  const { slug } = useParams();
-
-  const [blog, setBlog] = useState(null);
-  const [relatedBlogs, setRelatedBlogs] = useState([]);
-
+export default function BlogDetail({
+  blog,
+  relatedBlogs,
+}) {
   const sliderRef = useRef(null);
-
-  useEffect(() => {
-    if (slug) {
-      fetchBlog();
-    }
-  }, [slug]);
-
-  const fetchBlog = async () => {
-    const { data } = await supabase
-      .from("blogs")
-      .select("*")
-      .eq("slug", slug)
-      .single();
-
-    setBlog(data);
-
-    if (data) {
-      fetchRelatedBlogs(data.id);
-    }
-  };
-
-  const fetchRelatedBlogs = async (currentId) => {
-    const { data } = await supabase
-      .from("blogs")
-      .select("*")
-      .neq("id", currentId)
-      .order("created_at", { ascending: false })
-      .limit(6);
-
-    setRelatedBlogs(data || []);
-  };
 
   const scrollLeft = () => {
     sliderRef.current.scrollBy({
@@ -59,7 +24,13 @@ export default function BlogDetail() {
     });
   };
 
-  if (!blog) return <p className={styles.loading}>Loading...</p>;
+  if (!blog) {
+    return (
+      <p className={styles.loading}>
+        Artikel tidak ditemukan
+      </p>
+    );
+  }
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -88,13 +59,17 @@ export default function BlogDetail() {
       {/* HERO */}
       <div
         className={styles.hero}
-        style={{ backgroundImage: `url(${blog.thumbnail})` }}
+        style={{
+          backgroundImage: `url(${blog.thumbnail})`,
+        }}
       >
         <div className={styles.overlay}>
           <h1>{blog.title}</h1>
 
           <p>
-            {new Date(blog.created_at).toLocaleDateString()}
+            {new Date(
+              blog.created_at
+            ).toLocaleDateString()}
           </p>
         </div>
       </div>
@@ -103,7 +78,9 @@ export default function BlogDetail() {
       <div className={styles.container}>
         <div
           className={styles.content}
-          dangerouslySetInnerHTML={{ __html: blog.content }}
+          dangerouslySetInnerHTML={{
+            __html: blog.content,
+          }}
         />
       </div>
 
@@ -114,12 +91,20 @@ export default function BlogDetail() {
           <h2>Related Blogs</h2>
 
           <div className={styles.blogNav}>
-            <button onClick={scrollLeft}>‹</button>
-            <button onClick={scrollRight}>›</button>
+            <button onClick={scrollLeft}>
+              ‹
+            </button>
+
+            <button onClick={scrollRight}>
+              ›
+            </button>
           </div>
         </div>
 
-        <div className={styles.blogSlider} ref={sliderRef}>
+        <div
+          className={styles.blogSlider}
+          ref={sliderRef}
+        >
           {relatedBlogs.map((item) => (
             <Link
               href={`/blogs/${item.slug}`}
@@ -135,7 +120,8 @@ export default function BlogDetail() {
                 <h3>{item.title}</h3>
 
                 <p>
-                  {item.description?.slice(0, 100)}...
+                  {item.description?.slice(0, 100)}
+                  ...
                 </p>
               </div>
             </Link>

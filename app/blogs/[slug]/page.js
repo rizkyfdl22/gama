@@ -2,7 +2,7 @@ import { supabase } from "@/app/lib/supabase";
 import BlogDetail from "./BlogDetail";
 
 export async function generateMetadata({ params }) {
-  const { slug } = await params;
+  const { slug } = params;
 
   const { data: blog } = await supabase
     .from("blogs")
@@ -17,7 +17,7 @@ export async function generateMetadata({ params }) {
   }
 
   return {
-    title: `${blog.title}`,
+    title: blog.title,
 
     description:
       blog.description ||
@@ -26,6 +26,10 @@ export async function generateMetadata({ params }) {
     keywords: [
       "esports",
       "tournament",
+      "berita esports",
+      "portal berita",
+      "news esports",
+      "esports indonesia",
       "gaming",
       "mobile legends",
       blog.title,
@@ -53,6 +57,28 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function Page() {
-  return <BlogDetail />;
+export default async function Page({ params }) {
+  const { slug } = params;
+
+  /* BLOG DETAIL */
+  const { data: blog } = await supabase
+    .from("blogs")
+    .select("*")
+    .eq("slug", slug)
+    .single();
+
+  /* RELATED BLOGS */
+  const { data: relatedBlogs } = await supabase
+    .from("blogs")
+    .select("*")
+    .neq("id", blog?.id)
+    .order("created_at", { ascending: false })
+    .limit(6);
+
+  return (
+    <BlogDetail
+      blog={blog}
+      relatedBlogs={relatedBlogs || []}
+    />
+  );
 }
