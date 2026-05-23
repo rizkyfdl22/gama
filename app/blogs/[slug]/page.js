@@ -2,7 +2,7 @@ import { supabase } from "@/app/lib/supabase";
 import BlogDetail from "./BlogDetail";
 
 export async function generateMetadata({ params }) {
-  const { slug } = await params;
+  const { slug } = params;
 
   const { data: blog } = await supabase
     .from("blogs")
@@ -59,7 +59,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Page({ params }) {
-  const { slug } = await params;
+  const { slug } = params;
 
   /* BLOG DETAIL */
   const { data: blog, error } = await supabase
@@ -68,11 +68,7 @@ export default async function Page({ params }) {
     .eq("slug", slug)
     .single();
 
-  console.log(slug);
-  console.log(blog);
-  console.log(error);
-
-  if (!blog) {
+  if (error || !blog) {
     return <p>Blog not found</p>;
   }
 
