@@ -12,6 +12,8 @@ export const metadata = {
     "tournament",
     "mobile legends",
     "semesta esports",
+    "berita esports",
+    "berita esports terkini",
     "blog esports",
   ],
 

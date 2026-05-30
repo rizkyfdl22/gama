@@ -22,7 +22,6 @@ export default function Footer() {
           </Link>
           <p>
             Platform turnamen esports untuk para pemain kompetitif.
-            Bergabung dan buktikan skill kamu di arena.
           </p>
         </div>
 
@@ -40,7 +39,7 @@ export default function Footer() {
         <div className="footer-contact">
           <h4>Contact</h4>
           <p>Tangerang Selatan, Indonesia</p>
-          <p>admin@semestaesports.id</p>
+          <p>semestaesports@gmail.com</p>
           <p>+62 821 2205 2162</p>
           <p>+62 822 1397 6285</p>
         </div>

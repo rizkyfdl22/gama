@@ -10,6 +10,8 @@ export const metadata = {
     "about semesta esports",
     "platform esports indonesia",
     "komunitas esports",
+    "Semesta esports",
+    "berita esports",
     "tournament esports",
     "gaming indonesia",
   ],
