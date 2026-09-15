@@ -1,0 +1,339 @@
+/* ==========================================================================
+   NAVBAR COMPONENT STYLES
+   Menggunakan CSS Variables dari globals.css
+   ========================================================================== */
+
+/* --- Focus Outline (Accessibility) --- */
+.logo:focus-visible,
+.navLink:focus-visible,
+.ctaButton:focus-visible,
+.hamburger:focus-visible,
+.mobileNavLink:focus-visible,
+.mobileCtaButton:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* --- Header & Layout --- */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 100;
+  background-color: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background-color 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease;
+}
+
+.header.scrolled {
+  background-color: color-mix(in srgb, var(--black) 85%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid color-mix(in srgb, var(--white) 10%, transparent);
+}
+
+.header.menuOpenBackground {
+  background-color: var(--black);
+  backdrop-filter: none;
+  border-color: transparent;
+  transition: background-color 0s;
+}
+
+.navContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* --- Logo --- */
+.logo {
+  display: inline-flex;
+  align-items: flex-start;
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  color: var(--white);
+  text-decoration: none;
+  text-transform: uppercase;
+  z-index: 101;
+}
+
+.logoMark {
+  width: 6px;
+  height: 6px;
+  background-color: var(--pink);
+  border-radius: 50%;
+  margin-left: 2px;
+  margin-top: 4px;
+  box-shadow: 0 0 10px var(--pink);
+}
+
+/* --- Desktop Navigation --- */
+.desktopNav {
+  display: none;
+}
+
+.navList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.navLink {
+  color: var(--gray);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
+  padding: 0.5rem 0;
+}
+
+.navLink:hover {
+  color: var(--white);
+}
+
+/* Active Indicator Dot */
+.navLink::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  width: 4px;
+  height: 4px;
+  background-color: var(--purple);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navLink.active {
+  color: var(--white);
+}
+
+.navLink.active::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  box-shadow: 0 0 8px var(--purple);
+}
+
+/* --- Right Section (CTA & Hamburger) --- */
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  z-index: 101;
+}
+
+/* Desktop CTA */
+.ctaButton {
+  display: none;
+  position: relative;
+  background-color: color-mix(in srgb, var(--purple) 15%, transparent);
+  color: var(--white);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.75rem 1.75rem;
+  border: 1px solid var(--purple);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.ctaGlow {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--white) 20%, transparent),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.ctaButton:hover {
+  background-color: var(--purple);
+  border-color: var(--pink);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--purple) 40%, transparent);
+  transform: translateY(-2px);
+}
+
+.ctaButton:hover .ctaGlow {
+  left: 100%;
+}
+
+/* Hamburger Button */
+.hamburger {
+  background: transparent;
+  border: none;
+  color: var(--white);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  margin-right: -8px;
+  transition: color 0.3s ease;
+}
+
+.hamburger svg {
+  width: 24px;
+  height: 24px;
+}
+
+.hamburger:hover {
+  color: var(--pink);
+}
+
+/* --- Mobile Menu Overlay --- */
+.mobileMenu {
+  position: fixed;
+  inset: 0;
+  background-color: var(--black);
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
+}
+
+.mobileMenuOpen {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.mobileNav {
+  width: 100%;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+.mobileNavList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+.mobileNavLink {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--gray);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.mobileNavLink:hover {
+  color: var(--white);
+  transform: scale(1.05);
+}
+
+.mobileNavLink.mobileActive {
+  color: var(--white);
+}
+
+.mobileNavLink.mobileActive::before {
+  content: "•";
+  color: var(--purple);
+  margin-right: 12px;
+  text-shadow: 0 0 10px var(--purple);
+}
+
+/* Mobile CTA */
+.mobileCtaButton {
+  width: 100%;
+  max-width: 300px;
+  text-align: center;
+  background-color: var(--purple);
+  color: var(--white);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1rem;
+  border: 1px solid var(--pink);
+  box-shadow: 0 0 15px color-mix(in srgb, var(--purple) 30%, transparent);
+}
+
+/* --- Breakpoints --- */
+@media (min-width: 1024px) {
+  .hamburger {
+    display: none;
+  }
+
+  .desktopNav {
+    display: block;
+  }
+
+  .ctaButton {
+    display: inline-block;
+  }
+
+  .mobileMenu {
+    display: none !important;
+  }
+}
+
+/* Tablet Adjusments */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .navContainer {
+    padding-inline: 2rem;
+  }
+}
+
+/* --- Reduced Motion Fallback --- */
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .navLink,
+  .navLink::after,
+  .ctaButton,
+  .ctaGlow,
+  .mobileMenu,
+  .mobileNavLink {
+    transition: none !important;
+    animation: none !important;
+  }
+  
+  .ctaButton:hover {
+    transform: none;
+  }
+  
+  .mobileMenu {
+    transform: none;
+  }
+}

@@ -1,0 +1,447 @@
+/* Section Base Container */
+.collabs {
+  position: relative;
+  width: 100%;
+  background-color: var(--black);
+  color: var(--white);
+  padding: clamp(5rem, 10vw, 9rem) 0;
+  overflow: hidden;
+  border-top: 1px solid color-mix(in srgb, var(--white) 8%, transparent);
+}
+
+/* Background Atmosphere & Decorations */
+.bgGlowPink {
+  position: absolute;
+  top: 30%;
+  right: -20%;
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--pink) 12%, transparent) 0%,
+    transparent 70%
+  );
+  filter: blur(120px);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.bgGrid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(color-mix(in srgb, var(--white) 2%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--white) 2%, transparent) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: linear-gradient(to bottom, var(--black) 10%, transparent 90%);
+  -webkit-mask-image: linear-gradient(to bottom, var(--black) 10%, transparent 90%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Abstract Network Lines Decoration */
+.networkLines {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: 
+    radial-gradient(circle at 20% 30%, color-mix(in srgb, var(--purple) 30%, transparent) 1px, transparent 2px),
+    radial-gradient(circle at 80% 60%, color-mix(in srgb, var(--pink) 30%, transparent) 1px, transparent 2px);
+  background-size: 100% 100%;
+  opacity: 0.5;
+}
+
+.networkLines::before,
+.networkLines::after {
+  content: '';
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--white) 10%, transparent), transparent);
+}
+
+.networkLines::before {
+  top: 35%;
+  left: 10%;
+  width: 30%;
+  transform: rotate(15deg);
+}
+
+.networkLines::after {
+  top: 65%;
+  right: 15%;
+  width: 25%;
+  transform: rotate(-25deg);
+}
+
+/* Decorative Infinite Marquee */
+.marqueeContainer {
+  position: absolute;
+  top: 15%;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  z-index: 1;
+  opacity: 0.05; /* Sangat subtle sebagai background texture */
+  pointer-events: none;
+  transform: rotate(-2deg) scale(1.1);
+}
+
+.marqueeTrack {
+  display: flex;
+  white-space: nowrap;
+  animation: marqueeScroll 40s linear infinite;
+}
+
+.marqueeItem {
+  display: inline-flex;
+  align-items: center;
+  font-size: clamp(4rem, 10vw, 8rem);
+  font-weight: 900;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.marqueeDot {
+  color: var(--purple);
+  margin: 0 2rem;
+  font-size: 0.5em;
+}
+
+/* Content Wrapper */
+.container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Section Header */
+.header {
+  margin-bottom: clamp(3.5rem, 8vw, 6rem);
+  max-width: 800px;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--yellow);
+}
+
+.eyebrowLine {
+  width: 40px;
+  height: 1px;
+  background-color: var(--yellow);
+  opacity: 0.5;
+}
+
+.title {
+  font-size: clamp(2.5rem, 5.5vw, 4.25rem);
+  font-weight: 900;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--white);
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.02em;
+}
+
+.titleHighlight {
+  color: var(--purple);
+}
+
+.description {
+  color: var(--gray);
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  line-height: 1.7;
+  margin: 0;
+  max-width: 650px;
+}
+
+/* Collaborators / Partners Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: clamp(4rem, 8vw, 7rem);
+}
+
+/* Individual Partner Card */
+.card {
+  position: relative;
+  background: color-mix(in srgb, var(--white) 1%, transparent);
+  border: 1px solid color-mix(in srgb, var(--white) 8%, transparent);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s ease;
+  overflow: hidden;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+}
+
+.cardNumber {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--gray);
+  transition: color 0.3s ease;
+}
+
+.cardAccentLine {
+  height: 1px;
+  width: 0;
+  background: linear-gradient(90deg, var(--purple), transparent);
+  transition: width 0.4s ease;
+}
+
+/* Text-Based Logo Placeholder */
+.logoContainer {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--white) 15%, transparent);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--black) 50%, transparent);
+  transition: transform 0.4s ease, border-color 0.4s ease;
+}
+
+.logoInitials {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: 0.1em;
+  z-index: 2;
+}
+
+.logoGlow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, color-mix(in srgb, var(--pink) 40%, transparent) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  filter: blur(8px);
+  z-index: 1;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.collabName {
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: var(--white);
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+.collabCategory {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Card Hover Interactions */
+.card:hover {
+  background: color-mix(in srgb, var(--white) 2.5%, transparent);
+  border-color: color-mix(in srgb, var(--purple) 40%, transparent);
+  transform: translateY(-4px);
+}
+
+.card:hover .cardNumber {
+  color: var(--pink);
+}
+
+.card:hover .cardAccentLine {
+  width: 40px;
+}
+
+.card:hover .logoContainer {
+  transform: scale(1.05);
+  border-color: color-mix(in srgb, var(--pink) 50%, transparent);
+}
+
+.card:hover .logoGlow {
+  opacity: 1;
+}
+
+/* Footer Section */
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: clamp(3rem, 6vw, 5rem);
+  border-top: 1px solid color-mix(in srgb, var(--white) 10%, transparent);
+  gap: 2rem;
+}
+
+.statement {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  font-weight: 700;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Call To Action */
+.ctaWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ctaText {
+  color: var(--gray);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.primaryCta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  background: color-mix(in srgb, var(--purple) 15%, transparent);
+  color: var(--white);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border: 1px solid color-mix(in srgb, var(--purple) 50%, transparent);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  /* Slanted esports corner minimal */
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+}
+
+.ctaGlow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--white) 20%, transparent), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+.primaryCta:hover {
+  background: var(--purple);
+  border-color: var(--purple);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--purple) 30%, transparent);
+}
+
+.primaryCta:hover .ctaGlow {
+  transform: translateX(100%);
+}
+
+/* Animations */
+@keyframes marqueeScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* Berhenti di 50% karena konten diulang 2x */
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .eyebrow {
+    justify-content: center;
+  }
+
+  .description {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .networkLines {
+    display: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 0 1.25rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .footer {
+    padding-top: 3rem;
+  }
+
+  .primaryCta {
+    width: 100%;
+  }
+}
+
+/* Accessibility: Prefers Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .marqueeTrack {
+    animation: none;
+  }
+  
+  .card {
+    transition: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+
+  .cardAccentLine,
+  .logoContainer,
+  .logoGlow {
+    transition: none;
+  }
+
+  .primaryCta {
+    transition: none;
+  }
+
+  .primaryCta:hover {
+    transform: none;
+  }
+  
+  .ctaGlow {
+    display: none;
+  }
+}

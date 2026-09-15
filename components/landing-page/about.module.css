@@ -1,0 +1,456 @@
+/* Section Base Container */
+.about {
+  position: relative;
+  width: 100%;
+  background-color: var(--black);
+  color: var(--white);
+  padding: clamp(5rem, 10vw, 9rem) 0;
+  overflow: hidden;
+  border-top: 1px solid color-mix(in srgb, var(--white) 8%, transparent);
+}
+
+/* Background Atmosphere & Decorations */
+.bgGlowPurple {
+  position: absolute;
+  top: 20%;
+  left: -15%;
+  width: 45vw;
+  height: 45vw;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--purple) 20%, transparent) 0%,
+    transparent 70%
+  );
+  filter: blur(100px);
+  z-index: 1;
+  pointer-events: none;
+  animation: floatGlow 14s infinite alternate ease-in-out;
+}
+
+.bgGlowPink {
+  position: absolute;
+  bottom: 10%;
+  right: -15%;
+  width: 40vw;
+  height: 40vw;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--pink) 15%, transparent) 0%,
+    transparent 70%
+  );
+  filter: blur(100px);
+  z-index: 1;
+  pointer-events: none;
+  animation: floatGlowReverse 16s infinite alternate ease-in-out;
+}
+
+.bgGrid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(color-mix(in srgb, var(--white) 3%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--white) 3%, transparent) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(circle at center, var(--black) 30%, transparent 85%);
+  -webkit-mask-image: radial-gradient(circle at center, var(--black) 30%, transparent 85%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.bgWatermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-5deg);
+  font-size: clamp(6rem, 18vw, 22rem);
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: color-mix(in srgb, var(--white) 1.5%, transparent);
+  user-select: none;
+  z-index: 1;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Content Wrapper */
+.container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Section Header */
+.header {
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--yellow);
+}
+
+.eyebrowDot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--yellow);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--yellow);
+}
+
+.title {
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  text-transform: uppercase;
+  color: var(--white);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.titleHighlight {
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Main Two-Column Editorial Content */
+.mainContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: start;
+  margin-bottom: clamp(3.5rem, 7vw, 6rem);
+}
+
+.leftCol {
+  border-left: 2px solid color-mix(in srgb, var(--purple) 60%, transparent);
+  padding-left: 1.5rem;
+}
+
+.statement {
+  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--white);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.statementHighlight {
+  color: var(--purple);
+}
+
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.description {
+  color: var(--gray);
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Abstract Esports Arena Visual Centerpiece */
+.visualContainer {
+  width: 100%;
+  margin: 0 0 clamp(4rem, 8vw, 7rem) 0;
+  display: flex;
+  justify-content: center;
+}
+
+.arenaFrame {
+  position: relative;
+  width: 100%;
+  height: clamp(220px, 35vw, 360px);
+  background: color-mix(in srgb, var(--white) 1.5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--white) 10%, transparent);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  clip-path: polygon(
+    28px 0, 100% 0, 100% calc(100% - 28px), 
+    calc(100% - 28px) 100%, 0 100%, 0 28px
+  );
+}
+
+.arenaGrid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(color-mix(in srgb, var(--purple) 15%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--purple) 15%, transparent) 1px, transparent 1px);
+  background-size: 30px 30px;
+  transform: perspective(400px) rotateX(60deg) translateY(-20px);
+  opacity: 0.6;
+}
+
+.orbitRingOuter {
+  position: absolute;
+  width: clamp(180px, 28vw, 280px);
+  height: clamp(180px, 28vw, 280px);
+  border: 1px dashed color-mix(in srgb, var(--pink) 40%, transparent);
+  border-radius: 50%;
+  animation: spin 24s linear infinite;
+}
+
+.orbitRingInner {
+  position: absolute;
+  width: clamp(120px, 20vw, 190px);
+  height: clamp(120px, 20vw, 190px);
+  border: 1px solid color-mix(in srgb, var(--purple) 50%, transparent);
+  border-top-color: var(--purple);
+  border-bottom-color: var(--pink);
+  border-radius: 50%;
+  animation: spinReverse 18s linear infinite;
+}
+
+.arenaCore {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.coreGlow {
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(circle, var(--purple) 0%, transparent 70%);
+  opacity: 0.6;
+  filter: blur(12px);
+  animation: pulseCore 3s ease-in-out infinite alternate;
+}
+
+.corePulse {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--pink);
+  border-radius: 50%;
+  animation: expandPulse 2.5s ease-out infinite;
+}
+
+.coreCenter {
+  width: 16px;
+  height: 16px;
+  background-color: var(--white);
+  transform: rotate(45deg);
+  box-shadow: 0 0 15px var(--pink), 0 0 30px var(--purple);
+}
+
+.nodePoint1,
+.nodePoint2,
+.nodePoint3 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: var(--yellow);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--yellow);
+}
+
+.nodePoint1 { top: 25%; left: 30%; }
+.nodePoint2 { bottom: 25%; right: 28%; }
+.nodePoint3 { top: 35%; right: 35%; }
+
+.scanLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--pink), transparent);
+  opacity: 0.7;
+  animation: scan 4s ease-in-out infinite;
+}
+
+/* Feature Grid */
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  padding-top: 3rem;
+  border-top: 1px solid color-mix(in srgb, var(--white) 12%, transparent);
+}
+
+.featureCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  background: color-mix(in srgb, var(--white) 1.5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--white) 6%, transparent);
+  transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.featureCard:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--purple) 50%, transparent);
+  background: color-mix(in srgb, var(--purple) 4%, transparent);
+}
+
+.featureHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.featureNumber {
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: var(--pink);
+  letter-spacing: 0.1em;
+}
+
+.featureTitle {
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  font-weight: 900;
+  color: var(--white);
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+.featureDescription {
+  color: var(--gray);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Brand Statement Manifesto */
+.manifesto {
+  margin-top: clamp(4rem, 8vw, 7rem);
+  text-align: center;
+  padding: clamp(2.5rem, 5vw, 4.5rem) 2rem;
+  background: color-mix(in srgb, var(--white) 2%, transparent);
+  border: 1px solid color-mix(in srgb, var(--white) 8%, transparent);
+  position: relative;
+  clip-path: polygon(
+    20px 0, 100% 0, 100% calc(100% - 20px), 
+    calc(100% - 20px) 100%, 0 100%, 0 20px
+  );
+}
+
+.manifestoText {
+  font-size: clamp(1.75rem, 4vw, 3.25rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--white);
+  margin: 0;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.manifestoPurple {
+  color: var(--purple);
+}
+
+.manifestoPink {
+  color: var(--pink);
+}
+
+/* Keyframe Animations */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spinReverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes pulseCore {
+  0% { opacity: 0.4; transform: scale(0.9); }
+  100% { opacity: 0.8; transform: scale(1.1); }
+}
+
+@keyframes expandPulse {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+@keyframes scan {
+  0% { top: 0%; opacity: 0; }
+  15% { opacity: 0.8; }
+  85% { opacity: 0.8; }
+  100% { top: 100%; opacity: 0; }
+}
+
+@keyframes floatGlow {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(5%, 8%); }
+}
+
+@keyframes floatGlowReverse {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-5%, -8%); }
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+  .mainContent {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .featuresGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 0 1.25rem;
+  }
+
+  .leftCol {
+    padding-left: 1rem;
+  }
+
+  .manifesto {
+    clip-path: none;
+    border-radius: 8px;
+    padding: 2rem 1rem;
+  }
+}
+
+/* Accessibility: Prefers Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .bgGlowPurple,
+  .bgGlowPink,
+  .orbitRingOuter,
+  .orbitRingInner,
+  .coreGlow,
+  .corePulse,
+  .scanLine {
+    animation: none !important;
+  }
+
+  .featureCard {
+    transition: none !important;
+  }
+
+  .featureCard:hover {
+    transform: none !important;
+  }
+}
