@@ -1,8 +1,8 @@
-import { Hero } from "@components/landing-page/hero";
-import { About } from "@components/landing-page/about";
-import { Collabs } from "@components/landing-page/collabs";
-import { Features } from "@components/landing-page/features";
-import { Contact } from "@components/landing-page/contact";
+import About from "@/components/landing-page/about";
+import Collabs from "@/components/landing-page/collabs";
+import ContactSection from "@/components/landing-page/contact";
+import FeaturesSection from "@/components/landing-page/features";
+import Hero from "@/components/landing-page/hero";
 
 export const metadata = {
   title: "Semesta Esports",
@@ -48,11 +48,11 @@ export const metadata = {
 export default function Page() {
   return (
     <>
-      <Hero />
-      <About />
-      <Collabs />
-      <Features />
-      <Contact />
+  <Hero/>
+  <About/>
+  <FeaturesSection/>
+  <Collabs/>
+  <ContactSection/>
     </>
   );
 }
