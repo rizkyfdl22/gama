@@ -5,10 +5,10 @@ import styles from "./navbar.module.css";
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Collabs", href: "/collabs" },
-  { label: "Features", href: "/features" },
-  { label: "Contact", href: "/contact" },
+  { label: "About", href: "#about" },
+  { label: "Collabs", href: "#collabs" },
+  { label: "Features", href: "#features" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
