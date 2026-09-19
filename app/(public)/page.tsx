@@ -2,6 +2,7 @@ import About from "@/components/landing-page/about";
 import Collabs from "@/components/landing-page/collabs";
 import ContactSection from "@/components/landing-page/contact";
 import FeaturesSection from "@/components/landing-page/features";
+import GamesSection from "@/components/landing-page/games";
 import Hero from "@/components/landing-page/hero";
 
 export const metadata = {
@@ -50,6 +51,7 @@ export default function Page() {
     <>
   <Hero/>
   <About/>
+  <GamesSection/>
   <FeaturesSection/>
   <Collabs/>
   <ContactSection/>

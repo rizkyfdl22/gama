@@ -1,0 +1,319 @@
+/* ==========================================================================
+   GAMES SECTION MODULE
+   Strictly adheres to color variables from globals.css:
+   var(--black), var(--white), var(--gray), var(--purple), var(--pink), var(--yellow)
+   ========================================================================== */
+
+.section {
+  position: relative;
+  background-color: var(--black);
+  color: var(--white);
+  padding: 8rem 1.5rem;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+/* --------------------------------------------------------------------------
+   Header Area
+   -------------------------------------------------------------------------- */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 600px;
+}
+
+.eyebrowWrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.eyebrowLine {
+  width: 40px;
+  height: 1px;
+  background-color: var(--purple);
+}
+
+.eyebrowText {
+  font-family: monospace, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: var(--purple);
+  text-transform: uppercase;
+}
+
+.heading {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.accentText {
+  color: var(--pink);
+}
+
+.description {
+  font-size: clamp(1rem, 1.25vw, 1.25rem);
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   Games Grid
+   -------------------------------------------------------------------------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   Game Card
+   -------------------------------------------------------------------------- */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: color-mix(in srgb, var(--white) 3%, transparent);
+  border: 1px solid color-mix(in srgb, var(--white) 15%, transparent);
+  padding: 2rem;
+  text-decoration: none;
+  color: inherit;
+  min-height: 240px;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s ease,
+              background-color 0.4s ease;
+  overflow: hidden;
+}
+
+/* Focus state (A11y) */
+.card:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 4px;
+}
+
+/* Decorative Details */
+.cardCorner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  border-left: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  background: linear-gradient(225deg, transparent 50%, var(--black) 50%);
+  transition: border-color 0.4s ease;
+}
+
+.cardGlow {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle at bottom right, color-mix(in srgb, var(--purple) 15%, transparent) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+/* Top Section (Index & ShortName) */
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: auto;
+}
+
+.index {
+  font-family: monospace, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--gray);
+  transition: color 0.4s ease;
+}
+
+.shortName {
+  font-size: clamp(3rem, 4vw, 4rem);
+  font-weight: 900;
+  line-height: 0.8;
+  color: color-mix(in srgb, var(--white) 5%, transparent);
+  letter-spacing: -0.05em;
+  user-select: none;
+  transition: color 0.4s ease, transform 0.4s ease;
+  transform-origin: top right;
+}
+
+/* Main Content */
+.cardContent {
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+}
+
+.gameName {
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--white);
+  margin: 0;
+}
+
+/* Bottom CTA */
+.cardBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid color-mix(in srgb, var(--white) 10%, transparent);
+  padding-top: 1.25rem;
+  transition: border-color 0.4s ease;
+}
+
+.ctaText {
+  font-family: monospace, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--gray);
+  transition: color 0.4s ease;
+}
+
+.arrow {
+  font-family: monospace, sans-serif;
+  font-size: 1rem;
+  color: var(--gray);
+  transition: transform 0.4s ease, color 0.4s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Hover & Interaction States
+   -------------------------------------------------------------------------- */
+@media (hover: hover) {
+  .card:hover {
+    transform: translateY(-8px);
+    border-color: var(--purple);
+    background-color: color-mix(in srgb, var(--purple) 5%, transparent);
+  }
+
+  .card:hover .cardCorner {
+    border-color: var(--purple);
+    background: linear-gradient(225deg, transparent 50%, var(--purple) 50%);
+  }
+
+  .card:hover .cardGlow {
+    opacity: 1;
+  }
+
+  .card:hover .index {
+    color: var(--pink);
+  }
+
+  .card:hover .shortName {
+    color: color-mix(in srgb, var(--purple) 15%, transparent);
+    transform: scale(1.05);
+  }
+
+  .card:hover .cardBottom {
+    border-color: color-mix(in srgb, var(--purple) 30%, transparent);
+  }
+
+  .card:hover .ctaText {
+    color: var(--white);
+  }
+
+  .card:hover .arrow {
+    color: var(--pink);
+    transform: translateX(4px) translateY(-4px); /* Moves up and right like ↗ */
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Layouts
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .section {
+    padding: 6rem 2rem;
+  }
+  
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 5rem 1.25rem;
+  }
+  
+  .container {
+    gap: 3rem;
+  }
+
+  .header {
+    text-align: center;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  .eyebrowWrapper {
+    justify-content: center;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .card {
+    min-height: 200px;
+    padding: 1.5rem;
+  }
+  
+  .cardContent {
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility (Reduced Motion)
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .cardCorner,
+  .cardGlow,
+  .index,
+  .shortName,
+  .cardBottom,
+  .ctaText,
+  .arrow {
+    transition: none !important;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+
+  .card:hover .arrow {
+    transform: none;
+  }
+
+  .card:hover .shortName {
+    transform: none;
+  }
+}
