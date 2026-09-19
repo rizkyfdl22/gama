@@ -4,17 +4,17 @@ import React, { useState, useEffect } from "react";
 import styles from "./navbar.module.css";
 
 const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Collabs", href: "#collabs" },
-  { label: "Features", href: "#features" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Collabs", href: "/collabs" },
+  { label: "Features", href: "/features" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("#home");
+  const [activeSection, setActiveSection] = useState("/");
 
   // Handle Scroll state untuk merubah background navbar
   useEffect(() => {
