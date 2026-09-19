@@ -1,6 +1,8 @@
+import Footer from "@/components/Footer";
 import "./globals.css";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
+import Navbar from "@/components/Navbar";
+import type { ReactNode } from "react";
+
 
 export const metadata = {
   metadataBase: new URL("https://semestaesports.id"),
@@ -64,11 +66,11 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <>
     <html lang="id">
-    <Navbar/>
+      <Navbar/>
       <body>
           {children}
       </body>
