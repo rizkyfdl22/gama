@@ -1,0 +1,226 @@
+.container {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  background: var(--black);
+  color: var(--white);
+  border: 1px solid color-mix(in srgb, var(--white) 10%, transparent);
+  border-radius: 4px;
+}
+
+.header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.eyebrow {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--purple);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.description {
+  font-size: 0.875rem;
+  color: var(--gray);
+  margin: 0;
+}
+
+.roleSelector {
+  display: flex;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid color-mix(in srgb, var(--white) 10%, transparent);
+}
+
+.roleButton {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 0.875rem 1rem;
+  color: var(--gray);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.roleButton::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.roleButton[aria-pressed="true"] {
+  color: var(--white);
+  background: color-mix(in srgb, var(--purple) 10%, transparent);
+}
+
+.roleButton[aria-pressed="true"]::after {
+  background-color: var(--purple);
+}
+
+.roleButton:hover:not([aria-pressed="true"]) {
+  color: var(--white);
+  background: color-mix(in srgb, var(--white) 5%, transparent);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: color-mix(in srgb, var(--white) 3%, transparent);
+  border: 1px solid color-mix(in srgb, var(--white) 15%, transparent);
+  border-radius: 2px;
+  color: var(--white);
+  font-size: 0.9375rem;
+  font-family: inherit;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  outline: none;
+}
+
+.input::placeholder {
+  color: color-mix(in srgb, var(--gray) 70%, transparent);
+}
+
+.input:focus {
+  border-color: var(--purple);
+  background: color-mix(in srgb, var(--purple) 5%, transparent);
+}
+
+.inputPassword {
+  padding-right: 4.5rem;
+}
+
+.visibilityToggle {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--gray);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: color 0.2s ease;
+}
+
+.visibilityToggle:hover {
+  color: var(--white);
+}
+
+.errorAlert {
+  padding: 0.875rem;
+  background: color-mix(in srgb, var(--pink) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--pink) 30%, transparent);
+  border-radius: 2px;
+  color: var(--pink);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 1rem;
+  margin-top: 0.5rem;
+  background: var(--purple);
+  color: var(--white);
+  border: none;
+  border-radius: 2px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--purple) 80%, var(--white));
+}
+
+.submitButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.footer {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--gray);
+}
+
+.link {
+  color: var(--white);
+  font-weight: 600;
+  margin-left: 0.5rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--purple);
+  text-decoration: underline;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .roleButton,
+  .roleButton::after,
+  .input,
+  .visibilityToggle,
+  .submitButton,
+  .link {
+    transition: none;
+  }
+}
